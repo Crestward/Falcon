@@ -4,8 +4,8 @@
 
 A multi-agent fraud investigation system that turns raw bank alerts
 into structured case files. A LangGraph supervisor orchestrates five
-specialist agents — Triage, Account Historian, Network Mapper, Pattern
-Hunter, Case Writer — over a Postgres + pgvector evidence store, with
+specialist agents;Triage, Account Historian, Network Mapper, Pattern
+Hunter, Case Writer, over a Postgres + pgvector evidence store, with
 custom guardrails enforcing scoped tool access, justified calls, and
 Presidio-based PII redaction.
 
@@ -16,7 +16,7 @@ Presidio-based PII redaction.
 Banks spend hours per fraud alert on manual investigation. An analyst
 pulls transaction history, checks the network of linked accounts,
 looks for known patterns, writes up the case. Most of that work is
-deterministic and most of it is repetitive — but the deterministic
+deterministic and most of it is repetitive, but the deterministic
 parts produce too many false positives, so a human still has to
 read every case. FALCON automates the gathering and the reasoning,
 and pauses for a human only when the verdict is genuinely uncertain.
@@ -146,9 +146,6 @@ Three model backends are supported via `LLM_BACKEND` in `.env`:
 - `anthropic` — direct Claude API
 - `vertex` — Gemini in `europe-west2` for UK data residency
 
-The judge backend (`JUDGE_BACKEND`) is independent — see
-[ADR-006](docs/adr/0006-local-first-llm-strategy.md).
-
 ## Tuning knobs
 
 The current verdict accuracy and FPR are sensitive to a small handful
@@ -167,18 +164,6 @@ these and re-run the eval (`python -m eval.run_evaluation`):
 None of these change the framework — they change where the supervisor
 decides cases sit. Treat the defaults as the starting point.
 
-## Design decisions
-
-Six ADRs in `docs/adr/`:
-
-| ADR | Decision |
-|---|---|
-| [ADR-001](docs/adr/0001-langgraph-over-crewai.md) | LangGraph over CrewAI for the supervisor |
-| [ADR-002](docs/adr/0002-postgres-ctes-over-neo4j.md) | PostgreSQL recursive CTEs over Neo4j |
-| [ADR-003](docs/adr/0003-fastmcp-tool-interface.md) | FastMCP as the tool interface |
-| [ADR-004](docs/adr/0004-state-persistence-pause-resume.md) | Postgres checkpointer for pause-and-resume |
-| [ADR-005](docs/adr/0005-custom-guardrails.md) | Custom guardrails over NeMo |
-| [ADR-006](docs/adr/0006-local-first-llm-strategy.md) | Local-first LLM strategy with one env-var swap |
 
 ## Repo structure
 
@@ -196,6 +181,3 @@ falcon/
 └── tests/            88 unit tests across phases 0–4
 ```
 
-## License
-
-Portfolio project — not for production use.
