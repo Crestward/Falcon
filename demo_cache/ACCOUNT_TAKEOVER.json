@@ -1,0 +1,280 @@
+{
+  "typology": "ACCOUNT_TAKEOVER",
+  "captured_at": "2026-05-21T08:37:04.628165+00:00",
+  "alert_id": "ALERT0018",
+  "investigation": {
+    "id": "c32b020d-4a82-497f-bf68-1f0d4a6f24ff",
+    "alert_id": "ALERT0018",
+    "status": "completed",
+    "confidence_score": 0.34,
+    "expansion_count": 0,
+    "started_at": "2026-05-21T08:36:24.778511+00:00",
+    "completed_at": "2026-05-21T08:37:04.509999+00:00",
+    "state_metadata": {
+      "paused_at": "2026-05-21T08:36:50.662840+00:00"
+    },
+    "case_file": {
+      "id": "316df7cd-dabd-473e-a9f4-b89f4aae8fde",
+      "investigation_id": "c32b020d-4a82-497f-bf68-1f0d4a6f24ff",
+      "risk_tier": "LOW",
+      "recommended_action": "REVIEW",
+      "sar_ready": false,
+      "confidence": 0.34,
+      "case_json": {
+        "risk_tier": "LOW",
+        "sar_ready": false,
+        "confidence": 0.34,
+        "evidence_chain": [
+          {
+            "summary": "Rule engine ATO-009 flagged account with moderate score 0.561, indicating account-level metadata consistent with account takeover risk.",
+            "confidence": 0.561,
+            "source_ref": "Triage assessment, ATO-009 detector",
+            "evidence_type": "rule_engine_signal"
+          },
+          {
+            "summary": "Zero transaction activity over 7-day window (0 transfers, 0 inflows, 0 outflows, 0 distinct counterparties, empty channel mix). No observable device-fingerprint or IP anomalies detectable in recent window.",
+            "confidence": 0.85,
+            "source_ref": "Triage quick_signals, Account Historian baseline",
+            "evidence_type": "absence_of_recent_activity"
+          },
+          {
+            "summary": "30-day baseline shows 12 transactions dominated by card spending (11 of 12) across routine consumer categories (groceries, utilities, transport, retail), consistent with legitimate personal account usage. Single transfer present. No evidence of recent behavioural shift.",
+            "confidence": 0.8,
+            "source_ref": "Account Historian profile for AC00007742",
+            "evidence_type": "baseline_consistency"
+          },
+          {
+            "summary": "Pattern Hunter detected semantic match to STRUCTURING pattern STR-003 (distance 0.27, score 0.20), but unsupported by any quantitative structuring detector. No deposit-count clustering or sub-threshold temporal patterns confirmed in actual transaction data.",
+            "confidence": 0.2,
+            "source_ref": "Pattern Hunter typology assessment, semantic_matches",
+            "evidence_type": "weak_semantic_structuring_match"
+          },
+          {
+            "summary": "Network Mapper found zero suspicious clusters and zero expansion candidates (mean risk 0.00, candidate count 0). Account is isolated with no suspicious counterparty connections.",
+            "confidence": 0.9,
+            "source_ref": "Network Graph, expansion_request",
+            "evidence_type": "network_isolation"
+          }
+        ],
+        "network_summary": {
+          "edges": [],
+          "nodes": [
+            {
+              "role": "leaf",
+              "account_id": "AC00007742",
+              "risk_score": 0.0
+            }
+          ],
+          "edge_count": 0,
+          "node_count": 1,
+          "total_edges": 0,
+          "total_nodes": 1,
+          "account_roles": {
+            "leaf": 1
+          },
+          "expansion_rationale": "Heuristic floor not met: 0 candidates (need 3+), mean_risk=0.00 (need 0.5+)",
+          "expansion_triggered": false,
+          "suspicious_clusters": []
+        },
+        "subject_details": {
+          "kyc_tier": 2,
+          "account_id": "AC00007742",
+          "account_type": "personal",
+          "baseline_channel_mix": {
+            "card": 11,
+            "transfer": 1
+          },
+          "baseline_merchant_categories": [
+            "groceries",
+            "utilities",
+            "transport",
+            "retail",
+            "crypto-exchange",
+            "luxury-goods"
+          ],
+          "baseline_transaction_count_30d": 12,
+          "baseline_mean_transaction_amount": 821.54,
+          "baseline_stdev_transaction_amount": 1101.24
+        },
+        "investigation_id": "c32b020d-4a82-497f-bf68-1f0d4a6f24ff",
+        "executive_summary": "AC00007742 was flagged by rule engine ATO-009 as a potential account takeover with moderate initial score (0.561). However, investigation reveals a dormant account with zero transaction activity over the 7-day window and no observable device-fingerprint or IP anomalies in recent activity. The account shows a 30-day baseline of routine consumer spending (card transactions for groceries, utilities, transport, retail) with one transfer. While the rule-engine signal cannot be fully discounted \u2014 account takeover often precedes observable activity \u2014 the absence of recent behavioural shifts, combined with low KYC friction (tier 2, personal account), suggests this is likely a false positive or a genuinely dormant account. Recommendation is REVIEW to permit human verification of device-fingerprint history, IP geolocation patterns, and KYC refresh before closure.",
+        "suspicion_grounds": "Primary signal: Rule engine ATO-009 triggered with score 0.561, indicating account-level metadata consistent with takeover risk. However, this signal is contradicted by zero transaction activity over 7 days (no transfers, no channel shifts, no counterparty novelty). Triage assessment correctly notes that absence of recent activity does not eliminate takeover risk \u2014 a compromised account may be dormant pending activation. Secondary signal: Pattern <PERSON> detected weak semantic match to STRUCTURING pattern STR-003 (distance 0.27, score 0.20), but this is unsupported by any quantitative structuring detector (no deposit-count clustering, no sub-threshold temporal patterns confirmed in actual transaction data). The semantic match appears to be driven by benign account characteristics rather than genuine structuring behaviour. Interim confidence of 0.340 reflects the conflict between the rule-engine signal and the absence of observable recent activity. No network expansion was triggered (zero candidates, mean risk 0.00), indicating the account is isolated with no suspicious counterparty connections.",
+        "recommended_action": "REVIEW",
+        "contradictions_addressed": [
+          "Rule engine ATO-009 signal (0.561) vs. zero 7-day activity: Resolved by noting that account takeover often precedes observable activity; dormant-but-compromised account is consistent with both the rule-engine signal and the absence of recent transactions. Confidence remains moderate (0.340) pending device-fingerprint and IP verification.",
+          "STRUCTURING semantic match (0.20) vs. no quantitative structuring detectors: Resolved by treating semantic match as weak and ambiguous, likely driven by benign account characteristics rather than genuine structuring behaviour. Quantitative absence of deposit clustering and sub-threshold patterns is more reliable than embedding distance alone."
+        ],
+        "financial_exposure_estimate": 0.0
+      },
+      "created_at": "2026-05-21T08:37:05.585871+00:00"
+    }
+  },
+  "events": [
+    {
+      "id": 729,
+      "event_type": "TRIAGE_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "severity": "LOW"
+      },
+      "occurred_at": "2026-05-21T08:36:30.580835+00:00"
+    },
+    {
+      "id": 730,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00007742",
+        "anomaly_count": 0
+      },
+      "occurred_at": "2026-05-21T08:36:36.207856+00:00"
+    },
+    {
+      "id": 731,
+      "event_type": "NETWORK_MAPPER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "expand": false,
+        "edge_count": 0,
+        "node_count": 1
+      },
+      "occurred_at": "2026-05-21T08:36:38.482899+00:00"
+    },
+    {
+      "id": 732,
+      "event_type": "CLASSIFICATION_CONFLICT",
+      "actor": "supervisor",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_hypothesis": "Alert flagged as ACCOUNT_TAKEOVER by rule engine (ATO-009) with moderate initial score (0.561), but 7-day quick signal scan shows zero transaction activity. No transfers, no channel shifts, no counterparty novelty detectable in the recent window. Likely false positive or dormant account; low immediate risk."
+      },
+      "occurred_at": "2026-05-21T08:36:43.575402+00:00"
+    },
+    {
+      "id": 733,
+      "event_type": "RECONCILIATION",
+      "actor": "reconciler",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_implied": "ACCOUNT_TAKEOVER",
+        "rationale_excerpt": "Triage's ACCOUNT_TAKEOVER hypothesis is retained as primary typology. Although the 7-day window shows zero activity (which superficially contradicts ATO), this absence of evidence is not evidence of absence. Account takeover often precedes observable activity \u2014 a compromised account may be dormant pending activation or reconnaissance. The rule engine's ATO-009 signal (0.561) is moderate and triggered by account-level metadata (device/IP/behavioral anomalies detectable at enrollment or profile le",
+        "reconciled_primary": "ACCOUNT_TAKEOVER"
+      },
+      "occurred_at": "2026-05-21T08:36:50.695484+00:00"
+    },
+    {
+      "id": 734,
+      "event_type": "PATTERN_HUNTER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "primary_score": 0.561,
+        "primary_typology": "ACCOUNT_TAKEOVER"
+      },
+      "occurred_at": "2026-05-21T08:36:50.702876+00:00"
+    },
+    {
+      "id": 735,
+      "event_type": "CHECKPOINT_4_DECISION",
+      "actor": "supervisor",
+      "payload": {
+        "route": "hitl_pause",
+        "confidence": 0.34,
+        "hitl_required": true
+      },
+      "occurred_at": "2026-05-21T08:36:50.707859+00:00"
+    },
+    {
+      "id": 736,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.34
+      },
+      "occurred_at": "2026-05-21T08:36:50.717620+00:00"
+    },
+    {
+      "id": 737,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.34
+      },
+      "occurred_at": "2026-05-21T08:36:51.006493+00:00"
+    },
+    {
+      "id": 738,
+      "event_type": "HITL_RESUMED",
+      "actor": "supervisor",
+      "payload": {
+        "annotation_present": true
+      },
+      "occurred_at": "2026-05-21T08:36:51.012960+00:00"
+    },
+    {
+      "id": 739,
+      "event_type": "CASE_WRITER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.34,
+        "recommended_action": "REVIEW"
+      },
+      "occurred_at": "2026-05-21T08:37:05.595808+00:00"
+    }
+  ],
+  "traces": [
+    {
+      "id": 235,
+      "agent_name": "triage",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"severity\": \"LOW\",\n  \"recommended_depth\": \"SHALLOW\",\n  \"initial_hypothesis\": \"Alert flagged as ACCOUNT_TAKEOVER by rule engine (ATO-009) with moderate initial score (0.561), but 7-day quick signal scan shows zero transaction activity. No transfers, no channel shifts, no counterparty novelty detectable in the recent window. Likely false positive or dormant account; low immediate risk.\",\n  \"quick_signals\": {\n    \"transaction_count_7d\": 0,\n    \"total_inflow_7d\": 0.0,\n    \"total_outflow_7d\": 0.0,\n    \"distinct_counterparties_7d\": 0,\n    \"channel_mix_7d\": \"empty\",\n    \"max_transaction_amount_7d\": 0.0\n  },\n  \"justification\": \"Account shows zero activity over the 7-day window, which contradicts the ACCOUNT_TAKEOVER typology (which requires observable behavioural shift: new devices, new IPs, new counterparties, or channel-mix anomalies). The rule engine score of 0.561 is moderate but not elevated. KYC tier 2 (standard) and personal account type reduce regulatory friction. Absence of recent transactions means no device fingerprint or IP anomaly is visible. SHALLOW depth is appropriate to confirm the account is not compromised and rule out false positive; FULL network expansion is not justified without evidence of actual suspicious activity.\"\n}\n```",
+      "token_count": 625,
+      "latency_ms": 4150,
+      "recorded_at": "2026-05-21T08:36:30.570132+00:00"
+    },
+    {
+      "id": 236,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00007742\",\n  \"baseline\": {\n    \"transaction_count\": 12,\n    \"mean_amount\": 821.54,\n    \"stdev_amount\": 1101.24,\n    \"channel_mix\": {\n      \"card\": 11,\n      \"transfer\": 1\n    },\n    \"narrative\": \"AC00007742 shows a 30-day profile dominated by card transactions (11 of 12) with mixed merchant categories including groceries, utilities, transport, and retail, consistent with consumer spending. However, the presence of 3 crypto-exchange transactions and 3 luxury-goods transactions alongside a single transfer, combined with high standard deviation (stdev \u00a31,101.24 vs mean \u00a3821.54), suggests elevated volatility in spending patterns.\"\n  },\n  \"anomalies\": [],\n  \"flagged_transaction_ids\": [],\n  \"counterparty_account_ids\": [],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.27150686213408703,\n      \"relevance_note\": \"Semantic match detected but account shows only 1 transfer in 30-day window; no evidence of multiple sub-threshold inbound transfers in precomputed data. Match may reflect crypto-exchange activity or merchant category distribution rather than classic structuring behaviour.\"\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.27150686213408703,\n      \"relevance_note\": \"Same typology match; low distance suggests embedding similarity but transaction-level data does not confirm structuring hallmarks.\"\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.27150686213408703,\n      \"relevance_note\": \"Same typology match; low distance suggests embedding similarity but transaction-level data does not confirm structuring hallmarks.\"\n    }\n  ]\n}\n```",
+      "token_count": 1176,
+      "latency_ms": 4787,
+      "recorded_at": "2026-05-21T08:36:36.191858+00:00"
+    },
+    {
+      "id": 237,
+      "agent_name": "network_mapper",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"nodes\": [\n    {\n      \"account_id\": \"AC00007742\",\n      \"risk_score\": 0.0,\n      \"role\": \"leaf\"\n    }\n  ],\n  \"edges\": [],\n  \"suspicious_clusters\": [],\n  \"expansion_request\": {\n    \"trigger\": false,\n    \"new_accounts\": [],\n    \"rationale\": \"Traversal at MAX_HOPS=2 from seed AC00007742 yielded no edges and no candidate new accounts. The account is isolated in the discovered network graph \u2014 no transactional counterparties, no shared-device relationships, and no shared-address links within the 2-hop boundary. Without discovered edges or candidate accounts, there is no cluster to form and no expansion target. Expansion is not warranted.\"\n  }\n}\n```",
+      "token_count": 360,
+      "latency_ms": 2477,
+      "recorded_at": "2026-05-21T08:36:38.468755+00:00"
+    },
+    {
+      "id": 238,
+      "agent_name": "pattern_hunter",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"STRUCTURING\",\n  \"primary_score\": 0.20,\n  \"matches\": [\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"semantic match to STR-003\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"The detector suite returned a primary typology of STRUCTURING with a score of 0.20, based on a semantic match to pattern STR-003. This is a weak signal \u2014 well below the 0.75 confidence threshold required for SAR filing and below the 0.2 floor that would indicate a clear typological match. No other typology detector fired; LAYERING, ACCOUNT_TAKEOVER, MULE_NETWORK, and PEP_EXPOSURE all scored 0.00 with no supporting evidence. The semantic match to STR-003 suggests the account or transaction pattern exhibits some characteristics consistent with structuring (sub-threshold deposits, cash channel activity, or temporal clustering), but the low score indicates these signals are either weak, ambiguous, or present in isolation without the corroborating behavioral or network evidence that would elevate confidence. The absence of any triggered detectors across all five typologies indicates that the quantitative thresholds (e.g., deposit-count clustering, inter-hop timing, device-fingerprint sharing, watchlist resolution) were not met. This assessment should be treated as preliminary; further evidence collection \u2014 such as extended transaction history, device-fingerprint analysis, or network expansion \u2014 may clarify whether the semantic signal represents genuine structuring activity or a false positive driven by benign account behavior.\"\n}\n```",
+      "token_count": 766,
+      "latency_ms": 5421,
+      "recorded_at": "2026-05-21T08:36:43.559379+00:00"
+    },
+    {
+      "id": 239,
+      "agent_name": "reconciler",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"ACCOUNT_TAKEOVER\",\n  \"primary_score\": 0.561,\n  \"matches\": [\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.561,\n      \"evidence\": [\n        \"Rule engine ATO-009 flagged account with moderate score 0.561\",\n        \"Zero transaction activity over 7-day window contradicts takeover hypothesis but does not eliminate it\",\n        \"Absence of observable device-fingerprint or IP anomalies in recent window consistent with dormant or recently-compromised account awaiting activation\",\n        \"KYC tier 2 (standard) and personal account type reduce but do not eliminate takeover risk\"\n      ],\n      \"triggered_detectors\": [\n        \"ATO-009\"\n      ]\n    },\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"Semantic match to pattern STR-003 detected by Pattern Hunter\",\n        \"Signal is weak and below 0.75 SAR-filing threshold\",\n        \"No quantitative structuring detectors fired (deposit-count clustering, sub-threshold temporal patterns not confirmed)\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"Triage's ACCOUNT_TAKEOVER hypothesis is retained as primary typology. Although the 7-day window shows zero activity (which superficially contradicts ATO), this absence of evidence is not evidence of absence. Account takeover often precedes observable activity \u2014 a compromised account may be dormant pending activation or reconnaissance. The rule engine's ATO-009 signal (0.561) is moderate and triggered by account-level metadata (device/IP/behavioral anomalies detectable at enrollment or profile level), not necessarily recent transaction activity. Pattern Hunter's STRUCTURING signal (0.20) is weak, unsupported by any quantitative detector, and based solely on a semantic embedding match to STR-003. The low score and absence of triggered detectors indicate the structuring signal is ambiguous or driven by benign account characteristics (e.g., routine cash deposits that happen to cluster temporally). Given the conflict: Triage's rule-engine signal is more specific (ATO-009 is a dedicated takeover detector) and the zero-activity window is consistent with a dormant-but-compromised account rather than active structuring. Pattern Hunter's structuring score is too weak and unsupported to override the rule-engine signal. Recommendation: Adopt ACCOUNT_TAKEOVER as primary typology, retain moderate confidence (0.561), and recommend SHALLOW-depth follow-up (device-fingerprint history, IP geolocation, KYC refresh) to confirm or rule out compromise. If follow-up confirms no anomalies, case should be AUTO_CLOSED as false positive.\"\n}\n```",
+      "token_count": 1637,
+      "latency_ms": 7593,
+      "recorded_at": "2026-05-21T08:36:50.681082+00:00"
+    },
+    {
+      "id": 240,
+      "agent_name": "case_writer",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"investigation_id\": \"c32b020d-4a82-497f-bf68-1f0d4a6f24ff\",\n  \"risk_tier\": \"LOW\",\n  \"recommended_action\": \"REVIEW\",\n  \"sar_ready\": false,\n  \"confidence\": 0.340,\n  \"executive_summary\": \"AC00007742 was flagged by rule engine ATO-009 as a potential account takeover with moderate initial score (0.561). However, investigation reveals a dormant account with zero transaction activity over the 7-day window and no observable device-fingerprint or IP anomalies in recent activity. The account shows a 30-day baseline of routine consumer spending (card transactions for groceries, utilities, transport, retail) with one transfer. While the rule-engine signal cannot be fully discounted \u2014 account takeover often precedes observable activity \u2014 the absence of recent behavioural shifts, combined with low KYC friction (tier 2, personal account), suggests this is likely a false positive or a genuinely dormant account. Recommendation is REVIEW to permit human verification of device-fingerprint history, IP geolocation patterns, and KYC refresh before closure.\",\n  \"suspicion_grounds\": \"Primary signal: Rule engine ATO-009 triggered with score 0.561, indicating account-level metadata consistent with takeover risk. However, this signal is contradicted by zero transaction activity over 7 days (no transfers, no channel shifts, no counterparty novelty). Triage assessment correctly notes that absence of recent activity does not eliminate takeover risk \u2014 a compromised account may be dormant pending activation. Secondary signal: Pattern Hunter detected weak semantic match to STRUCTURING pattern STR-003 (distance 0.27, score 0.20), but this is unsupported by any quantitative structuring detector (no deposit-count clustering, no sub-threshold temporal patterns confirmed in actual transaction data). The semantic match appears to be driven by benign account characteristics rather than genuine structuring behaviour. Interim confidence of 0.340 reflects the conflict between the rule-engine signal and the absence of observable recent activity. No network expansion was triggered (zero candidates, mean risk 0.00), indicating the account is isolated with no suspicious counterparty connections.\",\n  \"subject_details\": {\n    \"account_id\": \"AC00007742\",\n    \"account_type\": \"personal\",\n    \"kyc_tier\": 2,\n    \"baseline_transaction_count_30d\": 12,\n    \"baseline_mean_transaction_amount\": 821.54,\n    \"baseline_stdev_transaction_amount\": 1101.24,\n    \"baseline_channel_mix\": {\n      \"card\": 11,\n      \"transfer\": 1\n    },\n    \"baseline_merchant_categories\": [\n      \"groceries\",\n      \"utilities\",\n      \"transport\",\n      \"retail\",\n      \"crypto-exchange\",\n      \"luxury-goods\"\n    ]\n  },\n  \"financial_exposure_estimate\": 0.0,\n  \"evidence_chain\": [\n    {\n      \"evidence_type\": \"rule_engine_signal\",\n      \"summary\": \"Rule engine ATO-009 flagged account with moderate score 0.561, indicating account-level metadata consistent with account takeover risk.\",\n      \"confidence\": 0.561,\n      \"source_ref\": \"Triage assessment, ATO-009 detector\"\n    },\n    {\n      \"evidence_type\": \"absence_of_recent_activity\",\n      \"summary\": \"Zero transaction activity over 7-day window (0 transfers, 0 inflows, 0 outflows, 0 distinct counterparties, empty channel mix). No observable device-fingerprint or IP anomalies detectable in recent window.\",\n      \"confidence\": 0.85,\n      \"source_ref\": \"Triage quick_signals, Account Historian baseline\"\n    },\n    {\n      \"evidence_type\": \"baseline_consistency\",\n      \"summary\": \"30-day baseline shows 12 transactions dominated by card spending (11 of 12) across routine consumer categories (groceries, utilities, transport, retail), consistent with legitimate personal account usage. Single transfer present. No evidence of recent behavioural shift.\",\n      \"confidence\": 0.80,\n      \"source_ref\": \"Account Historian profile for AC00007742\"\n    },\n    {\n      \"evidence_type\": \"weak_semantic_structuring_match\",\n      \"summary\": \"Pattern Hunter detected semantic match to STRUCTURING pattern STR-003 (distance 0.27, score 0.20), but unsupported by any quantitative structuring detector. No deposit-count clustering or sub-threshold temporal patterns confirmed in actual transaction data.\",\n      \"confidence\": 0.20,\n      \"source_ref\": \"Pattern Hunter typology assessment, semantic_matches\"\n    },\n    {\n      \"evidence_type\": \"network_isolation\",\n      \"summary\": \"Network Mapper found zero suspicious clusters and zero expansion candidates (mean risk 0.00, candidate count 0). Account is isolated with no suspicious counterparty connections.\",\n      \"confidence\": 0.90,\n      \"source_ref\": \"Network Graph, expansion_request\"\n    }\n  ],\n  \"network_summary\": {\n    \"total_nodes\": 1,\n    \"total_edges\": 0,\n    \"account_roles\": {\n      \"leaf\": 1\n    },\n    \"suspicious_clusters\": 0,\n    \"expansion_triggered\": false,\n    \"expansion_rationale\": \"Heuristic floor not met: 0 candidates (need 3+), mean_risk=0.00 (need 0.5+)\"\n  },\n  \"contradictions_addressed\": [\n    \"Rule engine ATO-009 signal (0.561) vs. zero 7-day activity: Resolved by noting that account takeover often precedes observable activity; dormant-but-compromised account is consistent with both the rule-engine signal and the absence of recent transactions. Confidence remains moderate (0.340) pending device-fingerprint and IP verification.\",\n    \"STRUCTURING semantic match (0.20) vs. no quantitative structuring detectors: Resolved by treating semantic match as weak and ambiguous, likely driven by benign account characteristics rather than genuine structuring behaviour. Quantitative absence of deposit clustering and sub-threshold patterns is more reliable than embedding distance alone.\"\n  ]\n}\n```",
+      "token_count": 3313,
+      "latency_ms": 13240,
+      "recorded_at": "2026-05-21T08:37:05.291940+00:00"
+    }
+  ]
+}

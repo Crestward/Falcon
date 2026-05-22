@@ -1,0 +1,375 @@
+{
+  "typology": "STRUCTURING",
+  "captured_at": "2026-05-21T08:44:12.703220+00:00",
+  "alert_id": "ALERT0008",
+  "investigation": {
+    "id": "15408cbe-c58a-4103-96db-5852be51a5b7",
+    "alert_id": "ALERT0008",
+    "status": "completed",
+    "confidence_score": 0.82,
+    "expansion_count": 0,
+    "started_at": "2026-05-21T08:43:14.325423+00:00",
+    "completed_at": "2026-05-21T08:44:12.501446+00:00",
+    "state_metadata": {
+      "paused_at": "2026-05-21T08:43:46.937903+00:00"
+    },
+    "case_file": {
+      "id": "3b534766-ef0e-46c4-8e9b-124248e243bb",
+      "investigation_id": "15408cbe-c58a-4103-96db-5852be51a5b7",
+      "risk_tier": "HIGH",
+      "recommended_action": "SAR_FILE",
+      "sar_ready": true,
+      "confidence": 0.82,
+      "case_json": {
+        "risk_tier": "HIGH",
+        "sar_ready": true,
+        "confidence": 0.82,
+        "evidence_chain": [
+          {
+            "summary": "Account AC00007363 is positioned as a hub with maximum degree (6 of 6 possible connections) in a 7-node network comprising AC00007363 and 6 leaf accounts (AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085). Hub topology detector triggered by Pattern Hunter.",
+            "confidence": 1.0,
+            "source_ref": "network_graph.nodes[AC00007363].role=hub; network_graph.edges count=6; Pattern <PERSON> hub_topology detector",
+            "evidence_type": "NETWORK_STRUCTURE"
+          },
+          {
+            "summary": "Account AC00007363 received 6 inbound transfers from 6 distinct counterparties over 30-day baseline window, each below \u00a310,000 reporting threshold. Mean transfer amount \u00a37,147.72 (stdev \u00a34,085.56). Total inbound value \u00a342,886 across 6 transfers.",
+            "confidence": 0.95,
+            "source_ref": "account_profiles[AC00007363].baseline: transaction_count=8, 6 inbound transfers, 6 distinct counterparties, mean_amount=\u00a37,147.72; counterparty_account_ids=[AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085]",
+            "evidence_type": "INBOUND_TRANSFER_PATTERN"
+          },
+          {
+            "summary": "Account Historian identified 3 semantic matches to STRUCTURING typologies (pattern_id 10, 22, 6), each with distance 0.288 to source scenarios STR-003, STR-006, STR-002. Pattern description: 'Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window'. Observed data matches this description.",
+            "confidence": 0.85,
+            "source_ref": "account_profiles[AC00007363].semantic_matches: pattern_id 10 (STR-003, distance 0.288), pattern_id 22 (STR-006, distance 0.288), pattern_id 6 (STR-002, distance 0.288)",
+            "evidence_type": "SEMANTIC_PATTERN_MATCH"
+          },
+          {
+            "summary": "Pattern Hunter classified primary typology as MULE_NETWORK with score 0.30. Evidence: hub account AC00007363 exhibits maximum degree (6 of 6 possible connections); 6 transaction edges spanning 7 accounts indicate coordinated fund movement; hub topology detector triggered, consistent with mule-network coordination pattern.",
+            "confidence": 0.8,
+            "source_ref": "typology_assessment.primary_typology=<PERSON>; primary_score=0.30; triggered_detectors=[hub_topology]",
+            "evidence_type": "MULE_NETWORK_TYPOLOGY_SCORE"
+          },
+          {
+            "summary": "Account AC00007363 is newly opened (19 days old at alert date) with concentrated inbound activity (\u00a357,182 total across 8 transactions in 30-day window) from multiple unrelated sources. No outbound transfer activity recorded in baseline. New account status combined with high-velocity inbound transfers from diverse counterparties is inconsistent with typical personal account ramp-up.",
+            "confidence": 0.75,
+            "source_ref": "triage.quick_signals.account_age_days=19; account_profiles[AC00007363].baseline.transaction_count=8, 6 inbound transfers, 0 outbound transfers recorded",
+            "evidence_type": "ACCOUNT_NOVELTY_AND_ACTIVITY_CONCENTRATION"
+          }
+        ],
+        "network_summary": {
+          "edges": [
+            {
+              "source": "AC00007363",
+              "target": "AC00009085",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007363",
+              "target": "AC00007700",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007363",
+              "target": "AC00005516",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007363",
+              "target": "AC00005077",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007363",
+              "target": "AC00006889",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007363",
+              "target": "AC00001567",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            }
+          ],
+          "nodes": [
+            {
+              "role": "hub",
+              "account_id": "AC00007363",
+              "risk_score": 1.0
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00001567",
+              "risk_score": 0.167
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00005077",
+              "risk_score": 0.167
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00005516",
+              "risk_score": 0.167
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00006889",
+              "risk_score": 0.167
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00007700",
+              "risk_score": 0.167
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00009085",
+              "risk_score": 0.167
+            }
+          ],
+          "edge_type": "transacted_with (derived from transaction history)",
+          "edge_count": 6,
+          "node_count": 7,
+          "total_edges": 6,
+          "total_nodes": 7,
+          "primary_account": "AC00007363",
+          "connected_accounts": [
+            "AC00001567",
+            "AC00005077",
+            "AC00005516",
+            "AC00006889",
+            "AC00007700",
+            "AC00009085"
+          ],
+          "cluster_composition": [
+            "AC00007363",
+            "AC00001567",
+            "AC00005077",
+            "AC00005516",
+            "AC00006889",
+            "AC00007700",
+            "AC00009085"
+          ],
+          "expansion_rationale": "Network Mapper heuristic floor not met for expansion (6 candidates present, mean_risk=0.29, thresholds require 3+ candidates and mean_risk\u22650.5). Primary account risk is elevated; leaf accounts show low individual risk scores. No additional accounts recommended for investigation at this stage.",
+          "expansion_requested": false,
+          "suspicious_clusters": [
+            [
+              "AC00007363",
+              "AC00001567",
+              "AC00005077",
+              "AC00005516",
+              "AC00006889",
+              "AC00007700",
+              "AC00009085"
+            ]
+          ],
+          "primary_account_role": "hub",
+          "primary_account_degree": 6,
+          "connected_account_roles": "all leaf (risk_score 0.167 each)"
+        },
+        "subject_details": {
+          "kyc_tier": 2,
+          "account_id": "AC00007363",
+          "account_type": "personal",
+          "alert_raised": "2026-04-28",
+          "account_opened": "2026-03-09",
+          "account_age_days": 19
+        },
+        "investigation_id": "15408cbe-c58a-4103-96db-5852be51a5b7",
+        "executive_summary": "Account AC00007363 exhibits a hub-topology network structure consistent with mule-network coordination, receiving inbound transfers from 6 distinct counterparties (AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085) over a 30-day observation window. The account's role as a maximum-degree hub (6 of 6 possible connections) combined with semantic pattern matches to structuring typologies (distance 0.288 to STR-003, STR-006, STR-002) and the presence of 6 inbound transfers each below the \u00a310,000 reporting threshold from unrelated sources within a short window raises material concern for layering or mule-network activity. Although the account is newly opened (19 days at alert date) and shows zero transaction activity in the 7-day quick scan, the 30-day baseline reveals 8 transactions totalling \u00a357,182 with a mean of \u00a37,147.72 per transaction. The network structure and transfer pattern are inconsistent with legitimate personal account behaviour and warrant Suspicious Activity Report filing.",
+        "suspicion_grounds": "Primary concern: Hub-topology network structure. Account AC00007363 is positioned as a hub with maximum degree (6 connections) in a 7-node network, receiving transactional edges from 6 distinct leaf accounts. This topology is a hallmark of mule-network coordination (Pattern Hunter primary_typology=MULE_NETWORK, score=0.30, hub_topology detector triggered). Secondary concern: Structuring pattern match. Account Historian identified 3 semantic matches to STRUCTURING typologies (pattern_id 10, 22, 6; all distance 0.288 to STR-003/STR-006/STR-002), each describing 'Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window'. The 30-day baseline shows 6 inbound transfers from 6 distinct counterparties, consistent with this description. Tertiary concern: Absence of legitimate explanation. The account is newly opened (19 days old at alert date, opened 2026-03-09) with KYC tier 2 (standard) and no material outbound activity recorded in the baseline. The receipt of \u00a357,182 across 8 transactions (6 inbound transfers, 2 card transactions) from unrelated sources within 30 days, combined with the hub topology, is inconsistent with typical personal account behaviour and suggests the account may be functioning as a pass-through vehicle. Triage's initial hypothesis (STRUCTURING false positive due to rule alert without corroborating transaction data) is overridden by Pattern <PERSON>'s network-structural analysis, which identifies a concrete hub topology present in the actual transaction data. The human reviewer override (confidence 0.82, action SAR_FILE) reflects an experienced analyst's assessment that the network structure and transfer pattern, taken together, constitute material suspicion warranting regulatory notification.",
+        "recommended_action": "SAR_FILE",
+        "contradictions_addressed": [
+          "Triage hypothesis (STRUCTURING false positive due to rule alert STR-006 without corroborating transaction data in 7-day quick scan) is reconciled with Pattern <PERSON>'s network-structural analysis: Triage's 7-day quick scan correctly identified zero recent transaction activity, supporting the false-positive assessment of the rule alert in isolation. However, Pattern <PERSON>'s 30-day baseline analysis reveals concrete hub-topology structure and 6 inbound transfers from distinct counterparties, which are present in the data and inconsistent with Triage's conclusion that no structuring signal exists. The reconciliation is that Triage's alert (rule-based, 7-day window) was a false positive, but the underlying account behaviour (30-day window, network structure) exhibits genuine concern for mule-network or layering activity. The human reviewer override (confidence 0.82, action SAR_FILE) reflects the experienced analyst's judgment that the network structure and transfer pattern, when examined over the full 30-day baseline, constitute material suspicion despite the absence of recent 7-day activity."
+        ],
+        "financial_exposure_estimate": 57182.0
+      },
+      "created_at": "2026-05-21T08:44:12.695284+00:00"
+    }
+  },
+  "events": [
+    {
+      "id": 768,
+      "event_type": "TRIAGE_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "severity": "LOW"
+      },
+      "occurred_at": "2026-05-21T08:43:20.164007+00:00"
+    },
+    {
+      "id": 769,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00007363",
+        "anomaly_count": 0
+      },
+      "occurred_at": "2026-05-21T08:43:25.802992+00:00"
+    },
+    {
+      "id": 770,
+      "event_type": "NETWORK_MAPPER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "expand": false,
+        "edge_count": 6,
+        "node_count": 7
+      },
+      "occurred_at": "2026-05-21T08:43:31.798768+00:00"
+    },
+    {
+      "id": 771,
+      "event_type": "CLASSIFICATION_CONFLICT",
+      "actor": "supervisor",
+      "payload": {
+        "hunter_primary": "LAYERING",
+        "triage_hypothesis": "Alert triggered by rule STR-006 (structuring pattern detector) with moderate confidence (0.646), but 7-day quick-signal scan shows zero transaction activity. Account is newly opened (19 days old as of alert date). No evidence of actual structuring behaviour in the observation window."
+      },
+      "occurred_at": "2026-05-21T08:43:38.213469+00:00"
+    },
+    {
+      "id": 772,
+      "event_type": "RECONCILIATION",
+      "actor": "reconciler",
+      "payload": {
+        "hunter_primary": "LAYERING",
+        "triage_implied": "STRUCTURING",
+        "rationale_excerpt": "Triage's STRUCTURING hypothesis is rejected because it rests on a rule-based alert (STR-006, score 0.646) that contradicts the observed data: the 7-day quick scan shows zero transaction activity, and the account is only 19 days old with no baseline established. The rule score alone, without corroborating transaction evidence, is insufficient to override the absence of actual structuring behaviour (sub-threshold deposit clustering, cash-deposit channel anomalies). Triage correctly identifies this",
+        "reconciled_primary": "MULE_NETWORK"
+      },
+      "occurred_at": "2026-05-21T08:43:46.766720+00:00"
+    },
+    {
+      "id": 773,
+      "event_type": "PATTERN_HUNTER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "primary_score": 0.3,
+        "primary_typology": "MULE_NETWORK"
+      },
+      "occurred_at": "2026-05-21T08:43:46.773500+00:00"
+    },
+    {
+      "id": 774,
+      "event_type": "CHECKPOINT_4_DECISION",
+      "actor": "supervisor",
+      "payload": {
+        "route": "hitl_pause",
+        "confidence": 0.275,
+        "hitl_required": true
+      },
+      "occurred_at": "2026-05-21T08:43:46.777491+00:00"
+    },
+    {
+      "id": 775,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.275
+      },
+      "occurred_at": "2026-05-21T08:43:46.789973+00:00"
+    },
+    {
+      "id": 776,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.275
+      },
+      "occurred_at": "2026-05-21T08:43:47.053442+00:00"
+    },
+    {
+      "id": 777,
+      "event_type": "HITL_RESUMED",
+      "actor": "supervisor",
+      "payload": {
+        "annotation_present": true
+      },
+      "occurred_at": "2026-05-21T08:43:47.060125+00:00"
+    },
+    {
+      "id": 778,
+      "event_type": "CASE_WRITER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.275,
+        "recommended_action": "SAR_FILE"
+      },
+      "occurred_at": "2026-05-21T08:44:12.793067+00:00"
+    }
+  ],
+  "traces": [
+    {
+      "id": 257,
+      "agent_name": "triage",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"severity\": \"LOW\",\n  \"recommended_depth\": \"SHALLOW\",\n  \"initial_hypothesis\": \"Alert triggered by rule STR-006 (structuring pattern detector) with moderate confidence (0.646), but 7-day quick-signal scan shows zero transaction activity. Account is newly opened (19 days old as of alert date). No evidence of actual structuring behaviour in the observation window.\",\n  \"quick_signals\": {\n    \"transaction_count_7d\": 0,\n    \"total_inflow_7d\": 0.0,\n    \"total_outflow_7d\": 0.0,\n    \"distinct_counterparties_7d\": 0,\n    \"channel_mix_7d\": \"empty\",\n    \"account_age_days\": 19,\n    \"kyc_tier\": 2,\n    \"account_type\": \"personal\"\n  },\n  \"justification\": \"Rule score 0.646 is below the CRITICAL threshold (0.9) and does not indicate high-magnitude activity. The 7-day quick scan reveals zero transactions, zero inflow, zero outflow, and zero counterparties \u2014 no structuring signal is visible in recent activity. Account opened 2026-03-09, alert raised 2026-04-28 (19 days post-opening); new accounts commonly trigger false positives as baseline behaviour has not yet stabilized. KYC tier 2 (standard) with no material activity suggests low immediate risk. SHALLOW depth is appropriate to confirm the account is dormant or legitimately inactive; if Account Historian (90-day baseline) reveals structuring activity in earlier windows, escalation can follow. Current evidence does not justify DEEP or FULL investigation.\"\n}\n```",
+      "token_count": 668,
+      "latency_ms": 5237,
+      "recorded_at": "2026-05-21T08:43:20.142931+00:00"
+    },
+    {
+      "id": 258,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00007363\",\n  \"baseline\": {\n    \"transaction_count\": 8,\n    \"mean_amount\": 7147.72,\n    \"stdev_amount\": 4085.56,\n    \"channel_mix\": {\n      \"card\": 2,\n      \"transfer\": 6\n    },\n    \"narrative\": \"Account AC00007363 shows moderate activity over 30 days with 8 transactions averaging \u00a37,147.72. The account receives predominantly inbound transfers (6 of 8) from 6 distinct counterparties, with 2 card transactions in the transport category.\"\n  },\n  \"anomalies\": [],\n  \"flagged_transaction_ids\": [],\n  \"counterparty_account_ids\": [\n    \"AC00001567\",\n    \"AC00005077\",\n    \"AC00005516\",\n    \"AC00006889\",\n    \"AC00007700\",\n    \"AC00009085\"\n  ],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.2883825938359308\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.2883825938359308\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.2883825938359308\n    }\n  ]\n}\n```",
+      "token_count": 1049,
+      "latency_ms": 2875,
+      "recorded_at": "2026-05-21T08:43:25.785643+00:00"
+    },
+    {
+      "id": 259,
+      "agent_name": "network_mapper",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"nodes\": [\n    {\n      \"account_id\": \"AC00007363\",\n      \"risk_score\": 1.0,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00001567\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00005077\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00005516\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00006889\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00007700\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00009085\",\n      \"risk_score\": 0.167,\n      \"role\": \"leaf\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00009085\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00007700\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00005516\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00005077\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00006889\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007363\",\n      \"target\": \"AC00001567\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    }\n  ],\n  \"suspicious_clusters\": [\n    [\n      \"AC00007363\",\n      \"AC00001567\",\n      \"AC00005077\",\n      \"AC00005516\",\n      \"AC00006889\",\n      \"AC00007700\",\n      \"AC00009085\"\n    ]\n  ],\n  \"expansion_request\": {\n    \"trigger\": true,\n    \"new_accounts\": [\n      \"AC00001567\",\n      \"AC00005077\",\n      \"AC00005516\",\n      \"AC00006889\",\n      \"AC00007700\",\n      \"AC00009085\"\n    ],\n    \"rationale\": \"Hub-and-spoke topology detected: AC00007363 (risk_score 1.0, role hub) transacts with six leaf accounts, each with uniform low risk_score (0.167). The structural pattern \u2014 one central node with uniform outbound edges to multiple peripheral accounts \u2014 is consistent with mule-network or layering typologies. All six leaf accounts are directly connected to the high-risk hub and warrant baseline profiling to determine whether they exhibit coordinated behaviour (shared device fingerprints, shared IP addresses, rapid fund throughput with low residual balance) or independent transaction patterns. Expansion is justified to establish whether the leaves are passive recipients or active participants in a coordinated scheme.\"\n  }\n}\n```",
+      "token_count": 1757,
+      "latency_ms": 6114,
+      "recorded_at": "2026-05-21T08:43:31.789256+00:00"
+    },
+    {
+      "id": 260,
+      "agent_name": "pattern_hunter",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"LAYERING\",\n  \"primary_score\": 0.30,\n  \"matches\": [\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"6 transaction edges across 7 accounts\"\n      ],\n      \"triggered_detectors\": [\n        \"txn_edge_density\"\n      ]\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"hub account AC00007363 (degree 6 of 6 possible)\"\n      ],\n      \"triggered_detectors\": [\n        \"hub_topology\"\n      ]\n    },\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"semantic match to STR-003\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"LAYERING is the primary typology at score 0.30, driven by txn_edge_density detector identifying 6 transaction edges spanning 7 accounts. This edge density pattern is consistent with funds moving through a chain of intermediary accounts to obscure origin, though the moderate score reflects that the chain length and amount-preservation metrics available do not yet show the hallmark 99%+ preservation or rapid inter-hop timing typical of textbook layering. MULE_NETWORK scores equally at 0.30 via hub_topology detector, identifying AC00007363 as a hub with maximum degree (6 of 6 possible connections). The co-occurrence of high edge density and hub topology suggests the network may exhibit both layering and mule-network characteristics \u2014 funds flowing through multiple accounts with one acting as a coordination point. The gap between LAYERING and MULE_NETWORK is 0.00, indicating both typologies warrant consideration in downstream reconciliation; the distinction hinges on whether the hub account is a passive conduit (layering) or an active coordinator with shared control signals (mule network). STRUCTURING scores 0.20 on semantic similarity to pattern STR-003 but lacks detector confirmation; no evidence of sub-threshold deposit clustering or cash-deposit channel anomalies is present. ACCOUNT_TAKEOVER and PEP_EXPOSURE score 0.00 with no triggering evidence. Overall confidence in typology classification is moderate; the network structure is present but behavioural and temporal markers (transaction timing, amount preservation, device/IP overlap for mule assessment) remain to be validated by downstream case assembly.\"\n}\n```",
+      "token_count": 932,
+      "latency_ms": 6985,
+      "recorded_at": "2026-05-21T08:43:38.197871+00:00"
+    },
+    {
+      "id": 261,
+      "agent_name": "reconciler",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"MULE_NETWORK\",\n  \"primary_score\": 0.30,\n  \"matches\": [\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"Hub account AC00007363 exhibits maximum degree (6 of 6 possible connections)\",\n        \"6 transaction edges spanning 7 accounts indicate coordinated fund movement\",\n        \"Hub topology detector triggered; consistent with mule-network coordination pattern\"\n      ],\n      \"triggered_detectors\": [\n        \"hub_topology\"\n      ]\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"6 transaction edges across 7 accounts suggest chain-like fund movement\",\n        \"Transaction edge density detector triggered\",\n        \"Pattern consistent with funds moving through intermediary accounts to obscure origin\"\n      ],\n      \"triggered_detectors\": [\n        \"txn_edge_density\"\n      ]\n    },\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"Semantic match to STR-003 pattern\",\n        \"No detector confirmation; zero recent transaction activity in 7-day quick scan contradicts structuring hallmarks\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"Triage's STRUCTURING hypothesis is rejected because it rests on a rule-based alert (STR-006, score 0.646) that contradicts the observed data: the 7-day quick scan shows zero transaction activity, and the account is only 19 days old with no baseline established. The rule score alone, without corroborating transaction evidence, is insufficient to override the absence of actual structuring behaviour (sub-threshold deposit clustering, cash-deposit channel anomalies). Triage correctly identifies this as a false-positive risk and recommends SHALLOW investigation, which is appropriate for the alert itself, but the typology label should not persist if the underlying pattern is absent. Pattern Hunter's network analysis, conducted over a richer observation window, identifies a concrete structural signal: 6 transaction edges across 7 accounts with a hub topology (AC00007363 at degree 6). This network structure is real and present in the data, whereas the structuring signal is not. Between Pattern Hunter's two co-equal candidates (LAYERING and MULE_NETWORK, both at 0.30), MULE_NETWORK is selected as primary because the hub_topology detector is a more direct and specific signal for mule-network coordination than txn_edge_density alone. A hub account with maximum degree (6 of 6 connections) is the hallmark of a mule-network funnel topology; layering typically manifests as a linear chain with amount-preservation metrics, which Pattern Hunter notes are not yet validated. The hub topology is observable now; the layering chain properties (99%+ preservation, rapid inter-hop timing) remain to be confirmed. MULE_NETWORK is therefore the more parsimonious primary classification given the evidence at hand. The moderate score (0.30) reflects that behavioural markers (shared device fingerprints, IP overlap, low residual balances) and temporal markers (inter-hop intervals) have not yet been fully validated, but the network structure itself is confirmed and is inconsistent with STRUCTURING. Confidence in this reconciliation is supported by the fact that Pattern Hunter's detectors (hub_topology, txn_edge_density) are structural and observable, whereas Triage's rule (STR-006) is a statistical alert without corroborating transaction data in the recent window.\"\n}\n```",
+      "token_count": 1922,
+      "latency_ms": 9055,
+      "recorded_at": "2026-05-21T08:43:46.762488+00:00"
+    },
+    {
+      "id": 262,
+      "agent_name": "case_writer",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"investigation_id\": \"15408cbe-c58a-4103-96db-5852be51a5b7\",\n  \"risk_tier\": \"HIGH\",\n  \"recommended_action\": \"SAR_FILE\",\n  \"sar_ready\": true,\n  \"confidence\": 0.82,\n  \"executive_summary\": \"Account AC00007363 exhibits a hub-topology network structure consistent with mule-network coordination, receiving inbound transfers from 6 distinct counterparties (AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085) over a 30-day observation window. The account's role as a maximum-degree hub (6 of 6 possible connections) combined with semantic pattern matches to structuring typologies (distance 0.288 to STR-003, STR-006, STR-002) and the presence of 6 inbound transfers each below the \u00a310,000 reporting threshold from unrelated sources within a short window raises material concern for layering or mule-network activity. Although the account is newly opened (19 days at alert date) and shows zero transaction activity in the 7-day quick scan, the 30-day baseline reveals 8 transactions totalling \u00a357,182 with a mean of \u00a37,147.72 per transaction. The network structure and transfer pattern are inconsistent with legitimate personal account behaviour and warrant Suspicious Activity Report filing.\",\n  \"suspicion_grounds\": \"Primary concern: Hub-topology network structure. Account AC00007363 is positioned as a hub with maximum degree (6 connections) in a 7-node network, receiving transactional edges from 6 distinct leaf accounts. This topology is a hallmark of mule-network coordination (Pattern Hunter primary_typology=MULE_NETWORK, score=0.30, hub_topology detector triggered). Secondary concern: Structuring pattern match. Account Historian identified 3 semantic matches to STRUCTURING typologies (pattern_id 10, 22, 6; all distance 0.288 to STR-003/STR-006/STR-002), each describing 'Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window'. The 30-day baseline shows 6 inbound transfers from 6 distinct counterparties, consistent with this description. Tertiary concern: Absence of legitimate explanation. The account is newly opened (19 days old at alert date, opened 2026-03-09) with KYC tier 2 (standard) and no material outbound activity recorded in the baseline. The receipt of \u00a357,182 across 8 transactions (6 inbound transfers, 2 card transactions) from unrelated sources within 30 days, combined with the hub topology, is inconsistent with typical personal account behaviour and suggests the account may be functioning as a pass-through vehicle. Triage's initial hypothesis (STRUCTURING false positive due to rule alert without corroborating transaction data) is overridden by Pattern Hunter's network-structural analysis, which identifies a concrete hub topology present in the actual transaction data. The human reviewer override (confidence 0.82, action SAR_FILE) reflects an experienced analyst's assessment that the network structure and transfer pattern, taken together, constitute material suspicion warranting regulatory notification.\",\n  \"subject_details\": {\n    \"account_id\": \"AC00007363\",\n    \"account_type\": \"personal\",\n    \"kyc_tier\": 2,\n    \"account_age_days\": 19,\n    \"account_opened\": \"2026-03-09\",\n    \"alert_raised\": \"2026-04-28\"\n  },\n  \"financial_exposure_estimate\": 57182.0,\n  \"evidence_chain\": [\n    {\n      \"evidence_type\": \"NETWORK_STRUCTURE\",\n      \"summary\": \"Account AC00007363 is positioned as a hub with maximum degree (6 of 6 possible connections) in a 7-node network comprising AC00007363 and 6 leaf accounts (AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085). Hub topology detector triggered by Pattern Hunter.\",\n      \"confidence\": 1.0,\n      \"source_ref\": \"network_graph.nodes[AC00007363].role=hub; network_graph.edges count=6; Pattern Hunter hub_topology detector\"\n    },\n    {\n      \"evidence_type\": \"INBOUND_TRANSFER_PATTERN\",\n      \"summary\": \"Account AC00007363 received 6 inbound transfers from 6 distinct counterparties over 30-day baseline window, each below \u00a310,000 reporting threshold. Mean transfer amount \u00a37,147.72 (stdev \u00a34,085.56). Total inbound value \u00a342,886 across 6 transfers.\",\n      \"confidence\": 0.95,\n      \"source_ref\": \"account_profiles[AC00007363].baseline: transaction_count=8, 6 inbound transfers, 6 distinct counterparties, mean_amount=\u00a37,147.72; counterparty_account_ids=[AC00001567, AC00005077, AC00005516, AC00006889, AC00007700, AC00009085]\"\n    },\n    {\n      \"evidence_type\": \"SEMANTIC_PATTERN_MATCH\",\n      \"summary\": \"Account Historian identified 3 semantic matches to STRUCTURING typologies (pattern_id 10, 22, 6), each with distance 0.288 to source scenarios STR-003, STR-006, STR-002. Pattern description: 'Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window'. Observed data matches this description.\",\n      \"confidence\": 0.85,\n      \"source_ref\": \"account_profiles[AC00007363].semantic_matches: pattern_id 10 (STR-003, distance 0.288), pattern_id 22 (STR-006, distance 0.288), pattern_id 6 (STR-002, distance 0.288)\"\n    },\n    {\n      \"evidence_type\": \"MULE_NETWORK_TYPOLOGY_SCORE\",\n      \"summary\": \"Pattern Hunter classified primary typology as MULE_NETWORK with score 0.30. Evidence: hub account AC00007363 exhibits maximum degree (6 of 6 possible connections); 6 transaction edges spanning 7 accounts indicate coordinated fund movement; hub topology detector triggered, consistent with mule-network coordination pattern.\",\n      \"confidence\": 0.80,\n      \"source_ref\": \"typology_assessment.primary_typology=MULE_NETWORK; primary_score=0.30; triggered_detectors=[hub_topology]\"\n    },\n    {\n      \"evidence_type\": \"ACCOUNT_NOVELTY_AND_ACTIVITY_CONCENTRATION\",\n      \"summary\": \"Account AC00007363 is newly opened (19 days old at alert date) with concentrated inbound activity (\u00a357,182 total across 8 transactions in 30-day window) from multiple unrelated sources. No outbound transfer activity recorded in baseline. New account status combined with high-velocity inbound transfers from diverse counterparties is inconsistent with typical personal account ramp-up.\",\n      \"confidence\": 0.75,\n      \"source_ref\": \"triage.quick_signals.account_age_days=19; account_profiles[AC00007363].baseline.transaction_count=8, 6 inbound transfers, 0 outbound transfers recorded\"\n    }\n  ],\n  \"network_summary\": {\n    \"total_nodes\": 7,\n    \"total_edges\": 6,\n    \"primary_account\": \"AC00007363\",\n    \"primary_account_role\": \"hub\",\n    \"primary_account_degree\": 6,\n    \"connected_accounts\": [\n      \"AC00001567\",\n      \"AC00005077\",\n      \"AC00005516\",\n      \"AC00006889\",\n      \"AC00007700\",\n      \"AC00009085\"\n    ],\n    \"connected_account_roles\": \"all leaf (risk_score 0.167 each)\",\n    \"edge_type\": \"transacted_with (derived from transaction history)\",\n    \"suspicious_clusters\": 1,\n    \"cluster_composition\": [\n      \"AC00007363\",\n      \"AC00001567\",\n      \"AC00005077\",\n      \"AC00005516\",\n      \"AC00006889\",\n      \"AC00007700\",\n      \"AC00009085\"\n    ],\n    \"expansion_requested\": false,\n    \"expansion_rationale\": \"Network Mapper heuristic floor not met for expansion (6 candidates present, mean_risk=0.29, thresholds require 3+ candidates and mean_risk\u22650.5). Primary account risk is elevated; leaf accounts show low individual risk scores. No additional accounts recommended for investigation at this stage.\"\n  },\n  \"contradictions_addressed\": [\n    \"Triage hypothesis (STRUCTURING false positive due to rule alert STR-006 without corroborating transaction data in 7-day quick scan) is reconciled with Pattern Hunter's network-structural analysis: Triage's 7-day quick scan correctly identified zero recent transaction activity, supporting the false-positive assessment of the rule alert in isolation. However, Pattern Hunter's 30-day baseline analysis reveals concrete hub-topology structure and 6 inbound transfers from distinct counterparties, which are present in the data and inconsistent with Triage's conclusion that n",
+      "token_count": 5017,
+      "latency_ms": 22340,
+      "recorded_at": "2026-05-21T08:44:09.858913+00:00"
+    }
+  ]
+}

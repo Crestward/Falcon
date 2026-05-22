@@ -1,0 +1,1218 @@
+{
+  "run_id": "598d2f00-5d52-477b-91c1-17dc96bf49df",
+  "label": "haiku-4.5",
+  "backend": "anthropic",
+  "started_at": "2026-05-19T16:34:15.604205+00:00",
+  "summary": {
+    "total": 29,
+    "verdict_accuracy": 0.241,
+    "typology_accuracy": 0.517,
+    "network_recall_mean": 0.95,
+    "network_precision_mean": 0.59,
+    "evidence_recall_mean": 0.506,
+    "false_positive_rate": 1.0,
+    "false_negative_rate": 0.053,
+    "by_typology": {
+      "LAYERING": {
+        "n": 4,
+        "verdict_correct": 0,
+        "typology_correct": 4,
+        "verdict_accuracy": 0.0,
+        "typology_accuracy": 1.0,
+        "network_recall_mean": 0.637
+      },
+      "MULE_NETWORK": {
+        "n": 2,
+        "verdict_correct": 0,
+        "typology_correct": 1,
+        "verdict_accuracy": 0.0,
+        "typology_accuracy": 0.5,
+        "network_recall_mean": 1.0
+      },
+      "PEP_EXPOSURE": {
+        "n": 4,
+        "verdict_correct": 4,
+        "typology_correct": 4,
+        "verdict_accuracy": 1.0,
+        "typology_accuracy": 1.0,
+        "network_recall_mean": 1.0
+      },
+      "STRUCTURING": {
+        "n": 5,
+        "verdict_correct": 0,
+        "typology_correct": 2,
+        "verdict_accuracy": 0.0,
+        "typology_accuracy": 0.4,
+        "network_recall_mean": 1.0
+      },
+      "ACCOUNT_TAKEOVER": {
+        "n": 4,
+        "verdict_correct": 3,
+        "typology_correct": 4,
+        "verdict_accuracy": 0.75,
+        "typology_accuracy": 1.0,
+        "network_recall_mean": 1.0
+      },
+      "NONE": {
+        "n": 10,
+        "verdict_correct": 0,
+        "typology_correct": 0,
+        "verdict_accuracy": 0.0,
+        "typology_accuracy": 0.0,
+        "network_recall_mean": 1.0
+      }
+    },
+    "confusion_matrix": {
+      "SAR_FILE": {
+        "REVIEW": 11
+      },
+      "REVIEW": {
+        "REVIEW": 7,
+        "AUTO_CLOSE": 1
+      },
+      "AUTO_CLOSE": {
+        "REVIEW": 10
+      }
+    },
+    "faithfulness_mean": 0.767,
+    "hallucination_mean": 0.115,
+    "label": "haiku-4.5",
+    "judge": {
+      "agent_backend": "anthropic",
+      "judge_backend": "anthropic",
+      "same_vendor": true,
+      "disclosure": "Judge runs the same vendor as the agents \u2014 capability-gap defence applies (judge model is strictly stronger than the agent models)."
+    },
+    "completed_at": "2026-05-19T16:34:15.604205+00:00"
+  },
+  "results": [
+    {
+      "alert_id": "ALERT0001",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "LAYERING",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 0.6,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 24.33,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "584b7d49-6231-4207-8a00-18fc2ac2dbd2"
+    },
+    {
+      "alert_id": "ALERT0002",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "LAYERING",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 0.6,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 18.59,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "e66d6fa5-bae4-44bf-a50a-333a437ea874"
+    },
+    {
+      "alert_id": "ALERT0003",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "MULE_NETWORK",
+      "got_typology": "MULE_NETWORK",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 81.95,
+      "faithfulness_score": 0.524,
+      "hallucination_rate": 0.286,
+      "judge_claims": [
+        {
+          "claim": "four-account network (AC00007241, AC00003527, AC00005082, AC00006524)",
+          "support": 2,
+          "note": "Investigation data confirms exactly 4 accounts in the network."
+        },
+        {
+          "claim": "AC00007241 functions as a hub with degree-9 connectivity across the cluster",
+          "support": 1,
+          "note": "The data shows 15 edges total across 4 nodes, with AC00007241 having 9 edges (3 shared_device, 3 shared_ip, 3 transacted_with), consistent with degree-9 for the hub. However, the network data also shows all satellite nodes labeled 'role=hub', which is inconsistent with the case file's description of them as satellites."
+        },
+        {
+          "claim": "connected to three satellite accounts via 12 shared-identity edges (shared device fingerprints and IP addresses)",
+          "support": 1,
+          "note": "The data shows 12 shared_device and shared_ip edges total across the full cluster (not just from AC00007241), but only 6 of those originate from AC00007241. The case file attributes all 12 to the hub's connections, which is not precise; the 12 edges span the entire cluster."
+        },
+        {
+          "claim": "primary account shows dormancy in the 7-day window (zero transactions)",
+          "support": 1,
+          "note": "AC00007241 shows anomalies=0 and flagged_tx=0, consistent with low/no activity, but the data does not explicitly state a 7-day transaction count of zero."
+        },
+        {
+          "claim": "60-day baseline reveals mixed transaction activity (13 transactions, \u00a321,935 total)",
+          "support": 0,
+          "note": "No transaction counts or monetary totals are present in the investigation data provided."
+        },
+        {
+          "claim": "transfers to all three counterparty accounts",
+          "support": 2,
+          "note": "AC00007241 has transacted_with edges to AC00003527, AC00005082, and AC00006524, and counterparties=3 in the account profile."
+        },
+        {
+          "claim": "Satellite accounts show routine consumer spending patterns",
+          "support": 0,
+          "note": "No spending pattern detail is provided in the investigation data."
+        },
+        {
+          "claim": "semantic matches to structuring typology (threshold-avoidance deposits)",
+          "support": 1,
+          "note": "The typology data lists MULE_NETWORK as primary; structuring is mentioned in the case file but not explicitly confirmed in the investigation data summary provided."
+        },
+        {
+          "claim": "12 shared-identity edges (shared_device weight 0.8, shared_ip weight 0.6) across all four accounts",
+          "support": 1,
+          "note": "The data confirms 12 shared_device and shared_ip edges across the cluster, but edge weights are not present in the investigation data."
+        },
+        {
+          "claim": "hub topology with AC00007241 exhibiting degree 9 (all possible connections within the 4-account cluster)",
+          "support": 2,
+          "note": "AC00007241 has 9 edges in the data (3 shared_device, 3 shared_ip, 3 transacted_with), confirming degree-9 and hub role."
+        },
+        {
+          "claim": "secondary typology STRUCTURING (score 0.60) detected via semantic matches to STR-003 pattern across satellite accounts",
+          "support": 0,
+          "note": "The investigation data only states PRIMARY TYPOLOGY: MULE_NETWORK and FINAL CONFIDENCE: 0.715; no secondary typology scores or STR-003 pattern matches are listed."
+        },
+        {
+          "claim": "network risk_score for AC00007241 is 1.0 (maximum); satellite accounts score 0.778 each",
+          "support": 2,
+          "note": "Data explicitly shows AC00007241 risk=1.0 and AC00003527, AC00005082, AC00006524 each at risk=0.778."
+        },
+        {
+          "claim": "AC00003527 flagged with 1 high-z transaction (ID 304393, z-score spike, severity MEDIUM) on 2026-04-28",
+          "support": 1,
+          "note": "Data confirms AC00003527 has anomalies=1 and flagged_tx=1, but transaction ID, date, and severity details are not present in the investigation data."
+        },
+        {
+          "claim": "AC00005082 flagged with 1 high-z transaction (ID 284749, severity MEDIUM) on 2026-04-11",
+          "support": 1,
+          "note": "Data confirms AC00005082 has anomalies=1 and flagged_tx=1, but transaction ID, date, and severity are not in the investigation data."
+        },
+        {
+          "claim": "AC00007241 matches three account-takeover patterns (ATO-001, ATO-010, ATO-009) with distance 0.295 each",
+          "support": 0,
+          "note": "No ATO pattern matches, distances, or semantic match details appear in the investigation data provided."
+        },
+        {
+          "claim": "card-not-present spend from NG/PH/RO, new device fingerprint, merchant categories absent from 90-day baseline",
+          "support": 0,
+          "note": "No transaction-level geographic or merchant category data is present in the investigation data."
+        },
+        {
+          "claim": "AC00006524: anomalies=0, flagged_tx=0",
+          "support": 2,
+          "note": "Investigation data explicitly confirms AC00006524 anomalies=0, flagged_tx=0."
+        },
+        {
+          "claim": "4 nodes, 15 edges in the network",
+          "support": 2,
+          "note": "Investigation data explicitly states 4 nodes and 15 edges."
+        },
+        {
+          "claim": "mean \u00a31,687 for hub, \u00a3300\u2013\u00a3800 for satellites",
+          "support": 0,
+          "note": "No transaction value statistics are present in the investigation data."
+        },
+        {
+          "claim": "absence of current transaction activity (0 transactions in 7-day window)",
+          "support": 1,
+          "note": "AC00007241 shows flagged_tx=0 and anomalies=0, suggesting low activity, but no explicit 7-day window transaction count is given."
+        },
+        {
+          "claim": "interim confidence of 0.715",
+          "support": 2,
+          "note": "Investigation data explicitly states FINAL CONFIDENCE: 0.715."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "97c6a05b-3338-4ac3-bd92-f53ad8ecde19"
+    },
+    {
+      "alert_id": "ALERT0004",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "LAYERING",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 0.75,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 17.93,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "7839423f-4cd5-4b54-807a-673c069a92a0"
+    },
+    {
+      "alert_id": "ALERT0005",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "PEP_EXPOSURE",
+      "got_typology": "PEP_EXPOSURE",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 0.5,
+      "evidence_recall": 0.667,
+      "status": "completed",
+      "elapsed_sec": 46.46,
+      "faithfulness_score": 0.647,
+      "hallucination_rate": 0.118,
+      "judge_claims": [
+        {
+          "claim": "AC00008237 is a business account (KYC tier 2) opened 4 months ago",
+          "support": 2,
+          "note": "Account data confirms AC00008237; case file states opened 2025-12-23 (126 days, ~4 months). KYC tier 2 stated in case file and consistent with investigation data context."
+        },
+        {
+          "claim": "beneficial owner flagged by rule engine as PEP-linked",
+          "support": 2,
+          "note": "Primary typology is PEP_EXPOSURE per investigation data, confirming PEP-linked beneficial owner flag."
+        },
+        {
+          "claim": "zero transactional activity in the 7-day window (dormancy)",
+          "support": 1,
+          "note": "Investigation data shows anomalies=1 and flagged_tx=1 for AC00008237 but does not explicitly confirm zero 7-day activity; dormancy is stated in case file but not directly evidenced in the data fields provided."
+        },
+        {
+          "claim": "24 transactions over the profiling period, dominated by card spending",
+          "support": 1,
+          "note": "Transaction count and channel breakdown not directly shown in investigation data; only flagged_tx=1 and anomalies=1 are given. Partial support as baseline details are in the case file but not verifiable from the raw data."
+        },
+        {
+          "claim": "Pattern Hunter identified PEP_EXPOSURE as the primary typology (score 0.85)",
+          "support": 1,
+          "note": "Investigation data confirms PRIMARY TYPOLOGY: PEP_EXPOSURE, but no score of 0.85 is present in the data provided."
+        },
+        {
+          "claim": "weak semantic match to STRUCTURING patterns (score 0.20)",
+          "support": 1,
+          "note": "Mentioned in case file and suspicion grounds but no structuring score or pattern embedding details appear in the investigation data fields provided."
+        },
+        {
+          "claim": "no deposit clustering, no threshold-proximity clustering, no channel-mix anomalies",
+          "support": 1,
+          "note": "Investigation data shows anomalies=1 (one anomaly) and flagged_tx=1, which is consistent with absence of structuring hallmarks, but does not explicitly confirm absence of those specific sub-patterns."
+        },
+        {
+          "claim": "network graph reveals a single declared beneficial-owner relationship to AC00004785",
+          "support": 2,
+          "note": "Network data explicitly shows edge AC00008237->AC00004785 type=beneficial_owner src=declared, confirming single declared relationship."
+        },
+        {
+          "claim": "No expansion was triggered",
+          "support": 1,
+          "note": "Network shows only 2 nodes and 1 edge with both as leaf nodes, consistent with no expansion, but the heuristic floor condition (need 3+ candidates) is stated in case file and not directly in investigation data."
+        },
+        {
+          "claim": "confidence 0.633 is below the 0.75 threshold",
+          "support": 2,
+          "note": "Investigation data explicitly states FINAL CONFIDENCE: 0.633, confirming it is below 0.75."
+        },
+        {
+          "claim": "account opened 2025-12-23 (126 days old)",
+          "support": 1,
+          "note": "Case file states this but the investigation data does not include account opening date fields; cannot fully verify from data provided."
+        },
+        {
+          "claim": "mean of \u00a38,236.44 and high standard deviation (\u00a317,583.61)",
+          "support": 0,
+          "note": "No transaction statistics (mean, standard deviation) are present in the investigation data provided."
+        },
+        {
+          "claim": "wire channel activity (5 transactions)",
+          "support": 0,
+          "note": "No channel breakdown or wire transaction count appears in the investigation data."
+        },
+        {
+          "claim": "One high-z transaction flagged on 2026-04-09 (flagged_transaction_id: 500273, severity MEDIUM)",
+          "support": 1,
+          "note": "Investigation data confirms flagged_tx=1 for AC00008237, consistent with one flagged transaction, but transaction ID 500273, date 2026-04-09, and severity MEDIUM are not present in the raw data."
+        },
+        {
+          "claim": "Both nodes assigned risk_score=1.0 and role='leaf'",
+          "support": 2,
+          "note": "Network data explicitly shows node AC00008237 risk=1.0 role=leaf and node AC00004785 risk=1.0 role=leaf."
+        },
+        {
+          "claim": "counterparties=0 for AC00008237",
+          "support": 2,
+          "note": "Investigation data explicitly states counterparties=0 for AC00008237."
+        },
+        {
+          "claim": "Network has 2 nodes and 1 edge",
+          "support": 2,
+          "note": "Investigation data explicitly states NETWORK: 2 nodes, 1 edges."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "c9583280-ff1c-463a-8d6b-ec616f9f1185"
+    },
+    {
+      "alert_id": "ALERT0006",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "STRUCTURING",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 0.889,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 23.23,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "4e963136-57ad-47d8-aca9-bac97cb545e6"
+    },
+    {
+      "alert_id": "ALERT0007",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "PEP_EXPOSURE",
+      "got_typology": "PEP_EXPOSURE",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.333,
+      "status": "completed",
+      "elapsed_sec": 39.39,
+      "faithfulness_score": 1.0,
+      "hallucination_rate": 0.0,
+      "judge_claims": [
+        {
+          "claim": "AC00001733 is a business account (KYC tier 1, highest risk)",
+          "support": 2,
+          "note": "Investigation data confirms KYC tier 1 and business account type via PEP_WATCHLIST_MATCH evidence item."
+        },
+        {
+          "claim": "High-confidence PEP watchlist match (alert score 0.918)",
+          "support": 2,
+          "note": "Evidence chain explicitly states alert score 0.918 for PEP watchlist match, consistent with investigation data primary typology PEP_EXPOSURE."
+        },
+        {
+          "claim": "The account has been dormant for 7 days with no recent transactions",
+          "support": 2,
+          "note": "DORMANCY_SIGNAL evidence item confirms zero transactions in 7-day recent activity window."
+        },
+        {
+          "claim": "Pattern Hunter identified weak semantic matches to STRUCTURING (score 0.20)",
+          "support": 2,
+          "note": "SEMANTIC_PATTERN_MATCH evidence item confirms score 0.20 and distance 0.280 to STR-003."
+        },
+        {
+          "claim": "No transaction-level evidence of structuring, layering, or account takeover was detected",
+          "support": 2,
+          "note": "Account profile shows anomalies=0, flagged_tx=0, and evidence chain confirms no structural detectors fired."
+        },
+        {
+          "claim": "Interim confidence 0.530",
+          "support": 2,
+          "note": "Investigation data confirms FINAL CONFIDENCE: 0.530."
+        },
+        {
+          "claim": "Zero recent activity (7-day window) consistent with dormancy or deliberate low-profile positioning",
+          "support": 2,
+          "note": "Directly supported by DORMANCY_SIGNAL evidence item."
+        },
+        {
+          "claim": "Semantic pattern match to STRUCTURING (STR-003, distance 0.280) but no structural detectors fired",
+          "support": 2,
+          "note": "SEMANTIC_PATTERN_MATCH evidence item confirms distance 0.280 and explicitly states no structural detectors triggered."
+        },
+        {
+          "claim": "Account age 7.5 years provides baseline for historical analysis",
+          "support": 2,
+          "note": "DORMANCY_SIGNAL and TRANSACTION_BASELINE evidence items confirm account open 7.5 years with available baseline."
+        },
+        {
+          "claim": "60-day baseline: 11 transactions, mean \u00a314,421.96 (stdev \u00a321,712.30), channel mix: card (4), ATM (2), transfer (1), wire (4)",
+          "support": 2,
+          "note": "TRANSACTION_BASELINE evidence item directly states these figures."
+        },
+        {
+          "claim": "Merchant categories dominated by professional services (4 transactions)",
+          "support": 2,
+          "note": "TRANSACTION_BASELINE evidence item confirms professional services dominance with 4 transactions."
+        },
+        {
+          "claim": "No anomalies flagged; no flagged transaction IDs",
+          "support": 2,
+          "note": "Account profile confirms anomalies=0 and flagged_tx=0."
+        },
+        {
+          "claim": "Network: 1 node, 0 edges, counterparties=0",
+          "support": 2,
+          "note": "Investigation data confirms 1 node, 0 edges, and account profile shows counterparties=0."
+        },
+        {
+          "claim": "No SAR filing warranted at this stage",
+          "support": 2,
+          "note": "Recommended action is REVIEW, not SAR_FILE, consistent with final confidence of 0.530 and absence of transaction-level crime indicators."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "af329613-99e1-478f-be2c-902d23ce0686"
+    },
+    {
+      "alert_id": "ALERT0008",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "STRUCTURING",
+      "got_typology": "MULE_NETWORK",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 29.98,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "dfc4ba76-2afb-4043-9aed-46046cd388fd"
+    },
+    {
+      "alert_id": "ALERT0009",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "PEP_EXPOSURE",
+      "got_typology": "PEP_EXPOSURE",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 0.5,
+      "evidence_recall": 0.667,
+      "status": "completed",
+      "elapsed_sec": 48.04,
+      "faithfulness_score": 0.9,
+      "hallucination_rate": 0.0,
+      "judge_claims": [
+        {
+          "claim": "Business account beneficial owner matches PEP watchlist entry at high confidence (rule score 0.805)",
+          "support": 2,
+          "note": "Primary typology is PEP_EXPOSURE and the evidence chain confirms PEP_watchlist_match triggered with rule score 0.805. Fully consistent with investigation data."
+        },
+        {
+          "claim": "Account is KYC tier 2",
+          "support": 1,
+          "note": "Stated in case file and evidence chain but not explicitly confirmed in the investigation data fields provided; however nothing contradicts it and it is internally consistent."
+        },
+        {
+          "claim": "21 transactions over 60 days, mean \u00a310,739, stdev \u00a322,178",
+          "support": 2,
+          "note": "TRANSACTION_BASELINE_ESTABLISHED evidence item states exactly these figures and the investigation data does not contradict them."
+        },
+        {
+          "claim": "Channel mix: card 12/21, transfer 5/21, wire 4/21",
+          "support": 2,
+          "note": "Directly stated in the TRANSACTION_BASELINE_ESTABLISHED evidence item."
+        },
+        {
+          "claim": "Merchant categories span groceries, retail, utilities, transport, salary deposits, professional services",
+          "support": 2,
+          "note": "Directly listed in TRANSACTION_BASELINE_ESTABLISHED evidence item."
+        },
+        {
+          "claim": "No transaction activity in the 7-day alert window",
+          "support": 2,
+          "note": "RECENT_DORMANCY evidence item states zero transactions in 7-day alert window; account profile shows flagged_tx=0 and anomalies=0."
+        },
+        {
+          "claim": "Account Historian detected weak semantic alignment with STRUCTURING patterns (distance 0.28 to STR-003, STR-006, STR-002)",
+          "support": 2,
+          "note": "SEMANTIC_STRUCTURING_MATCH evidence item explicitly states distance 0.28 to each of STR-003, STR-006, STR-002."
+        },
+        {
+          "claim": "No structural detectors fired and no transaction-level evidence supports sub-threshold deposit clustering",
+          "support": 2,
+          "note": "SEMANTIC_STRUCTURING_MATCH confirms no structural detectors fired, no deposit-count clustering, no threshold-proximity evidence, no channel-mix shift. Account profile shows anomalies=0, flagged_tx=0."
+        },
+        {
+          "claim": "Network Mapper identified one declared beneficial-ownership edge to AC00002888 (also flagged as leaf/risk 1.0)",
+          "support": 2,
+          "note": "Investigation data explicitly shows edge AC00007927->AC00002888 type=beneficial_owner src=declared, and both nodes have risk=1.0 role=leaf."
+        },
+        {
+          "claim": "Expansion heuristic floor not met (1 candidate, need 3+)",
+          "support": 2,
+          "note": "NETWORK_BENEFICIAL_OWNERSHIP_EDGE states heuristic floor not met with 1 candidate needing 3+; network data shows only 2 nodes and 1 edge."
+        },
+        {
+          "claim": "Interim confidence 0.501",
+          "support": 2,
+          "note": "Investigation data explicitly states FINAL CONFIDENCE: 0.501."
+        },
+        {
+          "claim": "STRUCTURING score 0.20, all other typology scores 0.0",
+          "support": 1,
+          "note": "Primary typology is PEP_EXPOSURE and confidence is 0.501; STRUCTURING score of 0.20 is stated in the case file but not directly listed as a separate field in the investigation data. Partially consistent given weak semantic alignment noted."
+        },
+        {
+          "claim": "No counterparty account IDs identified as suspicious",
+          "support": 2,
+          "note": "Account profile for AC00007927 shows counterparties=0, consistent with this claim."
+        },
+        {
+          "claim": "Account age 9 months",
+          "support": 1,
+          "note": "Stated in RECENT_DORMANCY evidence item but not confirmed or contradicted by the structured investigation data fields provided."
+        },
+        {
+          "claim": "Suspicious cluster identified: [AC00007927, AC00002888]",
+          "support": 2,
+          "note": "Network data shows both nodes present with risk=1.0 and a declared beneficial_owner edge between them, consistent with the identified cluster."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "7748be2d-29b1-4bdb-970b-44bc38916f40"
+    },
+    {
+      "alert_id": "ALERT0010",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "LAYERING",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 0.6,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 21.74,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "98b148a2-bd6d-47e0-ba5f-34f321d02582"
+    },
+    {
+      "alert_id": "ALERT0011",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 16.43,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "e251bdf8-c498-4f73-b907-744a6a2300be"
+    },
+    {
+      "alert_id": "ALERT0012",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "STRUCTURING",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 31.64,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "a0915828-df19-4971-b0ff-655d9a3210b5"
+    },
+    {
+      "alert_id": "ALERT0013",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "PEP_EXPOSURE",
+      "got_typology": "PEP_EXPOSURE",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.333,
+      "status": "completed",
+      "elapsed_sec": 43.84,
+      "faithfulness_score": 0.923,
+      "hallucination_rate": 0.0,
+      "judge_claims": [
+        {
+          "claim": "AC00004590 is a 54-month-old business account (KYC tier 2)",
+          "support": 1,
+          "note": "Account is confirmed as business with KYC tier 2 in the investigation data via the evidence chain, but account age (54 months) is not directly stated in the raw investigation data fields."
+        },
+        {
+          "claim": "flagged by rule-engine detection as associated with a politically exposed person (PEP_EXPOSURE alert score 0.718)",
+          "support": 2,
+          "note": "PRIMARY TYPOLOGY is PEP_EXPOSURE and the evidence chain confirms alert_score 0.718 for PEP_EXPOSURE rule-engine detection."
+        },
+        {
+          "claim": "zero transactions in the 7-day observation window",
+          "support": 2,
+          "note": "AC00004590 shows flagged_tx=0 and anomalies=0; dormancy is confirmed in the evidence chain and consistent with investigation data."
+        },
+        {
+          "claim": "60-day baseline of 22 mixed transactions (card 59%, wire 27%, other 14%)",
+          "support": 2,
+          "note": "Evidence chain item BASELINE_TRANSACTION_PROFILE explicitly states 22 transactions, card 59% (13 transactions), wire 27% (6 transactions), consistent with the case file claim."
+        },
+        {
+          "claim": "mean \u00a313,456, stdev \u00a323,072",
+          "support": 2,
+          "note": "Directly stated in the BASELINE_TRANSACTION_PROFILE evidence chain item."
+        },
+        {
+          "claim": "No concrete anomalies, account takeover signals, or network clustering were detected",
+          "support": 2,
+          "note": "AC00004590 shows anomalies=0, flagged_tx=0, counterparties=0, and NETWORK shows 0 edges with leaf node role."
+        },
+        {
+          "claim": "Interim confidence 0.48",
+          "support": 2,
+          "note": "FINAL CONFIDENCE is explicitly stated as 0.480 in the investigation data."
+        },
+        {
+          "claim": "Network Mapper identified AC00004590 as a leaf node with zero edges (no connected accounts, no shared device fingerprints, no shared IP addresses, no common registered addresses)",
+          "support": 2,
+          "note": "NETWORK data confirms 1 node, 0 edges, role=leaf for AC00004590."
+        },
+        {
+          "claim": "No network expansion was warranted (zero connected accounts, no suspicious clusters)",
+          "support": 2,
+          "note": "Network shows 0 edges, counterparties=0, and node role is leaf with risk=0.0."
+        },
+        {
+          "claim": "Pattern Hunter detected marginal semantic embedding match to STRUCTURING patterns (STR-003, STR-006, STR-002, distance 0.284)",
+          "support": 1,
+          "note": "The evidence chain item SEMANTIC_STRUCTURING_MATCH_MARGINAL states this, but the raw investigation data fields do not independently confirm the specific pattern IDs or distance value; it is only present in the case file evidence chain, not in the structured investigation data fields."
+        },
+        {
+          "claim": "no concrete structuring detectors triggered",
+          "support": 2,
+          "note": "AC00004590 shows anomalies=0 and flagged_tx=0, consistent with no concrete detectors triggering."
+        },
+        {
+          "claim": "Confidence remains below the 0.75 threshold required for SAR_FILE",
+          "support": 2,
+          "note": "FINAL CONFIDENCE is 0.480, which is below 0.75."
+        },
+        {
+          "claim": "zero edges (no connected accounts)",
+          "support": 2,
+          "note": "NETWORK confirms 0 edges and counterparties=0 for AC00004590."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "d4e696e5-289f-4fad-9e43-4263b750b2e2"
+    },
+    {
+      "alert_id": "ALERT0014",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "STRUCTURING",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 0.833,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 21.57,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "69687b9c-f9ad-4382-9973-3d3f6366592a"
+    },
+    {
+      "alert_id": "ALERT0015",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 32.73,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "17583940-ad28-41d7-85a5-5dbabe4be70f"
+    },
+    {
+      "alert_id": "ALERT0016",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "STRUCTURING",
+      "got_typology": "MULE_NETWORK",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.556,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 30.33,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "369d48c1-70bc-48e7-b59c-dea8d03692b4"
+    },
+    {
+      "alert_id": "ALERT0017",
+      "expected_verdict": "SAR_FILE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "MULE_NETWORK",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.833,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 86.85,
+      "faithfulness_score": 0.45,
+      "hallucination_rate": 0.4,
+      "judge_claims": [
+        {
+          "claim": "Network of five coordinated accounts (AC00008730, AC00003292, AC00006398, AC00007462, AC00008985) sharing device fingerprints and IP addresses",
+          "support": 2,
+          "note": "All five accounts are present in the network data with shared_device and shared_ip edges connecting them."
+        },
+        {
+          "claim": "20 shared-identity edges",
+          "support": 0,
+          "note": "The investigation data shows 25 total edges and the shared-identity edges (shared_device + shared_ip) count to 20, but the network has 6 nodes and 25 total edges including beneficial_owner and transacted_with edges. The 20 shared-identity edges figure is actually correct when counting only shared_device and shared_ip edges, so this is supported."
+        },
+        {
+          "claim": "Hub-spoke topology consistent with controlled account distribution",
+          "support": 1,
+          "note": "The data shows AC00008730 as hub, but all five main accounts have role=hub, not a pure hub-spoke topology. The network is more fully connected than a simple hub-spoke."
+        },
+        {
+          "claim": "STRUCTURING as primary typology with score 0.80",
+          "support": 1,
+          "note": "Primary typology is confirmed as STRUCTURING, but the score 0.80 is not explicitly stated in the investigation data provided."
+        },
+        {
+          "claim": "MULE_NETWORK coordination score 0.70",
+          "support": 0,
+          "note": "The investigation data does not include typology scores; only PRIMARY_TYPOLOGY and FINAL_CONFIDENCE are listed. Score 0.70 cannot be verified."
+        },
+        {
+          "claim": "9 transactions in AC00008730 primary account over 30 days",
+          "support": 0,
+          "note": "The account profile for AC00008730 shows anomalies=0, flagged_tx=0, counterparties=4, but no transaction count is provided in the investigation data."
+        },
+        {
+          "claim": "4-5 transactions in satellite accounts over 30 days",
+          "support": 0,
+          "note": "No transaction counts for satellite accounts are provided in the investigation data."
+        },
+        {
+          "claim": "No individual transaction exceeds \u00a36,300",
+          "support": 0,
+          "note": "No transaction amounts are provided in the investigation data."
+        },
+        {
+          "claim": "Semantic pattern matching to STR-003 with distance 0.278",
+          "support": 0,
+          "note": "No semantic pattern match distances are provided in the investigation data."
+        },
+        {
+          "claim": "Interim confidence of 0.40",
+          "support": 2,
+          "note": "FINAL_CONFIDENCE is listed as 0.400 in the investigation data."
+        },
+        {
+          "claim": "AC00008730 hub with risk_score 1.0",
+          "support": 2,
+          "note": "Node AC00008730 is listed with risk=1.0 and role=hub in the network data."
+        },
+        {
+          "claim": "Four satellite accounts connected via 20 edges comprising shared device fingerprints (8 edges, weight 0.8 each) and shared IP addresses (8 edges, weight 0.6 each), plus transactional links (4 edges, weight 0.5 each)",
+          "support": 1,
+          "note": "The data confirms 8 shared_device and 8 shared_ip edges from AC00008730 to the four satellites, and 4 transacted_with edges, totalling 20 edges from the hub. Edge weights are not specified in the investigation data."
+        },
+        {
+          "claim": "Hub degree 12",
+          "support": 1,
+          "note": "AC00008730 has 4 shared_device + 4 shared_ip + 4 transacted_with = 12 edges to satellites, consistent with degree 12, though the data does not explicitly state degree."
+        },
+        {
+          "claim": "All five accounts match STR-003 pattern with distances 0.266-0.279",
+          "support": 0,
+          "note": "No semantic distances or STR-003 pattern match data are present in the investigation data."
+        },
+        {
+          "claim": "No individual transaction flagged as anomalous in Account Historian output",
+          "support": 2,
+          "note": "All five account profiles show anomalies=0 and flagged_tx=0."
+        },
+        {
+          "claim": "Triage 7-day quick-scan reported zero transaction activity (0 txns, \u00a30 inflow/outflow, account_status_indicator=dormant_in_window)",
+          "support": 0,
+          "note": "No triage dormancy data is present in the investigation data provided."
+        },
+        {
+          "claim": "6 nodes in network",
+          "support": 2,
+          "note": "The network explicitly states 6 nodes including AC00004135 as a leaf node."
+        },
+        {
+          "claim": "25 edges in network",
+          "support": 2,
+          "note": "The network explicitly states 25 edges."
+        },
+        {
+          "claim": "AC00003292, AC00006398, AC00007462, AC00008985 are satellite accounts",
+          "support": 1,
+          "note": "These accounts exist in the network but all have role=hub, not satellite/leaf roles, contradicting the case file characterisation."
+        },
+        {
+          "claim": "Satellite accounts risk scores are lower than hub",
+          "support": 1,
+          "note": "AC00003292, AC00006398, AC00008985 have risk=0.75 and AC00007462 has risk=0.833, all lower than AC00008730 risk=1.0, partially consistent with hub-satellite hierarchy."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "abf7e3c2-500b-4e1e-8f81-1fc0c7dadf1f"
+    },
+    {
+      "alert_id": "ALERT0018",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "AUTO_CLOSE",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.667,
+      "status": "completed",
+      "elapsed_sec": 43.45,
+      "faithfulness_score": 0.923,
+      "hallucination_rate": 0.0,
+      "judge_claims": [
+        {
+          "claim": "Rule engine ATO-009 fired with score 0.561",
+          "support": 2,
+          "note": "Investigation data confirms RULE_ENGINE_ALERT with score 0.561 from ATO-009."
+        },
+        {
+          "claim": "7-day transaction window shows zero activity (0 inflows, 0 outflows, 0 counterparties)",
+          "support": 2,
+          "note": "Account profile shows counterparties=0 and ACTIVITY_ABSENCE evidence item confirms zero activity in 7-day window."
+        },
+        {
+          "claim": "30-day baseline shows routine consumer spending (13 transactions, mean \u00a3761.85)",
+          "support": 2,
+          "note": "BASELINE_STABILITY evidence item directly states 13 transactions, mean \u00a3761.85."
+        },
+        {
+          "claim": "Card-based transactions dominate baseline (11/13)",
+          "support": 2,
+          "note": "BASELINE_STABILITY evidence item states 11/13 card-based transactions."
+        },
+        {
+          "claim": "One high-z transaction (ID 377676) is present but isolated and does not form a pattern",
+          "support": 2,
+          "note": "ISOLATED_ANOMALY evidence item confirms transaction 377676 flagged with LOW severity as isolated outlier. Account profile shows flagged_tx=1."
+        },
+        {
+          "claim": "Network analysis identified no connected accounts or suspicious clusters",
+          "support": 2,
+          "note": "Network data shows 1 node, 0 edges, AC00007742 as leaf with risk=0.0. NETWORK_ISOLATION evidence confirms zero connected accounts and zero suspicious clusters."
+        },
+        {
+          "claim": "Semantic embedding matches to STRUCTURING patterns are weak (distance 0.28, no deterministic detector triggers)",
+          "support": 2,
+          "note": "WEAK_SEMANTIC_MATCH evidence item confirms distance 0.28 and no deterministic structuring detectors fired."
+        },
+        {
+          "claim": "No cash-deposit clustering, no sub-threshold pattern, no threshold-avoidance behaviour",
+          "support": 2,
+          "note": "WEAK_SEMANTIC_MATCH evidence item explicitly states no cash-deposit clustering, no sub-threshold pattern, no threshold-avoidance behaviour."
+        },
+        {
+          "claim": "Interim confidence of 0.460",
+          "support": 2,
+          "note": "Investigation data shows FINAL CONFIDENCE: 0.460, consistent with the stated interim confidence."
+        },
+        {
+          "claim": "Downward adjustment to 0.42 reflecting low probability of active fraud",
+          "support": 1,
+          "note": "The investigation data shows final confidence at 0.460, not 0.42. The adjustment to 0.42 is described in the case file but not reflected in the provided data."
+        },
+        {
+          "claim": "No new device fingerprints detected in 30-day baseline",
+          "support": 1,
+          "note": "BASELINE_STABILITY evidence item states no new device fingerprints, but the investigation data itself does not explicitly provide device fingerprint records to confirm this independently."
+        },
+        {
+          "claim": "Network expansion heuristics not met (0 candidates, mean risk 0.0)",
+          "support": 2,
+          "note": "Network data confirms 0 edges and node risk=0.0; NETWORK_ISOLATION evidence states 0 candidates, mean_risk=0.0."
+        },
+        {
+          "claim": "Account AC00007742 has anomalies=1",
+          "support": 2,
+          "note": "Account profile explicitly states anomalies=1 for AC00007742."
+        }
+      ],
+      "judge_note": null,
+      "investigation_id": "6d48a29e-85db-4c87-a33a-76171b963248"
+    },
+    {
+      "alert_id": "ALERT0019",
+      "expected_verdict": "REVIEW",
+      "got_verdict": "REVIEW",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": true,
+      "typology_correct": true,
+      "network_recall": 1.0,
+      "network_precision": 1.0,
+      "evidence_recall": 0.0,
+      "status": "completed",
+      "elapsed_sec": 24.02,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "9afb1ee1-654b-4234-a775-46772066d34d"
+    },
+    {
+      "alert_id": "ALERT0020",
+      "error": "KeyError: 'counterparty_account_ids'",
+      "elapsed_sec": null
+    },
+    {
+      "alert_id": "ALERT0021",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 16.02,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "010c5c1d-3e63-4d55-bd51-d9d2cc4035c3"
+    },
+    {
+      "alert_id": "ALERT0022",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 22.06,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "54c98e94-64dd-4e70-a930-0067645f15a6"
+    },
+    {
+      "alert_id": "ALERT0023",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 25.48,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "dc928e65-eca2-44ad-9f53-121f920df977"
+    },
+    {
+      "alert_id": "ALERT0024",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 16.06,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "46536136-b732-40c4-9e20-0e646ed7a614"
+    },
+    {
+      "alert_id": "ALERT0025",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "LAYERING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 23.06,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "59463bf3-807a-4099-95d5-c561cde98295"
+    },
+    {
+      "alert_id": "ALERT0026",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "STRUCTURING",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 20.84,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "857cfe29-c402-4a06-88f7-735bcdef7cc8"
+    },
+    {
+      "alert_id": "ALERT0027",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "PEP_EXPOSURE",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 24.92,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "0e39e841-ffff-4041-84e9-df582f4889b7"
+    },
+    {
+      "alert_id": "ALERT0028",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 25.61,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "2d979f81-7e75-4bf5-9a79-53cff33978f0"
+    },
+    {
+      "alert_id": "ALERT0029",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 27.14,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "d8e10c16-3a23-4708-a568-9bfc32a1f6cb"
+    },
+    {
+      "alert_id": "ALERT0030",
+      "expected_verdict": "AUTO_CLOSE",
+      "got_verdict": "REVIEW",
+      "expected_typology": "NONE",
+      "got_typology": "ACCOUNT_TAKEOVER",
+      "verdict_correct": false,
+      "typology_correct": false,
+      "network_recall": 1.0,
+      "network_precision": 0.0,
+      "evidence_recall": 1.0,
+      "status": "completed",
+      "elapsed_sec": 27.63,
+      "faithfulness_score": null,
+      "hallucination_rate": null,
+      "judge_claims": [],
+      "judge_note": null,
+      "investigation_id": "eb35ea60-7fbb-4542-94b5-81716cd75f03"
+    }
+  ]
+}

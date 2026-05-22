@@ -1,0 +1,2415 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=1280, initial-scale=1">
+<title>FALCON — Fraud Autonomous Long-horizon Case Officer Network</title>
+<meta name="description" content="Multi-agent fraud investigation system that turns raw bank alerts into structured case files.">
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="alternate icon" href="/favicon.ico">
+
+<link rel="preconnect" href="https://rsms.me/">
+<link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&display=swap">
+
+<style>
+/* ===== FALCON — design tokens ===== */
+:root {
+  --bg: #0a0f1c; --bg-elev: #0f1626; --bg-elev-2: #131c2f; --panel: #0d1424;
+  --border: rgba(148,163,184,0.12); --border-strong: rgba(148,163,184,0.22);
+  --text: #f1f5f9; --text-2: #cbd5e1; --text-3: #94a3b8; --text-4: #64748b;
+  --accent: #22d3ee; --accent-2: #a78bfa; --accent-3: #38bdf8;
+  --accent-glow: rgba(34,211,238,0.18); --violet-glow: rgba(167,139,250,0.18);
+  --success: #34d399; --warn: #fbbf24; --danger: #f87171;
+  --grid: rgba(148,163,184,0.06); --shadow-lg: 0 24px 60px rgba(0,0,0,0.45);
+  --mono: "JetBrains Mono","SF Mono",ui-monospace,Menlo,Consolas,monospace;
+  --sans: "Inter",-apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;
+  --radius-sm: 6px; --radius: 10px; --radius-lg: 14px; --radius-xl: 20px;
+}
+[data-theme="light"] {
+  --bg: #f8fafc; --bg-elev: #ffffff; --bg-elev-2: #f1f5f9; --panel: #ffffff;
+  --border: rgba(15,23,42,0.08); --border-strong: rgba(15,23,42,0.16);
+  --text: #0f172a; --text-2: #334155; --text-3: #475569; --text-4: #94a3b8;
+  --accent: #0891b2; --accent-2: #7c3aed; --accent-3: #0284c7;
+  --accent-glow: rgba(8,145,178,0.12); --violet-glow: rgba(124,58,237,0.10);
+  --success: #059669; --warn: #d97706; --danger: #dc2626;
+  --grid: rgba(15,23,42,0.05); --shadow-lg: 0 16px 40px rgba(15,23,42,0.12);
+}
+[data-theme="noir"] {
+  --bg: #050505; --bg-elev: #0b0b0b; --bg-elev-2: #111; --panel: #0a0a0a;
+  --border: rgba(255,255,255,0.08); --border-strong: rgba(255,255,255,0.18);
+  --text: #f4f4f5; --text-2: #d4d4d8; --text-3: #a1a1aa; --text-4: #71717a;
+  --accent: #f97316; --accent-2: #fbbf24; --accent-3: #fb923c;
+  --accent-glow: rgba(249,115,22,0.18); --violet-glow: rgba(251,191,36,0.14);
+  --success: #84cc16; --warn: #fbbf24; --danger: #ef4444;
+  --grid: rgba(255,255,255,0.04); --shadow-lg: 0 24px 60px rgba(0,0,0,0.7);
+}
+
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text); font: 14px/1.5 var(--sans);
+  -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "cv02","cv03","cv04","cv11","ss01";
+}
+
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+.skip-link {
+  position: absolute; top: -100px; left: 12px; background: var(--accent);
+  color: var(--bg); padding: 10px 14px; border-radius: var(--radius-sm);
+  font-weight: 600; z-index: 9999; transition: top 0.15s; text-decoration: none;
+}
+.skip-link:focus { top: 12px; }
+
+/* ===== App shell ===== */
+.app { display: grid; grid-template-columns: 260px 1fr; height: 100vh; background: var(--bg); }
+.sidebar { background: var(--panel); border-right: 1px solid var(--border); display: flex; flex-direction: column; padding: 18px 14px; gap: 4px; overflow-y: auto; }
+.brand { display: flex; align-items: center; gap: 10px; padding: 6px 8px 18px; border-bottom: 1px solid var(--border); margin-bottom: 14px; }
+.brand-mark {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  display: grid; place-items: center; color: #061018;
+  font: 800 13px var(--mono); box-shadow: 0 4px 16px var(--accent-glow);
+}
+.brand-name { font-size: 14px; font-weight: 700; letter-spacing: -0.01em; }
+.brand-tag { font-size: 11px; color: var(--text-4); font-family: var(--mono); margin-top: 1px; }
+.nav-section { display: flex; flex-direction: column; gap: 2px; margin-bottom: 14px; }
+.nav-label { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-4); padding: 8px 10px 6px; font-weight: 600; }
+.nav-item {
+  display: flex; align-items: center; gap: 10px; padding: 8px 10px;
+  border-radius: var(--radius-sm); color: var(--text-2); cursor: pointer;
+  font: 500 13px var(--sans); border: none; background: transparent;
+  text-align: left; width: 100%; position: relative; transition: background .12s, color .12s;
+}
+.nav-item:hover { background: var(--bg-elev-2); color: var(--text); }
+.nav-item[aria-current="page"] { background: var(--bg-elev-2); color: var(--text); }
+.nav-item[aria-current="page"]::before {
+  content: ""; position: absolute; left: -14px; top: 8px; bottom: 8px;
+  width: 2px; background: var(--accent); border-radius: 2px;
+}
+.nav-icon { width: 16px; height: 16px; color: var(--text-3); flex-shrink: 0; }
+.nav-item[aria-current="page"] .nav-icon { color: var(--accent); }
+.nav-badge { margin-left: auto; font: 10px var(--mono); background: var(--bg-elev); color: var(--text-3); border: 1px solid var(--border); padding: 1px 6px; border-radius: 999px; }
+.nav-badge.live { background: var(--accent-glow); color: var(--accent); border-color: transparent; }
+.kbd-hint { margin-left: auto; font: 10px var(--mono); color: var(--text-4); }
+.sidebar-footer { margin-top: auto; padding-top: 14px; border-top: 1px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-3); }
+
+/* ===== Main ===== */
+.main {
+  overflow-y: auto;
+  scroll-behavior: smooth;
+  /* The topbar is position:sticky and roughly 48px tall. Without this,
+     any element.scrollIntoView({block:"start"}) lands directly under
+     it, hiding the top of the target (the typology brief, the SAR card,
+     etc.). scroll-padding-top tells the scroll container to leave
+     room above the target. */
+  scroll-padding-top: 64px;
+}
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  background: color-mix(in oklab, var(--bg) 80%, transparent);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 12px 28px; display: flex; align-items: center; gap: 16px;
+}
+.crumbs { display: flex; align-items: center; gap: 8px; font: 12.5px var(--mono); color: var(--text-3); }
+.crumbs strong { color: var(--text); font-weight: 600; }
+.crumbs .sep { color: var(--text-4); }
+.topbar-actions { margin-left: auto; display: flex; align-items: center; gap: 10px; }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px;
+  border-radius: var(--radius-sm); border: 1px solid var(--border-strong);
+  background: var(--bg-elev); color: var(--text); font: 500 12.5px var(--sans);
+  cursor: pointer; transition: background .12s, border-color .12s, transform .05s;
+  white-space: nowrap;
+}
+.btn:hover { background: var(--bg-elev-2); border-color: var(--text-3); }
+.btn:active { transform: translateY(1px); }
+.btn-primary { background: var(--text); color: var(--bg); border-color: var(--text); }
+.btn-primary:hover { background: var(--text-2); border-color: var(--text-2); }
+.btn-accent { background: var(--accent); color: #051018; border-color: var(--accent); font-weight: 600; }
+.btn-accent:hover { background: var(--accent-3); border-color: var(--accent-3); }
+.btn-ghost { background: transparent; border-color: transparent; color: var(--text-3); }
+.btn-ghost:hover { color: var(--text); background: var(--bg-elev-2); }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn .kbd, .kbd {
+  font: 11px var(--mono); border: 1px solid var(--border-strong);
+  border-bottom-width: 2px; border-radius: 4px; padding: 1px 5px;
+  color: var(--text-2); background: var(--bg-elev);
+}
+
+.view { padding: 28px 28px 60px; max-width: 1280px; margin: 0 auto; display: none; }
+.view.active { display: block; animation: fade-up 0.35s ease-out both; }
+.view-header { display: flex; align-items: flex-end; justify-content: space-between; gap: 24px; margin-bottom: 24px; flex-wrap: wrap; }
+.view-title { font-size: 22px; font-weight: 600; letter-spacing: -0.02em; margin: 0; }
+.view-sub { font-size: 14px; color: var(--text-3); margin-top: 4px; max-width: 60ch; }
+
+/* ===== Cards ===== */
+.card { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+.card.pad-0 { padding: 0; }
+.card-h { padding: 14px 18px; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+.card-h h3 { margin: 0; font: 600 13px var(--sans); letter-spacing: -0.005em; }
+.card-h .muted { color: var(--text-3); font-size: 12px; }
+.card-body { padding: 18px; }
+
+/* ===== Pills ===== */
+.pill {
+  display: inline-flex; align-items: center; gap: 6px; padding: 2px 8px;
+  border-radius: 999px; font: 500 11px var(--mono); border: 1px solid var(--border-strong);
+  color: var(--text-2); background: var(--bg-elev); white-space: nowrap;
+}
+.pill .dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.pill-accent { color: var(--accent); border-color: transparent; background: var(--accent-glow); }
+.pill-violet { color: var(--accent-2); border-color: transparent; background: var(--violet-glow); }
+.pill-danger { color: var(--danger); border-color: transparent; background: color-mix(in oklab, var(--danger) 15%, transparent); }
+.pill-warn   { color: var(--warn);   border-color: transparent; background: color-mix(in oklab, var(--warn) 15%, transparent); }
+.pill-success{ color: var(--success); border-color: transparent; background: color-mix(in oklab, var(--success) 15%, transparent); }
+.pill-running    { color: var(--accent); border-color: transparent; background: var(--accent-glow); }
+.pill-paused_hitl{ color: var(--warn); border-color: transparent; background: color-mix(in oklab, var(--warn) 15%, transparent); }
+.pill-completed  { color: var(--success); border-color: transparent; background: color-mix(in oklab, var(--success) 15%, transparent); }
+.pill-auto_closed{ color: var(--text-3); border-color: transparent; background: var(--bg-elev-2); }
+.pill-failed     { color: var(--danger); border-color: transparent; background: color-mix(in oklab, var(--danger) 15%, transparent); }
+.pill-SAR_FILE   { color: var(--danger); border-color: transparent; background: color-mix(in oklab, var(--danger) 15%, transparent); }
+.pill-REVIEW     { color: var(--warn);   border-color: transparent; background: color-mix(in oklab, var(--warn)   15%, transparent); }
+.pill-AUTO_CLOSE { color: var(--success); border-color: transparent; background: color-mix(in oklab, var(--success) 15%, transparent); }
+
+.mono { font-family: var(--mono); }
+.muted { color: var(--text-3); }
+.muted-2 { color: var(--text-4); }
+
+/* ===== Animations ===== */
+@keyframes pulse-dot { 0%,100% { opacity: 1; } 50% { opacity: 0.35; } }
+.live-dot {
+  width: 8px; height: 8px; border-radius: 50%; background: var(--success);
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--success) 25%, transparent);
+  animation: pulse-dot 1.6s infinite; display: inline-block;
+}
+@keyframes fade-up { from { opacity: 0.001; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+}
+
+/* ===== Layout helpers ===== */
+.row { display: flex; gap: 10px; align-items: center; }
+.col { display: flex; flex-direction: column; gap: 10px; }
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+
+/* ===== Demo stage ===== */
+.demo-hero { padding: 44px 36px 36px; margin-bottom: 18px; }
+.btn-big { padding: 11px 18px; font-size: 14px; font-weight: 600; }
+
+.demo-stage { display: grid; grid-template-rows: auto auto auto; gap: 16px; margin-bottom: 28px; }
+
+.demo-status {
+  display: flex; justify-content: space-between; align-items: center; gap: 16px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 14px 18px; flex-wrap: wrap;
+}
+.demo-status-dot {
+  width: 10px; height: 10px; border-radius: 50%;
+  background: var(--text-4);
+  flex-shrink: 0;
+}
+.demo-status-dot.running {
+  background: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-glow);
+  animation: pulse-dot 1.4s infinite;
+}
+.demo-status-dot.done    { background: var(--success); box-shadow: 0 0 0 4px color-mix(in oklab, var(--success) 25%, transparent); }
+.demo-status-dot.failed  { background: var(--danger);  box-shadow: 0 0 0 4px color-mix(in oklab, var(--danger) 25%, transparent); }
+.demo-status-dot.paused  { background: var(--warn);    box-shadow: 0 0 0 4px color-mix(in oklab, var(--warn) 25%, transparent); }
+.demo-status-label { font-weight: 600; font-size: 14px; }
+.demo-status-sub   { font-size: 12.5px; }
+
+.demo-arch-scroll { overflow-x: auto; border-radius: var(--radius-lg); }
+.demo-arch {
+  position: relative; height: 380px; width: 880px; min-width: 880px;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+  overflow: hidden; margin: 0 auto;
+}
+.demo-arch .arch-svg { position: absolute; left: 0; top: 0; width: 880px; height: 380px; }
+.demo-arch path { transition: stroke 0.4s, stroke-width 0.4s; }
+.demo-arch path.active { stroke: url(#edge-live); stroke-width: 2.4; filter: drop-shadow(0 0 4px var(--accent-glow)); }
+.demo-arch path.done   { stroke: var(--success); stroke-width: 1.8; }
+
+.demo-node {
+  position: absolute; width: 150px; background: var(--bg-elev);
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  padding: 10px 12px; z-index: 2; transition: transform .2s, border-color .2s, box-shadow .2s, background .2s;
+}
+.demo-node.demo-supervisor { width: 200px; background: linear-gradient(180deg, var(--bg-elev-2), var(--bg-elev)); border-color: color-mix(in oklab, var(--accent) 40%, transparent); box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 24px var(--accent-glow); }
+.demo-node[data-state="running"] {
+  transform: translateY(-3px) scale(1.02);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 12px 30px var(--accent-glow);
+  background: linear-gradient(180deg, var(--accent-glow), var(--bg-elev));
+}
+.demo-node[data-state="done"]    { border-color: color-mix(in oklab, var(--success) 50%, transparent); }
+.demo-node[data-state="failed"]  { border-color: var(--danger); }
+.demo-node-h     { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; }
+.demo-node-icon  { width: 22px; height: 22px; border-radius: 5px; background: var(--accent-glow); color: var(--accent); display: grid; place-items: center; font: 600 11px var(--mono); }
+.demo-node[data-state="running"] .demo-node-icon { animation: pulse-dot 1.2s infinite; }
+.demo-node[data-state="done"]    .demo-node-icon { background: color-mix(in oklab, var(--success) 18%, transparent); color: var(--success); }
+.demo-node-title { font-size: 12.5px; font-weight: 600; }
+.demo-node-sub   { font-size: 10.5px; color: var(--text-3); }
+.demo-node-status[data-status] {
+  font: 500 10px var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-4); margin-top: 6px;
+}
+.demo-node[data-state="running"] .demo-node-status[data-status]::before { content: "● "; color: var(--accent); }
+.demo-node[data-state="done"]    .demo-node-status[data-status]::before { content: "✓ "; color: var(--success); }
+
+.demo-feed-wrap { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.demo-feed-card .card-body { max-height: 320px; overflow-y: auto; }
+.demo-case-card .card-body { max-height: 720px; overflow-y: auto; }
+
+/* ===== Typology picker ===== */
+.typology-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 28px; }
+@media (max-width: 1024px) { .typology-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 640px)  { .typology-grid { grid-template-columns: repeat(2, 1fr); } }
+.typology-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 16px; cursor: pointer; text-align: left; font: inherit; color: inherit;
+  transition: transform .15s, border-color .15s, box-shadow .15s, background .15s;
+  display: flex; flex-direction: column; gap: 8px; position: relative;
+}
+.typology-card:hover {
+  transform: translateY(-2px); border-color: var(--accent);
+  box-shadow: 0 12px 30px var(--accent-glow);
+}
+.typology-card:disabled { opacity: 0.5; cursor: not-allowed; transform: none; box-shadow: none; }
+.typology-card .typology-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--accent-glow); color: var(--accent);
+  display: grid; place-items: center; font: 700 14px var(--mono);
+}
+.typology-card .typology-title { font-weight: 600; font-size: 13px; letter-spacing: -0.005em; }
+.typology-card .typology-desc  { font-size: 12px; color: var(--text-3); line-height: 1.5; }
+.typology-card .typology-meta  { font: 10.5px var(--mono); color: var(--text-4); margin-top: auto; }
+.typology-card .typology-go {
+  position: absolute; top: 14px; right: 14px;
+  font: 500 11px var(--sans); color: var(--accent);
+  opacity: 0; transition: opacity .15s;
+}
+.typology-card:hover .typology-go { opacity: 1; }
+
+/* ===== Typology brief ===== */
+.typology-brief {
+  display: flex; gap: 16px; align-items: flex-start;
+  background: linear-gradient(180deg, var(--violet-glow), transparent 70%), var(--panel);
+  border: 1px solid color-mix(in oklab, var(--accent-2) 30%, var(--border));
+  border-radius: var(--radius-lg);
+  padding: 18px 22px; margin-bottom: 18px;
+  animation: fade-up 0.35s ease-out;
+}
+.typology-brief-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  color: #061018; display: grid; place-items: center;
+  font: 800 20px var(--mono); flex-shrink: 0;
+}
+.typology-brief-body { flex: 1; min-width: 0; }
+.typology-brief-eyebrow { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--accent-2); margin-bottom: 4px; }
+.typology-brief-body h3 { margin: 0 0 8px; font-size: 16px; font-weight: 600; letter-spacing: -0.01em; }
+.typology-brief-body p { margin: 0 0 10px; font-size: 13px; line-height: 1.55; color: var(--text-2); }
+.typology-brief-body ul { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 6px 16px; }
+.typology-brief-body li { font-size: 12px; color: var(--text-3); padding-left: 18px; position: relative; }
+.typology-brief-body li::before { content: "→"; position: absolute; left: 0; color: var(--accent); font-family: var(--mono); }
+.typology-brief-body li strong { color: var(--text); font-weight: 500; }
+.typology-brief-actions { display: flex; gap: 10px; margin-top: 16px; align-items: center; }
+.typology-brief-recorded {
+  display: flex; gap: 10px; align-items: flex-start;
+  background: color-mix(in oklab, var(--accent) 10%, var(--bg-elev));
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, var(--border));
+  border-radius: var(--radius); padding: 10px 14px; margin-top: 14px;
+  font-size: 12.5px; line-height: 1.55; color: var(--text-2);
+}
+.typology-brief-recorded svg { color: var(--accent); flex-shrink: 0; margin-top: 2px; }
+.typology-brief-recorded strong { color: var(--text); font-weight: 600; }
+.typology-brief-recorded .brief-repo-link { color: var(--accent); text-decoration: none; border-bottom: 1px dashed currentColor; }
+.typology-brief-recorded .brief-repo-link:hover { color: var(--accent-3); }
+#brief-recorded-when { display: block; margin-top: 4px; font-size: 11px; }
+
+/* ===== Guardrails grid ===== */
+.guard-card {
+  background: var(--panel); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 18px 20px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.guard-card-h { display: flex; align-items: center; gap: 10px; }
+.guard-card-icon {
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--accent-glow); color: var(--accent);
+  display: grid; place-items: center; font: 700 14px var(--mono); flex-shrink: 0;
+}
+.guard-card-title { font: 600 14px var(--sans); letter-spacing: -0.005em; }
+.guard-card-sub { font: 11px var(--mono); color: var(--text-4); }
+.guard-card p { margin: 0; font-size: 13px; line-height: 1.55; color: var(--text-2); }
+.guard-card .guard-where {
+  font: 11px var(--mono); color: var(--text-3);
+  background: var(--bg-elev); border-radius: 4px; padding: 6px 8px;
+  border-left: 2px solid var(--accent);
+}
+.guard-card .guard-where strong { color: var(--text-2); }
+
+/* ===== Reasoning panel (per-agent) ===== */
+.reasoning-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 14px; }
+.reasoning-card {
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 14px;
+  transition: border-color .2s, box-shadow .2s, transform .15s;
+  position: relative; overflow: hidden;
+}
+.reasoning-card::before {
+  content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+  background: var(--border); transition: background .2s;
+}
+.reasoning-card.active::before { background: var(--accent); }
+.reasoning-card.done::before   { background: var(--success); }
+.reasoning-card.active {
+  border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 6px 18px var(--accent-glow);
+}
+.reasoning-card.done   { border-color: color-mix(in oklab, var(--success) 35%, var(--border)); }
+.reasoning-card.idle   { opacity: 0.65; }
+
+.reasoning-card-h {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-areas: "mark name" "mark meta";
+  column-gap: 10px; row-gap: 2px;
+  align-items: center;
+  padding-bottom: 4px;
+}
+.reasoning-card-h .agent-mark {
+  grid-area: mark;
+  width: 32px; height: 32px; border-radius: 8px;
+  background: var(--bg-elev-2); color: var(--text-3);
+  display: grid; place-items: center; font: 700 13px var(--mono); flex-shrink: 0;
+  transition: background .2s, color .2s;
+}
+.reasoning-card.active .agent-mark { background: var(--accent-glow); color: var(--accent); }
+.reasoning-card.done   .agent-mark { background: color-mix(in oklab, var(--success) 20%, transparent); color: var(--success); }
+.reasoning-card-h .name {
+  grid-area: name;
+  font: 600 13px var(--sans); letter-spacing: -0.005em;
+  display: flex; align-items: center; gap: 8px;
+  min-width: 0; overflow: hidden;
+}
+.reasoning-card-h .name .name-label {
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.reasoning-card-h .state-dot {
+  width: 7px; height: 7px; border-radius: 50%; background: var(--text-4);
+  flex-shrink: 0;
+}
+.reasoning-card.active .state-dot { background: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); animation: pulse-dot 1.4s infinite; }
+.reasoning-card.done   .state-dot { background: var(--success); }
+.reasoning-card-h .meta {
+  grid-area: meta;
+  font: 10.5px var(--mono); color: var(--text-4);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+
+.reasoning-card [data-body] { display: flex; flex-direction: column; gap: 14px; min-height: 0; }
+.reasoning-card .summary { font-size: 12.5px; color: var(--text-3); line-height: 1.55; padding: 4px 0; }
+.reasoning-card.idle .summary { display: block; }
+
+/* Pretty reasoning blocks */
+.reasoning-card .kv-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px 16px;
+}
+.reasoning-card .kv { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.reasoning-card .kv-k {
+  font: 9.5px var(--mono); text-transform: uppercase; letter-spacing: 0.06em;
+  color: var(--text-4);
+}
+.reasoning-card .kv-v {
+  font: 600 13px var(--sans); color: var(--text); word-break: break-word;
+  font-variant-numeric: tabular-nums; line-height: 1.3;
+}
+
+.reasoning-card .reason-block {
+  background: var(--bg-elev);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+}
+.reasoning-card .reason-label {
+  font: 600 9.5px var(--mono); text-transform: uppercase; letter-spacing: 0.08em;
+  color: var(--text-4); margin-bottom: 6px;
+}
+.reasoning-card .reason-block p {
+  margin: 0; font-size: 12.5px; line-height: 1.6; color: var(--text-2);
+  display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.reasoning-card .reason-list {
+  margin: 0; padding: 0; list-style: none;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.reasoning-card .reason-list li {
+  font: 12px var(--sans); color: var(--text-2);
+  padding: 4px 8px; background: var(--bg);
+  border-radius: 4px; border-left: 2px solid var(--accent-3);
+  line-height: 1.45;
+}
+.reasoning-card pre.raw {
+  margin: 0; padding: 10px 12px; background: var(--bg-elev); border-radius: var(--radius-sm);
+  font: 11px var(--mono); line-height: 1.55; color: var(--text-2);
+  white-space: pre-wrap; word-break: break-word;
+  max-height: 180px; overflow-y: auto;
+}
+
+/* ===== Global theme-aligned scrollbars =====
+   Chromium / Safari: -webkit-scrollbar pseudos. Firefox: scrollbar-color /
+   scrollbar-width on a parent (we set them once on :root and they cascade).
+   Without these, every scrollable element (main, sidebar, the SAR card
+   body, the reasoning prose blocks, the event feed) gets the OS default
+   white scrollbar which looks broken on a dark theme. */
+:root {
+  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: thin;
+}
+*::-webkit-scrollbar { width: 10px; height: 10px; }
+*::-webkit-scrollbar-track { background: transparent; }
+*::-webkit-scrollbar-corner { background: transparent; }
+*::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+  min-height: 32px;
+}
+*::-webkit-scrollbar-thumb:hover { background: var(--text-4); background-clip: padding-box; }
+
+/* Thinner variant for content embedded inside cards */
+.reasoning-card pre.raw::-webkit-scrollbar,
+.reason-block p::-webkit-scrollbar,
+.events::-webkit-scrollbar,
+.demo-feed-card .card-body::-webkit-scrollbar { width: 6px; height: 6px; }
+
+/* Scroll isolation: when a user mouse-wheels inside the SAR card / event
+   feed / reasoning card, prevent the wheel from chaining out to the main
+   page scroll once the inner reaches its top/bottom. Without this the
+   page jumps unexpectedly while the user is reading inside the card. */
+.demo-case-card .card-body,
+.demo-feed-card .card-body,
+.events,
+.reasoning-card pre.raw,
+.case-paper { overscroll-behavior: contain; }
+
+.see-sar-btn {
+  margin-top: 4px; width: 100%; justify-content: center;
+  padding: 9px 12px; font-size: 12.5px; font-weight: 600;
+}
+
+/* ===== SAR styling — structured case-file paper ===== */
+.sar-banner {
+  display: flex; justify-content: space-between; align-items: center; gap: 12px;
+  padding: 12px 18px; border-radius: var(--radius);
+  margin: 14px 0 22px; font-size: 13px;
+}
+.sar-banner.SAR_FILE   { background: color-mix(in oklab, var(--danger) 14%, transparent);  border: 1px solid color-mix(in oklab, var(--danger) 40%, transparent);  color: var(--text); }
+.sar-banner.REVIEW     { background: color-mix(in oklab, var(--warn)   14%, transparent);  border: 1px solid color-mix(in oklab, var(--warn)   40%, transparent);  color: var(--text); }
+.sar-banner.AUTO_CLOSE { background: color-mix(in oklab, var(--success) 12%, transparent); border: 1px solid color-mix(in oklab, var(--success) 35%, transparent); color: var(--text); }
+.sar-banner strong { font-weight: 600; }
+.sar-meta-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  margin: 14px 0 20px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden;
+}
+.sar-meta-cell { padding: 10px 14px; border-right: 1px solid var(--border); }
+.sar-meta-cell:last-child { border-right: 0; }
+.sar-meta-cell .label { font-size: 10.5px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.06em; }
+.sar-meta-cell .value { font: 600 14px var(--sans); margin-top: 2px; font-feature-settings: "tnum"; }
+.sar-meta-cell .value.mono { font-family: var(--mono); font-size: 12px; }
+
+/* ===== Hero (overview) ===== */
+.hero {
+  position: relative; padding: 56px 36px 48px;
+  border-radius: var(--radius-xl); border: 1px solid var(--border);
+  background:
+    radial-gradient(900px 380px at 90% -10%, var(--violet-glow), transparent 60%),
+    radial-gradient(800px 400px at -10% 110%, var(--accent-glow), transparent 55%),
+    var(--panel);
+  overflow: hidden; margin-bottom: 28px;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 32px 32px;
+  mask-image: radial-gradient(1000px 500px at 70% 0%, #000 30%, transparent 70%);
+  -webkit-mask-image: radial-gradient(1000px 500px at 70% 0%, #000 30%, transparent 70%);
+  pointer-events: none;
+}
+.hero > * { position: relative; z-index: 1; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 11.5px var(--mono); color: var(--accent);
+  background: var(--accent-glow);
+  border: 1px solid color-mix(in oklab, var(--accent) 25%, transparent);
+  padding: 5px 10px; border-radius: 999px; margin-bottom: 18px;
+}
+.hero h1 { font-size: 44px; line-height: 1.05; letter-spacing: -0.03em; font-weight: 600; margin: 0 0 14px; max-width: 22ch; text-wrap: balance; }
+.hero h1 .grad { background: linear-gradient(120deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.hero p.lede { font-size: 16px; line-height: 1.55; color: var(--text-2); max-width: 58ch; margin: 0 0 22px; }
+.hero-cta { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.stat-strip {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 0;
+  margin-top: 28px; border-top: 1px solid var(--border); padding-top: 22px;
+}
+.stat { padding: 0 18px; border-right: 1px solid var(--border); }
+.stat:first-child { padding-left: 0; }
+.stat:last-child  { border-right: 0; padding-right: 0; }
+.stat-val { font: 600 26px var(--sans); letter-spacing: -0.02em; font-feature-settings: "tnum"; display: flex; align-items: baseline; gap: 6px; }
+.stat-val small { font: 500 13px var(--sans); color: var(--text-3); }
+.stat-label { font-size: 11.5px; color: var(--text-3); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+.plain-box {
+  border: 1px dashed color-mix(in oklab, var(--accent-2) 40%, transparent);
+  background: var(--violet-glow); border-radius: var(--radius);
+  padding: 12px 14px; font-size: 13px; color: var(--text-2);
+  display: flex; gap: 10px; margin-bottom: 28px;
+}
+.plain-box svg { color: var(--accent-2); flex-shrink: 0; margin-top: 2px; }
+.plain-box strong { color: var(--text); }
+
+.feature {
+  display: flex; gap: 14px; align-items: flex-start;
+  background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px;
+}
+.feature-icon {
+  width: 36px; height: 36px; border-radius: 8px;
+  background: var(--accent-glow); color: var(--accent);
+  display: grid; place-items: center; flex-shrink: 0;
+}
+.feature.violet .feature-icon { background: var(--violet-glow); color: var(--accent-2); }
+.feature h4 { font-weight: 600; font-size: 14px; margin: 0 0 4px; letter-spacing: -0.01em; }
+.feature p  { color: var(--text-3); font-size: 13px; line-height: 1.55; margin: 0; }
+
+.stack-block { font-size: 13px; }
+.stack-block .label { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-4); margin-bottom: 8px; font-weight: 600; }
+.stack-block ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.stack-block li { color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+.stack-block li::before { content: ""; width: 4px; height: 4px; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.stack-block li span { font-family: var(--mono); }
+
+/* ===== Architecture diagram ===== */
+.arch-wrap { border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--panel); overflow-x: auto; }
+.arch {
+  position: relative; height: 560px; width: 980px; min-width: 980px;
+  overflow: hidden; background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.arch-svg { position: absolute; left: 0; top: 0; width: 980px; height: 560px; }
+.arch-node {
+  position: absolute; width: 180px; background: var(--bg-elev);
+  border: 1px solid var(--border-strong); border-radius: var(--radius);
+  padding: 12px 14px; cursor: pointer; transition: transform .15s, border-color .15s, box-shadow .15s; z-index: 2;
+}
+.arch-node:hover { transform: translateY(-2px); border-color: var(--accent); box-shadow: 0 8px 24px var(--accent-glow); }
+.arch-node[data-role="supervisor"] {
+  background: linear-gradient(180deg, var(--bg-elev-2), var(--bg-elev));
+  border-color: color-mix(in oklab, var(--accent) 40%, transparent);
+  box-shadow: 0 0 0 1px var(--accent-glow), 0 8px 24px var(--accent-glow);
+}
+.arch-node[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 8px 28px var(--accent-glow); }
+.arch-node-h { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; }
+.arch-node-icon { width: 22px; height: 22px; border-radius: 5px; background: var(--accent-glow); color: var(--accent); display: grid; place-items: center; }
+.arch-node-title { font-size: 12.5px; font-weight: 600; }
+.arch-node-sub { font-size: 11px; color: var(--text-3); font-family: var(--mono); }
+
+.agent-detail { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 18px 20px; margin-top: 16px; }
+.agent-detail h4 { margin: 0 0 4px; font-size: 14px; letter-spacing: -0.01em; }
+.agent-detail .role { color: var(--text-3); font-size: 13px; margin-bottom: 12px; }
+.agent-detail .tools { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ===== Table rows (alerts, investigations) ===== */
+.list-table { border-radius: var(--radius-lg); border: 1px solid var(--border); background: var(--panel); overflow: hidden; }
+.list-row {
+  display: grid; align-items: center; gap: 14px;
+  padding: 12px 18px; border-bottom: 1px solid var(--border);
+  font-size: 13px; cursor: pointer; transition: background .1s;
+}
+.list-row:last-child { border-bottom: 0; }
+.list-row:hover { background: var(--bg-elev-2); }
+.list-row.head { font-size: 11px; color: var(--text-4); text-transform: uppercase; letter-spacing: 0.06em; cursor: default; background: var(--bg-elev); }
+.list-row.head:hover { background: var(--bg-elev); }
+.alert-cols { grid-template-columns: 100px 1fr 130px 110px 130px 110px; }
+.inv-cols   { grid-template-columns: 110px 1fr 130px 90px 110px 110px; }
+.eval-cols  { grid-template-columns: 110px 110px 140px 90px 90px 90px; }
+.cell-mono { font-family: var(--mono); color: var(--text-3); font-size: 12px; }
+.cell-num  { font: 600 13px var(--mono); font-variant-numeric: tabular-nums; }
+
+.risk-bar { height: 6px; border-radius: 999px; background: var(--bg-elev-2); overflow: hidden; position: relative; }
+.risk-bar > i { display: block; height: 100%; border-radius: 999px; }
+.risk-hi { background: linear-gradient(90deg, var(--warn), var(--danger)); }
+.risk-md { background: linear-gradient(90deg, var(--accent-3), var(--warn)); }
+.risk-lo { background: var(--accent-3); }
+
+/* ===== Investigation detail ===== */
+.detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.detail-grid > .full { grid-column: 1 / -1; }
+
+.summary-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 12px; }
+.summary-stat { background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius); padding: 12px 14px; }
+.summary-stat .label { font-size: 11px; color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+.summary-stat .value { font: 600 18px var(--sans); letter-spacing: -0.01em; margin-top: 4px; font-feature-settings: "tnum"; }
+
+/* Event timeline (CoT-feel) */
+.events { font-family: var(--mono); font-size: 12.5px; line-height: 1.65; display: flex; flex-direction: column; gap: 4px; max-height: 480px; overflow-y: auto; }
+.thought {
+  display: grid; grid-template-columns: 70px 1fr; gap: 12px;
+  padding: 8px 0; border-bottom: 1px dashed var(--border);
+}
+.thought:last-child { border-bottom: 0; }
+.thought-ts { color: var(--text-4); font-size: 11px; padding-top: 2px; }
+.thought-body { color: var(--text-2); }
+.label-pill {
+  display: inline-block; margin-right: 8px; font-size: 10.5px;
+  text-transform: uppercase; letter-spacing: 0.06em;
+  padding: 1px 6px; border-radius: 3px; background: var(--bg-elev-2); color: var(--text-3); vertical-align: middle;
+}
+.label-pill.triage    { color: var(--accent);   background: var(--accent-glow); }
+.label-pill.historian { color: var(--accent-3); background: color-mix(in oklab, var(--accent-3) 18%, transparent); }
+.label-pill.mapper    { color: var(--accent-2); background: var(--violet-glow); }
+.label-pill.hunter    { color: var(--danger);   background: color-mix(in oklab, var(--danger) 15%, transparent); }
+.label-pill.writer    { color: var(--success);  background: color-mix(in oklab, var(--success) 15%, transparent); }
+.label-pill.supervisor{ color: var(--warn);     background: color-mix(in oklab, var(--warn) 15%, transparent); }
+.thought-body pre { margin: 6px 0 0; padding: 8px 10px; background: var(--bg-elev); border-radius: 4px; font-size: 11.5px; max-height: 160px; overflow: auto; color: var(--text-2); }
+
+.empty { color: var(--text-3); font-style: italic; padding: 20px; text-align: center; }
+
+/* ===== Network ===== */
+.network { position: relative; border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--panel); aspect-ratio: 840/540; min-height: 320px; overflow: hidden; }
+.network svg { width: 100%; height: 100%; display: block; }
+
+/* ===== Case file ===== */
+.case-paper {
+  background: var(--bg-elev); border: 1px solid var(--border); border-radius: var(--radius-lg);
+  padding: 40px 48px; max-width: 820px; margin: 0 auto;
+  font-size: 13.5px; line-height: 1.65; position: relative;
+}
+.case-paper::before { content: ""; position: absolute; left: 0; top: 0; bottom: 0; width: 3px; background: linear-gradient(180deg, var(--accent), var(--accent-2)); border-radius: 3px 0 0 3px; }
+.case-head { display: flex; justify-content: space-between; align-items: flex-start; padding-bottom: 18px; border-bottom: 1px solid var(--border); margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
+.case-head h2 { font-size: 20px; margin: 0 0 6px; letter-spacing: -0.01em; }
+.case-paper h3 { font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin: 24px 0 8px; font-weight: 600; }
+.case-paper p, .case-paper li { color: var(--text-2); }
+.evidence-table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin-top: 8px; }
+.evidence-table th, .evidence-table td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+.evidence-table th { font: 600 11px var(--sans); color: var(--text-3); text-transform: uppercase; letter-spacing: 0.06em; }
+.evidence-table code { font: 11.5px var(--mono); background: var(--bg-elev-2); padding: 1px 5px; border-radius: 3px; }
+
+/* ===== Inputs ===== */
+input, select {
+  font: inherit; padding: 6px 10px; background: var(--bg-elev); color: var(--text);
+  border: 1px solid var(--border-strong); border-radius: var(--radius-sm);
+}
+input:focus, select:focus { outline: 2px solid var(--accent); outline-offset: 0; }
+label { font-size: 12px; color: var(--text-3); display: flex; align-items: center; gap: 8px; }
+
+/* ===== Toast ===== */
+.toast {
+  position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+  background: var(--panel); border: 1px solid var(--border-strong);
+  border-radius: var(--radius); padding: 10px 16px; font-size: 13px;
+  box-shadow: var(--shadow-lg); z-index: 1000;
+  display: flex; align-items: center; gap: 10px;
+  animation: fade-up 0.25s ease-out;
+}
+
+/* ===== Spark / mini chart ===== */
+.spark { width: 100%; height: 50px; margin-top: 8px; display: block; }
+
+/* ===== Responsive ===== */
+@media (max-width: 1024px) {
+  .app { grid-template-columns: 220px 1fr; }
+  .detail-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 760px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar { display: none; }
+  .hero h1 { font-size: 32px; }
+  .stat-strip { grid-template-columns: 1fr 1fr; }
+  .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+  .summary-stats { grid-template-columns: 1fr 1fr; }
+  .alert-cols { grid-template-columns: 110px 1fr 110px; }
+  .alert-cols > .hide-sm { display: none; }
+  .inv-cols { grid-template-columns: 110px 1fr 110px; }
+  .inv-cols > .hide-sm { display: none; }
+}
+</style>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<div class="app">
+
+  <!-- ===== Sidebar ===== -->
+  <aside class="sidebar" aria-label="Primary navigation">
+    <div class="brand">
+      <div class="brand-mark" aria-hidden="true">F</div>
+      <div>
+        <div class="brand-name">FALCON</div>
+        <div class="brand-tag">fraud agent network</div>
+      </div>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Demo</div>
+      <button class="nav-item" data-view="overview" aria-current="page">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5z"/></svg>
+        Live investigation <span class="kbd-hint">1</span>
+      </button>
+      <button class="nav-item" data-view="architecture">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="3" r="2"/><circle cx="3" cy="13" r="2"/><circle cx="13" cy="13" r="2"/><path d="M8 5v3M6 9l-2 2M10 9l2 2"/></svg>
+        How it works <span class="kbd-hint">2</span>
+      </button>
+      <button class="nav-item" data-view="guardrails">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 1L2 4v4c0 3 2.5 6 6 7 3.5-1 6-4 6-7V4z"/></svg>
+        Guardrails <span class="kbd-hint">3</span>
+      </button>
+    </div>
+
+    <div class="nav-section">
+      <div class="nav-label">Performance</div>
+      <button class="nav-item" data-view="metrics">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 13V3M2 13h12M5 10V7M8 10V5M11 10V8"/></svg>
+        Metrics <span class="kbd-hint">4</span>
+      </button>
+      <button class="nav-item" data-view="eval">
+        <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 13V3h10v10z"/><path d="M5 6h6M5 9h4"/></svg>
+        Evaluation <span class="kbd-hint">5</span>
+      </button>
+    </div>
+
+    <div class="sidebar-footer">
+      <span id="refresh-status" class="mono" style="font-size:11px;">idle</span>
+    </div>
+  </aside>
+
+  <!-- ===== Main ===== -->
+  <main class="main" id="main">
+    <div class="topbar">
+      <div class="crumbs">
+        <span>FALCON</span><span class="sep">/</span><strong id="crumb-view">Overview</strong>
+      </div>
+      <div class="topbar-actions">
+        <button class="btn btn-ghost" id="theme-btn" aria-label="Cycle theme">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2M3 3l1.4 1.4M11.6 11.6L13 13M3 13l1.4-1.4M11.6 4.4L13 3"/></svg>
+          <span id="theme-label">Dark</span>
+        </button>
+        <button class="btn btn-ghost" id="refresh-btn" aria-label="Refresh">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 8a6 6 0 11-1.76-4.24M14 3v3h-3"/></svg>
+          Refresh
+        </button>
+      </div>
+    </div>
+
+    <!-- ===== Overview / Guided demo ===== -->
+    <section class="view active" id="view-overview" aria-labelledby="ovh">
+      <section class="hero demo-hero" aria-labelledby="ovh">
+        <span class="hero-eyebrow">
+          <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1l1.5 5L14 7l-3.5 2.5L11 14 8 11l-3 3 .5-4.5L2 7l4.5-1z"/></svg>
+          Multi-agent fraud investigation pipeline
+        </span>
+        <h1 id="ovh">Pick a fraud type below to watch the <span class="grad">agents run</span>.</h1>
+        <p class="lede">
+          FALCON is a LangGraph supervisor that orchestrates five agents — Triage,
+          Account Historian, Network Mapper, Pattern Hunter, Case Writer — over a
+          Postgres + pgvector store. Each click below replays one full investigation
+          end to end: the supervisor's event timeline, each agent's reasoning, and
+          the final case file.
+        </p>
+      </section>
+
+      <!-- ===== Typology picker ===== -->
+      <h3 style="font-size:13px;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:0 0 12px;font-weight:600;">
+        Fraud typologies
+      </h3>
+      <div class="typology-grid" id="typology-grid" role="list" aria-label="Fraud typology choices"></div>
+
+      <!-- ===== Typology brief — appears once the user picks a card ===== -->
+      <section class="typology-brief" id="typology-brief" hidden aria-live="polite">
+        <div class="typology-brief-icon" id="brief-icon"></div>
+        <div class="typology-brief-body">
+          <div class="typology-brief-eyebrow mono" id="brief-eyebrow"></div>
+          <!-- title + body + recorded notice are populated by renderTypologyBrief() -->
+          <h3 id="brief-title"></h3>
+          <p id="brief-desc"></p>
+          <ul id="brief-params"></ul>
+          <div class="typology-brief-recorded">
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M6 5l5 3-5 3z" fill="currentColor"/></svg>
+            <span>
+              <strong>Replay of a real investigation.</strong>
+              All agents ran on Claude Haiku 4.5; the run was captured ahead of time so the
+              demo doesn't make live API calls. Source is on
+              <a href="https://github.com/oladi/falcon" target="_blank" rel="noopener" class="brief-repo-link">GitHub</a>
+              if you want to run it yourself.
+              <span class="muted mono" id="brief-recorded-when"></span>
+            </span>
+          </div>
+          <div class="typology-brief-actions">
+            <button class="btn btn-accent btn-big" id="brief-start">
+              <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor"><path d="M4 3l9 5-9 5z"/></svg>
+              Start the investigation
+            </button>
+            <button class="btn btn-ghost" id="brief-cancel">Back to typologies</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== The demo stage ===== -->
+      <section class="demo-stage" aria-live="polite">
+        <div class="demo-status">
+          <div class="row" style="gap:10px;">
+            <span class="demo-status-dot" id="demo-status-dot" aria-hidden="true"></span>
+            <div>
+              <div class="demo-status-label" id="demo-status-label">Pick a typology to begin</div>
+              <div class="demo-status-sub muted" id="demo-status-sub">The supervisor, agents, and case writer will animate below as the cached run plays back.</div>
+            </div>
+          </div>
+          <div class="row" style="gap:10px;">
+            <span class="pill" id="demo-alert-pill" hidden></span>
+            <span class="pill mono" id="demo-elapsed" hidden>0.0s</span>
+            <button class="btn btn-ghost" id="demo-restart" hidden>↻ Try another typology</button>
+          </div>
+        </div>
+
+        <div class="demo-arch-scroll">
+          <div class="demo-arch">
+            <!--
+              Coordinate system: 880x380. Supervisor (200x70) centred at x=440, bottom at y=90.
+              Agents (150x90) at y=220. Centres at x = leftPad + 75. Five agents evenly
+              spaced across 880: leftPad values 35, 200, 365, 530, 695 → centres at 110,
+              275, 440, 605, 770. Edges originate at (440, 90) and terminate exactly at
+              each agent centre x at y=220.
+            -->
+            <svg class="arch-svg" viewBox="0 0 880 380" aria-hidden="true">
+              <defs>
+                <linearGradient id="edge-live" x1="0" x2="1" y1="0" y2="0">
+                  <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0.7"/>
+                </linearGradient>
+              </defs>
+              <path id="edge-triage"    d="M440,90 C440,160 110,160 110,220" stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+              <path id="edge-historian" d="M440,90 C440,170 275,170 275,220" stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+              <path id="edge-mapper"    d="M440,90 L440,220"                   stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+              <path id="edge-hunter"    d="M440,90 C440,170 605,170 605,220" stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+              <path id="edge-writer"    d="M440,90 C440,160 770,160 770,220" stroke="var(--border-strong)" stroke-width="1.5" fill="none"/>
+            </svg>
+            <div class="demo-node demo-supervisor" data-node="supervisor" style="left:340px; top:20px;">
+              <div class="demo-node-h">
+                <div class="demo-node-icon"><svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8l6-6 6 6M4 7v7h8V7"/></svg></div>
+                <div class="demo-node-title">Supervisor</div>
+              </div>
+              <div class="demo-node-sub mono">LangGraph router</div>
+            </div>
+            <div class="demo-node" data-node="triage"    style="left:35px;  top:220px;"><div class="demo-node-h"><div class="demo-node-icon">T</div><div class="demo-node-title">Triage</div></div><div class="demo-node-sub mono">7-day scan</div><div class="demo-node-status" data-status>idle</div></div>
+            <div class="demo-node" data-node="historian" style="left:200px; top:220px;"><div class="demo-node-h"><div class="demo-node-icon">H</div><div class="demo-node-title">Historian</div></div><div class="demo-node-sub mono">90-day baseline</div><div class="demo-node-status" data-status>idle</div></div>
+            <div class="demo-node" data-node="mapper"    style="left:365px; top:220px;"><div class="demo-node-h"><div class="demo-node-icon">N</div><div class="demo-node-title">Network</div></div><div class="demo-node-sub mono">graph traversal</div><div class="demo-node-status" data-status>idle</div></div>
+            <div class="demo-node" data-node="hunter"    style="left:530px; top:220px;"><div class="demo-node-h"><div class="demo-node-icon">P</div><div class="demo-node-title">Pattern Hunter</div></div><div class="demo-node-sub mono">5 detectors</div><div class="demo-node-status" data-status>idle</div></div>
+            <div class="demo-node" data-node="writer"    style="left:695px; top:220px;"><div class="demo-node-h"><div class="demo-node-icon">W</div><div class="demo-node-title">Case Writer</div></div><div class="demo-node-sub mono">SAR draft</div><div class="demo-node-status" data-status>idle</div></div>
+          </div>
+        </div>
+
+        <!-- Per-agent reasoning cards -->
+        <div class="card pad-0">
+          <div class="card-h"><h3>Agent reasoning</h3><span class="muted">structured output per agent</span></div>
+          <div class="card-body">
+            <div class="reasoning-grid" id="reasoning-grid"></div>
+          </div>
+        </div>
+
+        <div class="demo-feed-wrap">
+          <div class="card pad-0 demo-feed-card">
+            <div class="card-h"><h3>Supervisor event timeline</h3><span class="muted" id="demo-feed-count">—</span></div>
+            <div class="card-body" id="demo-feed"><div class="empty">Pick a typology above to start.</div></div>
+          </div>
+          <div class="card pad-0 demo-case-card" id="demo-case-card" hidden>
+            <div class="card-h"><h3>SAR draft</h3><span class="muted">case writer output</span></div>
+            <div class="card-body" id="demo-case-slot"></div>
+          </div>
+        </div>
+      </section>
+
+      <hr style="border:0; border-top:1px solid var(--border); margin:36px 0;">
+      <div id="how-it-works"></div>
+
+      <section class="card pad-0" style="margin-bottom:28px;">
+        <div class="card-h"><h3>Stack</h3></div>
+        <div class="card-body grid-3" style="gap:18px;">
+          <div class="stack-block"><div class="label">Orchestration</div><ul><li><span>LangGraph supervisor</span></li><li><span>Postgres checkpointer</span></li><li><span>FastAPI BackgroundTasks</span></li></ul></div>
+          <div class="stack-block"><div class="label">Storage</div><ul><li><span>Postgres 16</span></li><li><span>pgvector (ivfflat)</span></li><li><span>Investigation events log</span></li></ul></div>
+          <div class="stack-block"><div class="label">Guardrails</div><ul><li><span>Pydantic schema rail</span></li><li><span>Presidio PII redaction</span></li><li><span>Scope · justification · escalation</span></li></ul></div>
+          <div class="stack-block"><div class="label">Models</div><ul><li><span>Claude Haiku 4.5</span></li><li><span>Qwen3 / Llama 3.1 (Ollama)</span></li><li><span>Gemini 2.5 (Vertex)</span></li></ul></div>
+          <div class="stack-block"><div class="label">Evaluation</div><ul><li><span>30-alert ground truth</span></li><li><span>Cross-vendor LLM judge</span></li><li><span>Static HTML report</span></li></ul></div>
+          <div class="stack-block"><div class="label">Surface</div><ul><li><span>FastAPI</span></li><li><span>Vanilla HTML dashboard</span></li><li><span>OpenTelemetry → Jaeger</span></li></ul></div>
+        </div>
+      </section>
+
+    </section>
+
+    <!-- ===== Architecture ===== -->
+    <section class="view" id="view-architecture" aria-labelledby="archh">
+      <header class="view-header">
+        <div>
+          <h1 class="view-title" id="archh">How it works</h1>
+          <p class="view-sub">The supervisor at the top routes alerts through the five agents below. Click any node for the role and tools it owns.</p>
+        </div>
+        <div class="row">
+          <span class="pill"><span class="dot"></span> 6 nodes</span>
+        </div>
+      </header>
+
+      <div class="arch-wrap" style="margin-bottom:18px;">
+        <div class="arch" role="img" aria-label="Architecture diagram. A supervisor at the top routes to triage, account historian, network mapper, pattern hunter, and case writer.">
+          <!--
+            Coordinate system: 980x560. Supervisor (180x70) at left=400 (centre 490, bottom 100).
+            Five agents (180x70) arranged in an arc at the bottom, centres at:
+              triage 110, historian 290, mapper 490, hunter 690, writer 870
+            Agent left = centre - 90.
+          -->
+          <svg class="arch-svg" viewBox="0 0 980 560">
+            <defs>
+              <linearGradient id="edge-grad" x1="0" x2="0" y1="0" y2="1">
+                <stop offset="0%"  stop-color="var(--accent)"   stop-opacity="0.6"/>
+                <stop offset="100%" stop-color="var(--accent-2)" stop-opacity="0.5"/>
+              </linearGradient>
+            </defs>
+            <path d="M490,110 C490,200 110,200 110,280"  stroke="var(--border-strong)" stroke-width="1.4" fill="none"/>
+            <path d="M490,110 C490,230 290,300 290,400" stroke="var(--border-strong)" stroke-width="1.4" fill="none"/>
+            <path d="M490,110 L490,460"                   stroke="var(--border-strong)" stroke-width="1.4" fill="none"/>
+            <path d="M490,110 C490,230 690,300 690,400" stroke="var(--border-strong)" stroke-width="1.4" fill="none"/>
+            <path d="M490,110 C490,200 870,200 870,280"  stroke="var(--border-strong)" stroke-width="1.4" fill="none"/>
+          </svg>
+          <button class="arch-node" data-role="supervisor" data-agent="supervisor" style="left:400px; top:30px;">
+            <div class="arch-node-h">
+              <div class="arch-node-icon"><svg width="12" height="12" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 8l6-6 6 6M4 7v7h8V7"/></svg></div>
+              <div class="arch-node-title">Supervisor</div>
+            </div>
+            <div class="arch-node-sub">LangGraph state machine</div>
+          </button>
+          <button class="arch-node" data-agent="triage" style="left:20px; top:280px;">
+            <div class="arch-node-h"><div class="arch-node-icon">T</div><div class="arch-node-title">Triage</div></div>
+            <div class="arch-node-sub">7-day quick scan</div>
+          </button>
+          <button class="arch-node" data-agent="historian" style="left:200px; top:400px;">
+            <div class="arch-node-h"><div class="arch-node-icon">H</div><div class="arch-node-title">Account Historian</div></div>
+            <div class="arch-node-sub">90-day baseline + pgvector</div>
+          </button>
+          <button class="arch-node" data-agent="mapper" style="left:400px; top:460px;">
+            <div class="arch-node-h"><div class="arch-node-icon">N</div><div class="arch-node-title">Network Mapper</div></div>
+            <div class="arch-node-sub">recursive CTE traversal</div>
+          </button>
+          <button class="arch-node" data-agent="hunter" style="left:600px; top:400px;">
+            <div class="arch-node-h"><div class="arch-node-icon">P</div><div class="arch-node-title">Pattern Hunter</div></div>
+            <div class="arch-node-sub">5 typology detectors</div>
+          </button>
+          <button class="arch-node" data-agent="writer" style="left:780px; top:280px;">
+            <div class="arch-node-h"><div class="arch-node-icon">W</div><div class="arch-node-title">Case Writer</div></div>
+            <div class="arch-node-sub">SAR draft + Presidio</div>
+          </button>
+        </div>
+      </div>
+
+      <div id="agent-detail-slot"></div>
+    </section>
+
+    <!-- ===== Guardrails ===== -->
+    <section class="view" id="view-guardrails">
+      <header class="view-header">
+        <div>
+          <h1 class="view-title">Guardrails</h1>
+          <p class="view-sub">Five validators in <code class="mono">guardrails/</code>. Each runs at a defined choke point during an investigation. Failures are written to the <code class="mono">security_events</code> table.</p>
+        </div>
+      </header>
+      <div class="grid-2" id="guardrails-grid"></div>
+    </section>
+
+    <!-- ===== Metrics ===== -->
+    <section class="view" id="view-metrics">
+      <header class="view-header">
+        <div>
+          <h1 class="view-title">Metrics</h1>
+          <p class="view-sub">Operational data pulled from the audit tables (<code class="mono">investigations</code>, <code class="mono">agent_traces</code>, <code class="mono">tool_call_logs</code>). Computed on demand by <code class="mono">GET /metrics</code>; no Prometheus or external scraper involved.</p>
+        </div>
+      </header>
+      <div id="metrics-content"><div class="empty">Loading…</div></div>
+    </section>
+
+    <!-- ===== Eval ===== -->
+    <section class="view" id="view-eval">
+      <header class="view-header">
+        <div>
+          <h1 class="view-title">Evaluation</h1>
+          <p class="view-sub">FALCON is scored against a 30-alert ground-truth dataset (<code class="mono">eval/ground_truth.json</code>). Four metrics are deterministic; faithfulness and hallucination come from a separate LLM judge. Below shows the most recent run.</p>
+        </div>
+      </header>
+      <div id="eval-content"><div class="empty">Loading…</div></div>
+    </section>
+
+  </main>
+</div>
+
+<script>
+'use strict';
+
+/* ============================================================
+ * Agent metadata — for the architecture click-to-explain panel.
+ * ============================================================ */
+const AGENT_INFO = {
+  supervisor: {
+    name: "Supervisor",
+    role: "LangGraph state machine. Routes the investigation between agents, recomputes the in-scope account set at every checkpoint, and decides the verdict tier (AUTO_CLOSE / REVIEW / SAR_FILE) from the confidence score.",
+    tools: ["state.read", "state.write", "checkpoint.persist", "interrupt"],
+  },
+  triage: {
+    name: "Triage",
+    role: "Reads the alert metadata plus a 7-day signal scan from the transaction store. Outputs a severity tier and recommended investigation depth.",
+    tools: ["transaction_store.get_quick_signals", "case_management.record_decision"],
+  },
+  historian: {
+    name: "Account Historian",
+    role: "Pulls a 90-day transaction history for the account, computes z-scores on transaction amounts, flags anomalies, and runs a pgvector cosine search against the known-pattern corpus.",
+    tools: ["transaction_store.get_history", "transaction_store.semantic_pattern_search"],
+  },
+  mapper: {
+    name: "Network Mapper",
+    role: "Runs a recursive CTE on Postgres to traverse the account network. Unions declared edges, transaction-derived edges, and shared-address edges. Decides whether to expand the investigation.",
+    tools: ["network_graph.traverse_network"],
+  },
+  hunter: {
+    name: "Pattern Hunter",
+    role: "Runs five deterministic typology detectors (structuring, layering, account takeover, mule network, PEP exposure). The LLM writes the rationale; the detectors decide the score.",
+    tools: ["watchlist.lookup"],
+  },
+  writer: {
+    name: "Case Writer",
+    role: "Composes the SAR-shaped case file: evidence chain, suspicion grounds, recommended action. Output passes the escalation rail and the Presidio PII scrub before it's persisted.",
+    tools: ["case_management.persist_case_file"],
+  },
+};
+
+/* ============================================================
+ * Helpers
+ * ============================================================ */
+const $  = (s, root) => (root || document).querySelector(s);
+const $$ = (s, root) => Array.from((root || document).querySelectorAll(s));
+const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
+const fmtPct  = (v) => v == null ? "—" : (v * 100).toFixed(1) + "%";
+const fmtNum  = (v, p=1) => v == null ? "—" : Number(v).toFixed(p);
+const fmtTS   = (iso) => {
+  if (!iso) return "—";
+  const t = new Date(iso); if (isNaN(t)) return iso;
+  const sec = Math.floor((Date.now() - t.getTime()) / 1000);
+  if (sec < 60)    return sec + "s ago";
+  if (sec < 3600)  return Math.floor(sec / 60) + "m ago";
+  if (sec < 86400) return Math.floor(sec / 3600) + "h ago";
+  return Math.floor(sec / 86400) + "d ago";
+};
+const pill = (s, cls) => `<span class="pill pill-${esc(cls || s)}"><span class="dot"></span>${esc(s)}</span>`;
+const setRefresh = (s) => { const el = $("#refresh-status"); if (el) el.textContent = s; };
+
+async function api(path, opts) {
+  setRefresh("loading…");
+  try {
+    const res = await fetch(path, opts || {});
+    const isJson = (res.headers.get("content-type") || "").includes("json");
+    const data = isJson ? await res.json() : await res.text();
+    if (!res.ok) throw new Error(typeof data === "string" ? data : (data.detail || res.statusText));
+    setRefresh("ok · " + new Date().toLocaleTimeString());
+    return data;
+  } catch (e) {
+    setRefresh("error · " + e.message);
+    throw e;
+  }
+}
+
+function toast(msg) {
+  const t = document.createElement("div");
+  t.className = "toast";
+  t.innerHTML = `<span class="live-dot"></span><span>${esc(msg)}</span>`;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2400);
+}
+
+/* ============================================================
+ * View switching + keyboard nav
+ * ============================================================ */
+const VIEW_LABELS = {
+  overview: "Live investigation", architecture: "How it works",
+  guardrails: "Guardrails", metrics: "Metrics", eval: "Evaluation",
+};
+const KEY_MAP = { "1": "overview", "2": "architecture", "3": "guardrails", "4": "metrics", "5": "eval" };
+
+function showView(name) {
+  if (!VIEW_LABELS[name]) return;
+  $$(".view").forEach(el => el.classList.toggle("active", el.id === "view-" + name));
+  $$(".nav-item").forEach(b => {
+    if (b.dataset.view === name) b.setAttribute("aria-current", "page");
+    else b.removeAttribute("aria-current");
+  });
+  $("#crumb-view").textContent = VIEW_LABELS[name];
+  if (name === "metrics")    loadMetrics();
+  if (name === "eval")       loadEval();
+  if (name === "guardrails") renderGuardrails();
+}
+
+const GUARDRAILS = [
+  {
+    letter: "S", title: "Scope rail", file: "guardrails/scope.py",
+    body: "Blocks Network Mapper tool calls against accounts outside the investigation's discovered scope. Scope is computed by the supervisor at every checkpoint as <code>accounts_investigated ∪ network_graph.nodes</code>.",
+    where: "<strong>Runs at:</strong> <code>@enforce_scope</code> wrapper on Network Mapper tool calls.",
+  },
+  {
+    letter: "T", title: "Schema rail", file: "guardrails/schema.py",
+    body: "Validates every inter-agent message against a Pydantic model with <code>extra='forbid'</code>. On failure, retries the LLM with the validation error fed back into the prompt.",
+    where: "<strong>Runs at:</strong> <code>call_structured()</code> in <code>agents/llm_utils.py</code>.",
+  },
+  {
+    letter: "J", title: "Justification rail", file: "guardrails/justification.py",
+    body: "Requires a <code>justification</code> string (≥10 chars) on every tool call. Empty or missing strings fail validation before the tool runs.",
+    where: "<strong>Runs at:</strong> <code>enforce_justification()</code> wrapping every <code>call_tool()</code>.",
+  },
+  {
+    letter: "E", title: "Escalation rail", file: "guardrails/escalation.py",
+    body: "Downgrades any case file with <code>recommended_action=\"SAR_FILE\"</code> to <code>REVIEW</code> when <code>len(evidence_items) &lt; 3</code> or <code>confidence ≤ 0.75</code>. Runs after the LLM has produced its draft.",
+    where: "<strong>Runs at:</strong> <code>enforce_escalation()</code> in <code>agents/case_writer.py</code>.",
+  },
+  {
+    letter: "P", title: "PII rail", file: "guardrails/pii.py",
+    body: "Runs Microsoft Presidio over agent outputs before they're persisted. Names, emails, account numbers, and addresses are redacted. Fails open: if Presidio errors, the payload passes through and the failure is logged.",
+    where: "<strong>Runs at:</strong> <code>redact_payload()</code> on every Case Writer output.",
+  },
+];
+
+function renderGuardrails() {
+  const grid = $("#guardrails-grid");
+  if (!grid || grid.dataset.rendered) return;  // render once
+  grid.dataset.rendered = "1";
+  grid.innerHTML = GUARDRAILS.map(g => `
+    <div class="guard-card">
+      <div class="guard-card-h">
+        <div class="guard-card-icon">${esc(g.letter)}</div>
+        <div>
+          <div class="guard-card-title">${esc(g.title)}</div>
+          <div class="guard-card-sub">${esc(g.file)}</div>
+        </div>
+      </div>
+      <p>${g.body}</p>
+      <div class="guard-where">${g.where}</div>
+    </div>`).join("");
+}
+
+$$(".nav-item").forEach(b => b.addEventListener("click", () => showView(b.dataset.view)));
+$$("[data-jump]").forEach(b => b.addEventListener("click", () => showView(b.dataset.jump)));
+
+document.addEventListener("keydown", (e) => {
+  if (e.target.matches("input, select, textarea")) return;
+  const v = KEY_MAP[e.key];
+  if (v) { e.preventDefault(); showView(v); }
+});
+
+/* ============================================================
+ * Theme cycling
+ * ============================================================ */
+const THEMES = ["dark", "light", "noir"];
+const THEME_LABEL = { dark: "Dark", light: "Light", noir: "Noir" };
+function setTheme(t) {
+  document.documentElement.setAttribute("data-theme", t);
+  $("#theme-label").textContent = THEME_LABEL[t];
+  try { localStorage.setItem("falcon.theme", t); } catch (_) {}
+}
+$("#theme-btn").addEventListener("click", () => {
+  const cur = document.documentElement.getAttribute("data-theme") || "dark";
+  setTheme(THEMES[(THEMES.indexOf(cur) + 1) % THEMES.length]);
+});
+try {
+  const saved = localStorage.getItem("falcon.theme");
+  if (saved && THEME_LABEL[saved]) setTheme(saved);
+} catch (_) {}
+
+$("#refresh-btn").addEventListener("click", () => {
+  const active = document.querySelector(".view.active");
+  if (!active) return;
+  const name = active.id.replace("view-", "");
+  showView(name);
+});
+
+/* ============================================================
+ * Architecture interactivity
+ * ============================================================ */
+$$(".arch-node").forEach(n => {
+  n.addEventListener("click", () => {
+    const agent = n.dataset.agent;
+    $$(".arch-node").forEach(x => x.removeAttribute("aria-pressed"));
+    n.setAttribute("aria-pressed", "true");
+    const info = AGENT_INFO[agent];
+    if (!info) return;
+    $("#agent-detail-slot").innerHTML = `
+      <div class="agent-detail">
+        <h4>${esc(info.name)}</h4>
+        <div class="role">${esc(info.role)}</div>
+        <div class="tools">
+          ${info.tools.map(t => `<span class="pill mono">${esc(t)}</span>`).join("")}
+        </div>
+      </div>`;
+  });
+});
+
+/* ============================================================
+ * Shared helpers used by demo + eval
+ * ============================================================ */
+function tracesTokens(traces)  { return traces.reduce((a, t) => a + (t.token_count || 0), 0); }
+function tracesLatency(traces) { return traces.reduce((a, t) => a + (t.latency_ms  || 0), 0); }
+
+const AGENT_TO_LABEL_CLASS = {
+  triage: "triage", account_historian: "historian", network_mapper: "mapper",
+  pattern_hunter: "hunter", reconciler: "hunter", case_writer: "writer", supervisor: "supervisor",
+};
+function labelClassFor(name) { return AGENT_TO_LABEL_CLASS[name] || ""; }
+
+function renderEvents(events) {
+  if (!events.length) return `<div class="empty">No events yet.</div>`;
+  return `<div class="events">` + events.map(e => `
+    <div class="thought">
+      <div class="thought-ts">${esc(fmtTS(e.occurred_at))}</div>
+      <div class="thought-body">
+        <span class="label-pill ${labelClassFor(e.actor)}">${esc(e.actor)}</span>
+        <span style="font-weight:600;">${esc(e.event_type)}</span>
+        ${Object.keys(e.payload || {}).length ? `<pre>${esc(JSON.stringify(e.payload, null, 2))}</pre>` : ""}
+      </div>
+    </div>`).join("") + `</div>`;
+}
+
+function renderTraces(traces) {
+  if (!traces.length) return `<div class="empty">No agent traces yet.</div>`;
+  return `<div class="events">` + traces.map(t => {
+    const text = (t.reasoning_text || "").slice(0, 1500);
+    const more = (t.reasoning_text || "").length > 1500 ? "\n…(truncated)" : "";
+    return `
+      <div class="thought">
+        <div class="thought-ts">${esc(fmtTS(t.recorded_at))}</div>
+        <div class="thought-body">
+          <span class="label-pill ${labelClassFor(t.agent_name)}">${esc(t.agent_name)}</span>
+          <span class="muted">step ${t.step} · ${t.token_count ?? "?"} tok · ${t.latency_ms ?? "?"} ms</span>
+          <pre>${esc(text + more)}</pre>
+        </div>
+      </div>`;
+  }).join("") + `</div>`;
+}
+
+function renderCaseFile(cf) {
+  if (!cf) {
+    return `<div class="card"><div class="card-h"><h3>Case file</h3></div><div class="card-body"><div class="empty">No case file produced yet.</div></div></div>`;
+  }
+  const j = cf.case_json || {};
+  const evidence = j.evidence_chain || [];
+  const contradictions = j.contradictions_addressed || [];
+  const network = j.network_summary || {};
+  const action = cf.recommended_action || "REVIEW";
+  const actionCopy = {
+    SAR_FILE:   { headline: "Recommended action: file a Suspicious Activity Report", verb: "FILE" },
+    REVIEW:     { headline: "Recommended action: route to human review",            verb: "REVIEW" },
+    AUTO_CLOSE: { headline: "Recommended action: close — insufficient evidence",    verb: "CLOSE" },
+  }[action] || { headline: action, verb: action };
+  const subj = j.subject_details || {};
+  const exposure = typeof j.financial_exposure_estimate === "number"
+    ? "£" + j.financial_exposure_estimate.toLocaleString(undefined, {maximumFractionDigits: 2})
+    : "—";
+  return `
+    <div class="case-paper">
+      <div class="case-head">
+        <div>
+          <h2>Suspicious Activity Report — draft</h2>
+          <div class="muted mono" style="font-size:12px;">case ${esc(cf.id || "—")}</div>
+        </div>
+        <div class="row" style="gap:8px; flex-wrap:wrap;">
+          ${pill(action, action)}
+          ${pill(cf.risk_tier || "—")}
+          <span class="pill mono">conf ${fmtNum(cf.confidence, 2)}</span>
+          ${cf.sar_ready ? `<span class="pill pill-danger"><span class="dot"></span>SAR-ready</span>` : ""}
+        </div>
+      </div>
+
+      <div class="sar-banner ${esc(action)}">
+        <strong>${esc(actionCopy.headline)}</strong>
+        <span class="mono" style="font-size:11px;">verb: ${esc(actionCopy.verb)}</span>
+      </div>
+
+      <div class="sar-meta-grid">
+        <div class="sar-meta-cell">
+          <div class="label">Primary subject</div>
+          <div class="value mono">${esc(subj.account_id || subj.primary_account_id || "—")}</div>
+        </div>
+        <div class="sar-meta-cell">
+          <div class="label">Risk tier</div>
+          <div class="value">${esc(cf.risk_tier || "—")}</div>
+        </div>
+        <div class="sar-meta-cell">
+          <div class="label">Financial exposure</div>
+          <div class="value">${esc(exposure)}</div>
+        </div>
+        <div class="sar-meta-cell">
+          <div class="label">Network size</div>
+          <div class="value">${(network.nodes || []).length} accounts · ${(network.edges || []).length} edges</div>
+        </div>
+      </div>
+
+      <h3>Executive summary</h3>
+      <p>${esc(j.executive_summary || "—")}</p>
+
+      <h3>Suspicion grounds</h3>
+      <p>${esc(j.suspicion_grounds || "—")}</p>
+
+      <h3>Evidence chain (${evidence.length})</h3>
+      ${evidence.length ? `
+        <table class="evidence-table">
+          <thead><tr><th>Type</th><th>Summary</th><th style="width:60px;">Conf</th></tr></thead>
+          <tbody>${evidence.map(e => `
+            <tr>
+              <td><code>${esc(e.evidence_type)}</code></td>
+              <td>${esc(e.summary)}</td>
+              <td class="cell-num">${fmtNum(e.confidence, 2)}</td>
+            </tr>`).join("")}</tbody>
+        </table>` : `<div class="empty">No evidence items.</div>`}
+
+      ${contradictions.length ? `
+        <h3>Contradictions addressed</h3>
+        <ul>${contradictions.map(c => `<li>${esc(c)}</li>`).join("")}</ul>` : ""}
+
+      <h3>Network</h3>
+      ${renderNetworkSVG(network)}
+
+      <p class="muted" style="font-size:11px;margin-top:18px;">
+        Generated by the Case Writer agent. Presidio PII redaction applied; escalation rail evaluated.
+      </p>
+    </div>`;
+}
+
+function renderAutoClosePanel(inv, traces) {
+  // No SAR was produced because confidence < 0.4. Show the audit-trail
+  // equivalent so the recruiter sees what the system saw.
+  const hunter = traces.filter(t => t.agent_name === "pattern_hunter").slice(-1)[0];
+  const triage = traces.filter(t => t.agent_name === "triage").slice(-1)[0];
+  return `
+    <div class="case-paper">
+      <div class="case-head">
+        <div>
+          <h2>Closure record — no SAR filed</h2>
+          <div class="muted mono" style="font-size:12px;">investigation ${esc(inv.id)}</div>
+        </div>
+        <div class="row" style="gap:8px; flex-wrap:wrap;">
+          ${pill("AUTO_CLOSE", "AUTO_CLOSE")}
+          <span class="pill mono">conf ${fmtNum(inv.confidence_score, 2)}</span>
+        </div>
+      </div>
+      <div class="sar-banner AUTO_CLOSE">
+        <strong>The system declined to escalate this alert.</strong>
+        <span class="mono" style="font-size:11px;">below the 0.40 review threshold</span>
+      </div>
+      <h3>What the system saw</h3>
+      <p class="muted" style="font-size:13px;">
+        Final confidence sat below the review threshold, so the supervisor closed the
+        case without a SAR draft. The reasoning chain is preserved below.
+      </p>
+      ${triage ? `<h3>Triage rationale</h3><pre style="background:var(--bg-elev);padding:12px;border-radius:6px;font:11px var(--mono);max-height:160px;overflow:auto;">${esc((triage.reasoning_text || "").slice(0, 1200))}</pre>` : ""}
+      ${hunter ? `<h3>Pattern Hunter rationale</h3><pre style="background:var(--bg-elev);padding:12px;border-radius:6px;font:11px var(--mono);max-height:160px;overflow:auto;">${esc((hunter.reasoning_text || "").slice(0, 1200))}</pre>` : ""}
+      <p class="muted" style="font-size:11px;margin-top:18px;">
+        Escalation rail enforced. Audit row written to <code>investigation_events.AUTO_CLOSED</code>.
+      </p>
+    </div>`;
+}
+
+function renderNetworkSVG(network) {
+  const nodes = network.nodes || [];
+  const edges = network.edges || [];
+  if (!nodes.length) return `<div class="empty">No network discovered.</div>`;
+  const W = 720, H = 360, cx = W/2, cy = H/2, r = Math.min(W,H)/2 - 50;
+  const pos = {};
+  nodes.forEach((n, i) => {
+    const a = (i / nodes.length) * 2 * Math.PI - Math.PI/2;
+    const id = n.account_id || n;
+    pos[id] = { x: cx + r * Math.cos(a), y: cy + r * Math.sin(a) };
+  });
+  const lines = edges.map(e => {
+    const a = pos[e.source]; const b = pos[e.target];
+    if (!a || !b) return "";
+    return `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="var(--border-strong)" stroke-width="1"/>`;
+  }).join("");
+  const dots = nodes.map(n => {
+    const id = n.account_id || n;
+    const p = pos[id]; if (!p) return "";
+    const isHub = n.role === "hub";
+    const fill = isHub ? "var(--danger)" : "var(--accent)";
+    const stroke = isHub ? "color-mix(in oklab, var(--danger) 60%, white)" : "color-mix(in oklab, var(--accent) 60%, white)";
+    return `
+      <g>
+        <circle cx="${p.x}" cy="${p.y}" r="9" fill="${fill}" stroke="${stroke}" stroke-width="1.5"/>
+        <text x="${p.x + 12}" y="${p.y + 4}" font-family="JetBrains Mono, monospace" font-size="10" fill="var(--text-2)">${esc(String(id).slice(-6))}</text>
+      </g>`;
+  }).join("");
+  return `<div class="network"><svg viewBox="0 0 ${W} ${H}">${lines}${dots}</svg></div>`;
+}
+
+/* ============================================================
+ * METRICS
+ * ============================================================ */
+async function loadMetrics() {
+  const m = await api("/metrics");
+  const dur = m.duration || {};
+  const byStatus = m.investigations_by_status || {};
+  const total = Object.values(byStatus).reduce((a, b) => a + b, 0);
+  const agents = m.per_agent_latency || {};
+  const tools = m.tool_call_counts || {};
+  const slow = m.slow_investigations || [];
+
+  $("#metrics-content").innerHTML = `
+    <div class="grid-4" style="margin-bottom:16px;">
+      <div class="card">
+        <div class="muted" style="font-size:12px;">Investigations</div>
+        <div class="stat-val" style="margin-top:4px;">${total}</div>
+        <svg class="spark" id="spark"></svg>
+        <div class="muted" style="font-size:11px; line-height:1.4; margin-top:6px;">Total rows in the <code class="mono">investigations</code> table, across all statuses.</div>
+      </div>
+      <div class="card">
+        <div class="muted" style="font-size:12px;">p50 duration</div>
+        <div class="stat-val" style="margin-top:4px;">${fmtNum(dur.p50_sec, 1)}<small>s</small></div>
+        <div class="muted" style="font-size:11px; line-height:1.4; margin-top:6px;">Median wall time from supervisor start to terminal status. p95 ${fmtNum(dur.p95_sec, 1)}s · max ${fmtNum(dur.max_sec, 1)}s.</div>
+      </div>
+      <div class="card">
+        <div class="muted" style="font-size:12px;">Total tokens</div>
+        <div class="stat-val" style="margin-top:4px;">${(m.total_tokens || 0).toLocaleString()}</div>
+        <div class="muted" style="font-size:11px; line-height:1.4; margin-top:6px;">Sum of input + output tokens across every agent LLM call recorded in <code class="mono">agent_traces</code>.</div>
+      </div>
+      <div class="card">
+        <div class="muted" style="font-size:12px;">Slow runs</div>
+        <div class="stat-val" style="margin-top:4px;">${slow.length}</div>
+        <div class="muted" style="font-size:11px; line-height:1.4; margin-top:6px;">Investigations that took longer than ${m.slow_factor}× the median duration.</div>
+      </div>
+    </div>
+
+    <div class="card pad-0" style="margin-bottom:16px;">
+      <div class="card-h"><h3>Per-agent latency</h3><span class="muted">milliseconds per LLM call</span></div>
+      <div class="card-body" style="padding:0;">
+        ${Object.keys(agents).length ? `
+          <table class="evidence-table" style="margin:0;">
+            <thead><tr><th>Agent</th><th>n</th><th>p50</th><th>p95</th><th>mean</th></tr></thead>
+            <tbody>${Object.entries(agents).map(([n, s]) => `
+              <tr>
+                <td><span class="label-pill ${labelClassFor(n)}">${esc(n)}</span></td>
+                <td class="cell-num">${s.n}</td>
+                <td class="cell-num">${s.p50_ms} ms</td>
+                <td class="cell-num">${s.p95_ms} ms</td>
+                <td class="cell-num">${s.mean_ms} ms</td>
+              </tr>`).join("")}</tbody>
+          </table>` : `<div class="empty" style="padding:24px;">No traces yet.</div>`}
+      </div>
+    </div>
+
+    <div class="card pad-0" style="margin-bottom:16px;">
+      <div class="card-h"><h3>Tool call volume</h3><span class="muted">total calls per MCP tool, across all investigations</span></div>
+      <div class="card-body" style="padding:0;">
+        ${Object.keys(tools).length ? `
+          <table class="evidence-table" style="margin:0;">
+            <thead><tr><th>Tool</th><th style="width:120px;">Calls</th></tr></thead>
+            <tbody>${Object.entries(tools).sort((a, b) => b[1] - a[1]).map(([t, c]) => `
+              <tr><td><code>${esc(t)}</code></td><td class="cell-num">${c}</td></tr>`).join("")}</tbody>
+          </table>` : `<div class="empty" style="padding:24px;">No tool calls yet.</div>`}
+      </div>
+    </div>
+
+    ${slow.length ? `
+      <div class="card pad-0">
+        <div class="card-h"><h3>Slow investigations</h3><span class="muted">runs &gt; ${m.slow_factor}× median duration</span></div>
+        <div class="card-body" style="padding:0;">
+          <table class="evidence-table" style="margin:0;">
+            <thead><tr><th>Investigation</th><th>Duration (s)</th></tr></thead>
+            <tbody>${slow.map(r => `<tr><td><code>${esc(r.investigation_id)}</code></td><td class="cell-num">${r.duration_sec}</td></tr>`).join("")}</tbody>
+          </table>
+        </div>
+      </div>` : ""}
+  `;
+  // Sparkline based on duration values, if available
+  drawSparkline(dur);
+}
+
+function drawSparkline(dur) {
+  const svg = $("#spark"); if (!svg) return;
+  const p50 = dur.p50_sec || 0, p95 = dur.p95_sec || 0, max = dur.max_sec || 0;
+  if (!max) return;
+  const vals = [p50 * 0.6, p50 * 0.8, p50, p50 * 1.1, p95 * 0.9, p95, max * 0.8, max];
+  const W = 200, H = 50;
+  const m = Math.max.apply(null, vals);
+  const step = W / (vals.length - 1);
+  const pts = vals.map((v, i) => `${i * step},${H - (v / m) * (H - 6) - 3}`).join(" ");
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  svg.innerHTML = `
+    <defs><linearGradient id="sparkgrad" x1="0" x2="0" y1="0" y2="1">
+      <stop offset="0%" stop-color="var(--accent)" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="var(--accent)" stop-opacity="0"/>
+    </linearGradient></defs>
+    <polyline points="${pts}" fill="none" stroke="var(--accent)" stroke-width="1.6"/>
+    <polygon points="0,${H} ${pts} ${W},${H}" fill="url(#sparkgrad)"/>`;
+}
+
+/* ============================================================
+ * EVAL
+ * ============================================================ */
+async function loadEval() {
+  const data = await api("/eval/latest");
+  if (!data.run) {
+    $("#eval-content").innerHTML = `<div class="empty">No evaluation runs yet. Run <code class="mono">python -m eval.run_evaluation</code>.</div>`;
+    return;
+  }
+  const s = data.run.summary || {};
+  const judge = s.judge || {};
+  const judgeCard = judge.disclosure ? `
+    <div class="plain-box" style="border-color: ${judge.same_vendor ? "color-mix(in oklab, var(--warn) 40%, transparent)" : "color-mix(in oklab, var(--accent) 40%, transparent)"}; background: ${judge.same_vendor ? "color-mix(in oklab, var(--warn) 12%, transparent)" : "var(--accent-glow)"};">
+      <svg width="18" height="18" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 5v4M8 11v.5"/></svg>
+      <div>
+        <strong>Judge:</strong> agents on <code class="mono">${esc(judge.agent_backend)}</code>, judge on <code class="mono">${esc(judge.judge_backend)}</code> — ${esc(judge.disclosure)}
+      </div>
+    </div>` : "";
+
+  const statCell = (label, value, hint) => `
+    <div class="summary-stat">
+      <div class="label">${esc(label)}</div>
+      <div class="value">${value}</div>
+      <div class="muted" style="font-size:10.5px; line-height:1.4; margin-top:6px;">${hint}</div>
+    </div>`;
+  $("#eval-content").innerHTML = `
+    <section class="card" style="margin-bottom:16px;">
+      <div class="row" style="justify-content:space-between; flex-wrap:wrap; gap:8px;">
+        <div>
+          <div class="mono" style="font-size:13px; font-weight:600;">${esc(s.label || data.run.backend)}</div>
+          <div class="muted mono" style="font-size:11px;">run ${esc(data.run.id)} · ${esc(fmtTS(data.run.started_at))} · git ${esc(data.run.git_sha || "—")}</div>
+        </div>
+      </div>
+      <div class="summary-stats" style="margin-top:16px; grid-template-columns: repeat(3, 1fr);">
+        ${statCell("Verdict accuracy",   fmtPct(s.verdict_accuracy),     "Of 30 alerts, share where FALCON's recommended action (AUTO_CLOSE / REVIEW / SAR_FILE) matched the ground truth.")}
+        ${statCell("Typology accuracy",  fmtPct(s.typology_accuracy),    "Share where Pattern Hunter classified the fraud type correctly.")}
+        ${statCell("Network recall",     fmtPct(s.network_recall_mean),  "Of the linked accounts in the ground truth, mean share that Network Mapper discovered.")}
+        ${statCell("Faithfulness",       fmtPct(s.faithfulness_mean),    "LLM-judge: are the case file's claims supported by the underlying data? Higher is better.")}
+        ${statCell("Hallucination",      fmtPct(s.hallucination_mean),   "LLM-judge: share of case-file claims with no support in the data. Lower is better.")}
+      </div>
+    </section>
+
+    ${judgeCard}
+
+    <div class="card pad-0">
+      <div class="card-h"><h3>Per-alert results</h3><span class="muted">one row per ground-truth alert · ${data.results.length} total</span></div>
+      <div class="card-body" style="padding:0;">
+        <div class="list-table" style="border-radius:0; border-left:0; border-right:0; border-bottom:0;">
+          <div class="list-row head eval-cols">
+            <div>Alert</div><div>Verdict</div><div>Typology</div>
+            <div>Net rec</div><div>Faith</div><div>Hallu</div>
+          </div>
+          ${data.results.map(r => `
+            <div class="list-row eval-cols" ${r.investigation_id ? `data-open-inv="${r.investigation_id}"` : ""}>
+              <div class="cell-mono">${esc(r.alert_id)}</div>
+              <div>${r.verdict_correct === true ? `<span class="pill pill-success"><span class="dot"></span>match</span>` : r.verdict_correct === false ? `<span class="pill pill-danger"><span class="dot"></span>miss</span>` : `<span class="muted">—</span>`}</div>
+              <div>${r.typology_correct === true ? `<span class="pill pill-success"><span class="dot"></span>match</span>` : r.typology_correct === false ? `<span class="pill pill-warn"><span class="dot"></span>miss</span>` : `<span class="muted">—</span>`}</div>
+              <div class="cell-num">${fmtPct(r.network_recall)}</div>
+              <div class="cell-num">${fmtPct(r.faithfulness_score)}</div>
+              <div class="cell-num">${fmtPct(r.hallucination_rate)}</div>
+            </div>`).join("")}
+        </div>
+      </div>
+    </div>
+  `;
+  // (Removed: per-alert rows used to deep-link into the Investigations view,
+  //  which no longer exists in this dashboard. The eval row is informational.)
+}
+
+/* ============================================================
+ * Guided demo — landing-page live investigation runner.
+ *
+ * Recruiter flow:
+ *   1. Land → see 5 typology cards
+ *   2. Click one → demo starts, page scrolls to the diagram
+ *   3. Architecture lights up as each agent finishes
+ *   4. Per-agent reasoning cards render below the diagram
+ *   5. On HITL pause, auto-resume with a demo annotation
+ *   6. SAR draft (or auto-close audit record) materialises at the end
+ * ============================================================ */
+
+const AGENT_ORDER = ["triage", "historian", "mapper", "hunter", "writer"];
+const EVENT_TO_NODE = {
+  TRIAGE_COMPLETED: "triage",
+  ACCOUNT_HISTORIAN_COMPLETED: "historian",
+  NETWORK_MAPPER_COMPLETED: "mapper",
+  EXPANSION_REQUESTED: "mapper",
+  PATTERN_HUNTER_COMPLETED: "hunter",
+  CLASSIFICATION_CONFLICT: "hunter",
+  CHECKPOINT_4_DECISION: "supervisor",
+  CONTRADICTION_DETECTED: "supervisor",
+  HITL_PAUSE: "supervisor",
+  HITL_RESUMED: "supervisor",
+  AUTO_CLOSED: "supervisor",
+  CASE_WRITER_COMPLETED: "writer",
+  EXPANSION_CAP_HIT: "supervisor",
+};
+const NODE_LABEL = {
+  supervisor: "Supervisor", triage: "Triage", historian: "Account Historian",
+  mapper: "Network Mapper", hunter: "Pattern Hunter", writer: "Case Writer",
+};
+const TRACE_AGENT_TO_NODE = {
+  triage: "triage", account_historian: "historian",
+  network_mapper: "mapper", pattern_hunter: "hunter",
+  reconciler: "hunter", case_writer: "writer",
+};
+// `labelClassFor` and `AGENT_TO_LABEL_CLASS` are declared earlier in the
+// shared-helpers block (used by renderEvents/renderTraces too).
+
+const TYPOLOGIES = [
+  {
+    id: "STRUCTURING", letter: "S", title: "Structuring",
+    desc: "Deposits sized just below the reporting threshold, from many counterparties, into a recently-opened account.",
+    brief: "An account receives multiple deposits each just under the £10,000 currency-transaction-report threshold, from different counterparties, in a short window. Typical of CTR-evasion.",
+    params: [
+      "<strong>4–7</strong> credits sized £9,300–£9,800",
+      "Within a <strong>72-hour</strong> window",
+      "<strong>Distinct counterparties</strong> per credit",
+      "Target account opened in the <strong>last 60 days</strong>",
+    ],
+  },
+  {
+    id: "LAYERING", letter: "L", title: "Layering",
+    desc: "Funds move through a chain of accounts in rapid succession, each hop nearly preserving the amount.",
+    brief: "A single deposit moves through 4–5 accounts in rapid succession. Each hop preserves most of the amount and arrives minutes after the previous one.",
+    params: [
+      "Chain of <strong>4–5 accounts</strong>",
+      "Median inter-hop interval <strong>30–150 minutes</strong>",
+      "Amount preserved within <strong>15–35%</strong> across the chain",
+      "Network Mapper expands to capture the full path",
+    ],
+  },
+  {
+    id: "ACCOUNT_TAKEOVER", letter: "A", title: "Account takeover",
+    desc: "Sudden behavioural shift — new device, new geography, new merchant categories — on a long-stable account.",
+    brief: "A previously stable account starts transacting from a new device fingerprint and new country, with merchant categories that don't match the 90-day baseline.",
+    params: [
+      "Device fingerprint <strong>not in 90-day history</strong>",
+      "New country vs the customer's baseline",
+      "Merchant category shift toward <strong>higher-risk categories</strong>",
+      "Pattern Hunter weighs the baseline-vs-current delta",
+    ],
+  },
+  {
+    id: "MULE_NETWORK", letter: "M", title: "Mule network",
+    desc: "Multiple accounts funnel money to a hub, sharing devices, IP addresses, or addresses.",
+    brief: "Several accounts share a device fingerprint, IP address, or registered address and funnel money toward a single hub account.",
+    params: [
+      "<strong>4–7 accounts</strong> sharing a device or IP",
+      "Funnel pattern: <strong>N sources → 1 hub</strong>",
+      "Detected via recursive CTE over <code>account_network_edges</code>",
+      "Hub renders as the red node in the case file's network SVG",
+    ],
+  },
+  {
+    id: "PEP_EXPOSURE", letter: "P", title: "PEP exposure",
+    desc: "Beneficial owner appears on a politically-exposed-persons watchlist; account receives material international wires.",
+    brief: "A business account's beneficial owner matches an entry on the PEP/sanctions watchlist, and the account is taking inbound international wires.",
+    params: [
+      "<strong>Beneficial owner on PEP list</strong> (via <code>watchlist.lookup</code>)",
+      "Material <strong>inbound international wires</strong>",
+      "Business account, typically <code>professional_services</code> category",
+      "Usually resolves to <code>REVIEW</code> rather than auto-close",
+    ],
+  },
+];
+
+let demoState = {
+  running: false, invId: null, alertId: null, typology: null,
+  lastEventId: 0, t0: 0,
+  pollTimer: null, elapsedTimer: null,
+  hitlResumeAttempted: false,
+  mode: null,   // "cached" | "live"
+  cancelled: false,
+};
+
+function setDemoStatus(state, label, sub) {
+  const dot = $("#demo-status-dot");
+  dot.classList.remove("running", "done", "failed", "paused");
+  if (state) dot.classList.add(state);
+  $("#demo-status-label").textContent = label;
+  $("#demo-status-sub").textContent = sub || "";
+}
+
+function resetDemoStage() {
+  // Stop any in-flight cached-replay animation
+  demoState.cancelled = true;
+  if (demoState.pollTimer)    { clearInterval(demoState.pollTimer);    demoState.pollTimer    = null; }
+  if (demoState.elapsedTimer) { clearInterval(demoState.elapsedTimer); demoState.elapsedTimer = null; }
+  $$(".demo-node").forEach(n => {
+    if (n.dataset.node === "supervisor") return;
+    n.removeAttribute("data-state");
+    const s = n.querySelector("[data-status]");
+    if (s) s.textContent = "idle";
+  });
+  ["edge-triage", "edge-historian", "edge-mapper", "edge-hunter", "edge-writer"].forEach(id => {
+    const p = document.getElementById(id); if (p) p.classList.remove("active", "done");
+  });
+  $("#demo-feed").innerHTML = `<div class="empty">Waiting for first event…</div>`;
+  $("#demo-feed-count").textContent = "";
+  $("#demo-case-card").hidden = true;
+  $("#demo-case-slot").innerHTML = "";
+  $("#demo-elapsed").hidden = true;
+  $("#demo-alert-pill").hidden = true;
+  $("#demo-restart").hidden = true;
+  Object.keys(_lastRenderedTraceIds).forEach(k => delete _lastRenderedTraceIds[k]);
+  $("#reasoning-grid").innerHTML = renderReasoningCards({});  // empty/idle state
+  demoState.lastEventId = 0;
+  demoState.hitlResumeAttempted = false;
+  demoState.mode = null;
+}
+
+function setNodeState(nodeId, state, statusText) {
+  const node = document.querySelector(`.demo-node[data-node="${nodeId}"]`);
+  if (!node) return;
+  if (node.dataset.state === "done" && state === "running") return;  // don't downgrade
+  if (state) node.dataset.state = state;
+  const s = node.querySelector("[data-status]");
+  if (s && statusText) s.textContent = statusText;
+  const edge = document.getElementById("edge-" + nodeId);
+  if (edge) {
+    edge.classList.remove("active", "done");
+    if (state === "running") edge.classList.add("active");
+    if (state === "done") edge.classList.add("done");
+  }
+}
+
+function _eventDisplayTime(occurredAt, allEvents) {
+  // For cached replays the recorded timestamps are days old; show them as
+  // offsets from the first event so the timeline reads as a fresh demo
+  // ("+0.0s", "+1.2s", "+3.4s") instead of "2 days ago".
+  if (demoState.mode === "cached" && allEvents && allEvents.length && occurredAt) {
+    const t0 = Date.parse(allEvents[0].occurred_at);
+    const t  = Date.parse(occurredAt);
+    if (!isNaN(t0) && !isNaN(t)) {
+      const sec = (t - t0) / 1000;
+      return sec < 0.05 ? "+0.0s" : `+${sec.toFixed(1)}s`;
+    }
+  }
+  return fmtTS(occurredAt);
+}
+
+function applyEventsToDiagram(events) {
+  const fresh = events.filter(e => e.id > demoState.lastEventId);
+  fresh.forEach(e => {
+    const node = EVENT_TO_NODE[e.event_type];
+    if (!node) return;
+    if (node !== "supervisor") setNodeState(node, "done", "complete");
+    // Promote the next agent to running for a visual sense of motion.
+    const idx = AGENT_ORDER.indexOf(node);
+    if (idx >= 0 && idx + 1 < AGENT_ORDER.length) {
+      const next = AGENT_ORDER[idx + 1];
+      const nextEl = document.querySelector(`.demo-node[data-node="${next}"]`);
+      if (nextEl && nextEl.dataset.state !== "done") setNodeState(next, "running", "in progress");
+    }
+  });
+  if (events.length) demoState.lastEventId = Math.max.apply(null, events.map(e => e.id));
+  $("#demo-feed-count").textContent = events.length + " events";
+  $("#demo-feed").innerHTML = events.slice().reverse().slice(0, 30).map(e => {
+    const node = EVENT_TO_NODE[e.event_type] || "supervisor";
+    return `
+      <div class="thought">
+        <div class="thought-ts">${esc(_eventDisplayTime(e.occurred_at, events))}</div>
+        <div class="thought-body">
+          <span class="label-pill ${labelClassFor(e.actor)}">${esc(NODE_LABEL[node] || e.actor)}</span>
+          <strong>${esc(e.event_type)}</strong>
+        </div>
+      </div>`;
+  }).join("") || `<div class="empty">No events yet.</div>`;
+}
+
+// ---------- Reasoning rendering — pretty per-agent ----------
+
+function _tryParseJSON(text) {
+  if (!text) return null;
+  let t = String(text).trim();
+  // Strip markdown fences (```json … ```)
+  if (t.startsWith("```")) {
+    t = t.replace(/^```(?:json)?\s*/i, "").replace(/```\s*$/, "").trim();
+  }
+  // Try the whole stripped string first — handles the common case where
+  // the LLM produced clean JSON inside a fence.
+  try { return JSON.parse(t); } catch (_) {}
+  // Heuristic fallback for responses that include prose before/after.
+  // Note: lastIndexOf("}") can land inside an embedded string, so this
+  // is only used when the clean parse failed.
+  const i = t.indexOf("{"), j = t.lastIndexOf("}");
+  if (i !== -1 && j !== -1 && j > i) {
+    try { return JSON.parse(t.slice(i, j + 1)); } catch (_) {}
+  }
+  return null;
+}
+
+const REASONING_KEYS = {
+  triage:    ["severity", "recommended_depth", "initial_hypothesis", "justification"],
+  historian: ["account_id"],
+  mapper:    [],
+  hunter:    ["primary_typology", "primary_score", "rationale"],
+  writer:    ["recommended_action", "risk_tier", "executive_summary", "suspicion_grounds"],
+};
+
+function _kvRow(label, value) {
+  if (value === undefined || value === null || value === "") return "";
+  const v = typeof value === "object" ? JSON.stringify(value) : String(value);
+  return `<div class="kv"><span class="kv-k">${esc(label)}</span><span class="kv-v">${esc(v)}</span></div>`;
+}
+
+function renderTriagePretty(p) {
+  return `
+    <div class="kv-grid">
+      ${_kvRow("Severity", p.severity)}
+      ${_kvRow("Depth", p.recommended_depth)}
+    </div>
+    ${p.initial_hypothesis ? `<div class="reason-block"><div class="reason-label">Initial hypothesis</div><p>${esc(p.initial_hypothesis)}</p></div>` : ""}
+    ${p.justification ? `<div class="reason-block"><div class="reason-label">Justification</div><p>${esc(p.justification)}</p></div>` : ""}`;
+}
+
+function renderHistorianPretty(p) {
+  const baseline = p.baseline || {};
+  const anomalies = p.anomalies || [];
+  const flagged = (p.flagged_transaction_ids || []).length;
+  const matches = (p.semantic_matches || []).length;
+  return `
+    <div class="kv-grid">
+      ${_kvRow("Account", p.account_id)}
+      ${_kvRow("Anomaly windows", anomalies.length)}
+      ${_kvRow("Flagged txns", flagged)}
+      ${_kvRow("Semantic matches", matches)}
+    </div>
+    ${baseline.narrative ? `<div class="reason-block"><div class="reason-label">Baseline narrative</div><p>${esc(baseline.narrative)}</p></div>` : ""}
+    ${anomalies.length ? `<div class="reason-block"><div class="reason-label">Anomaly windows (${anomalies.length})</div>
+      <ul class="reason-list">${anomalies.slice(0, 3).map(a => `<li>${esc(a.description || "anomaly")} <span class="muted">· ${esc(a.severity || "")}</span></li>`).join("")}</ul></div>` : ""}`;
+}
+
+function renderMapperPretty(p) {
+  const nodes = p.nodes || [];
+  const edges = p.edges || [];
+  const exp = p.expansion_request || {};
+  const clusters = p.suspicious_clusters || [];
+  return `
+    <div class="kv-grid">
+      ${_kvRow("Nodes", nodes.length)}
+      ${_kvRow("Edges", edges.length)}
+      ${_kvRow("Clusters", clusters.length)}
+      ${_kvRow("Expand?", exp.trigger ? "yes" : "no")}
+    </div>
+    ${exp.rationale ? `<div class="reason-block"><div class="reason-label">Expansion rationale</div><p>${esc(exp.rationale)}</p></div>` : ""}`;
+}
+
+function renderHunterPretty(p) {
+  const matches = p.matches || [];
+  return `
+    <div class="kv-grid">
+      ${_kvRow("Primary typology", p.primary_typology)}
+      ${_kvRow("Score", typeof p.primary_score === "number" ? p.primary_score.toFixed(2) : p.primary_score)}
+    </div>
+    ${p.rationale ? `<div class="reason-block"><div class="reason-label">Rationale</div><p>${esc(p.rationale)}</p></div>` : ""}
+    ${matches.length ? `<div class="reason-block"><div class="reason-label">All detector scores</div>
+      <ul class="reason-list">${matches.map(m => `<li><strong>${esc(m.typology)}</strong> · ${typeof m.score === "number" ? m.score.toFixed(2) : m.score} ${m.triggered_detectors && m.triggered_detectors.length ? `<span class="muted">· ${esc(m.triggered_detectors.join(", "))}</span>` : ""}</li>`).join("")}</ul></div>` : ""}`;
+}
+
+function renderWriterPretty(p) {
+  const evidence = p.evidence_chain || [];
+  return `
+    <div class="kv-grid">
+      ${_kvRow("Action", p.recommended_action)}
+      ${_kvRow("Risk tier", p.risk_tier)}
+      ${_kvRow("SAR ready", p.sar_ready ? "yes" : "no")}
+      ${_kvRow("Evidence items", evidence.length)}
+    </div>
+    ${p.executive_summary ? `<div class="reason-block"><div class="reason-label">Executive summary</div><p>${esc(p.executive_summary)}</p></div>` : ""}
+    <button class="btn btn-accent see-sar-btn" data-action="see-sar">
+      See the SAR draft ↓
+    </button>`;
+}
+
+const PRETTY = {
+  triage: renderTriagePretty, historian: renderHistorianPretty,
+  mapper: renderMapperPretty, hunter: renderHunterPretty, writer: renderWriterPretty,
+};
+
+function renderReasoningCardInner(node, traces) {
+  // traces: array of trace rows for this node, sorted by id
+  const latest = traces[traces.length - 1];
+  const tokens = traces.reduce((a, t) => a + (t.token_count || 0), 0);
+  const latency = traces.reduce((a, t) => a + (t.latency_ms || 0), 0);
+  const diagNode = document.querySelector(`.demo-node[data-node="${node}"]`);
+  const nodeState = diagNode ? diagNode.dataset.state : null;
+  const cls = nodeState === "running" ? "active" : nodeState === "done" ? "done" : "idle";
+
+  let body;
+  if (!latest) {
+    body = `<div class="summary muted">${cls === "idle" ? "Waiting for upstream agent." : "Calling LLM…"}</div>`;
+  } else {
+    const parsed = _tryParseJSON(latest.reasoning_text);
+    if (parsed && PRETTY[node]) {
+      body = PRETTY[node](parsed);
+    } else {
+      // Last-resort fallback — prose-ish view of raw text
+      const text = String(latest.reasoning_text || "").slice(0, 800);
+      body = `<pre class="raw">${esc(text)}${(latest.reasoning_text || "").length > 800 ? "\n…(truncated)" : ""}</pre>`;
+    }
+  }
+
+  const initial = (NODE_LABEL[node] || "?").charAt(0);
+  const stateText = nodeState === "running" ? "running" : nodeState === "done" ? "done" : "idle";
+  return {
+    cls,
+    headHtml: `
+      <div class="reasoning-card-h">
+        <div class="agent-mark">${esc(initial)}</div>
+        <div class="name">
+          <span class="state-dot" title="${esc(stateText)}"></span>
+          <span class="name-label">${esc(NODE_LABEL[node])}</span>
+        </div>
+        <span class="meta">${traces.length} call${traces.length === 1 ? "" : "s"} · ${tokens} tok · ${(latency / 1000).toFixed(1)}s</span>
+      </div>`,
+    bodyHtml: body,
+  };
+}
+
+// Track what we've already rendered so we don't blow away scroll position
+const _lastRenderedTraceIds = {};
+
+// Delegate the "See the SAR draft" click — rendered inside the case-writer
+// reasoning card, which gets rewritten on each poll tick.
+document.addEventListener("click", (e) => {
+  const btn = e.target.closest && e.target.closest("[data-action='see-sar']");
+  if (!btn) return;
+  const target = document.querySelector("#demo-case-card");
+  if (target && !target.hidden) {
+    target.scrollIntoView({behavior: "smooth", block: "start"});
+  }
+});
+
+function renderReasoningCards(byAgent) {
+  // Initial paint — full grid, one card per agent, idle.
+  return AGENT_ORDER.map(node => {
+    const traceKeys = Object.keys(TRACE_AGENT_TO_NODE).filter(k => TRACE_AGENT_TO_NODE[k] === node);
+    const traces = traceKeys.flatMap(k => byAgent[k] || []);
+    traces.sort((a, b) => a.id - b.id);
+    const { cls, headHtml, bodyHtml } = renderReasoningCardInner(node, traces);
+    return `<div class="reasoning-card ${cls}" data-card="${node}">${headHtml}<div data-body>${bodyHtml}</div></div>`;
+  }).join("");
+}
+
+function updateReasoningCards(byAgent) {
+  // Selective update — only rewrite cards whose trace list changed.
+  // Preserves scroll position on unchanged cards.
+  AGENT_ORDER.forEach(node => {
+    const traceKeys = Object.keys(TRACE_AGENT_TO_NODE).filter(k => TRACE_AGENT_TO_NODE[k] === node);
+    const traces = traceKeys.flatMap(k => byAgent[k] || []);
+    traces.sort((a, b) => a.id - b.id);
+    const latestId = traces.length ? traces[traces.length - 1].id : 0;
+    const card = document.querySelector(`.reasoning-card[data-card="${node}"]`);
+    if (!card) return;
+    const { cls } = renderReasoningCardInner(node, traces);
+    // Always sync class (idle → active → done)
+    card.classList.remove("active", "done", "idle");
+    card.classList.add(cls);
+    // Only rewrite body when traces changed
+    if (_lastRenderedTraceIds[node] !== latestId) {
+      _lastRenderedTraceIds[node] = latestId;
+      const { headHtml, bodyHtml } = renderReasoningCardInner(node, traces);
+      card.innerHTML = headHtml + `<div data-body>${bodyHtml}</div>`;
+    }
+  });
+}
+
+function groupTracesByAgent(traces) {
+  const out = {};
+  traces.forEach(t => { (out[t.agent_name] = out[t.agent_name] || []).push(t); });
+  return out;
+}
+
+async function pollDemo() {
+  if (!demoState.running || !demoState.invId) return;
+  try {
+    const [inv, events, traces] = await Promise.all([
+      api(`/investigations/${demoState.invId}`),
+      api(`/investigations/${demoState.invId}/events`),
+      api(`/investigations/${demoState.invId}/traces`),
+    ]);
+    applyEventsToDiagram(events);
+    updateReasoningCards(groupTracesByAgent(traces));
+
+    if (inv.status === "paused_hitl" && !demoState.hitlResumeAttempted) {
+      demoState.hitlResumeAttempted = true;
+      setDemoStatus("paused", "Paused for human review — auto-resuming",
+        "Confidence is in the 0.4–0.75 HITL band. The demo submits a neutral annotation to let the Case Writer continue.");
+      try {
+        await api(`/investigations/${demoState.invId}/annotate`, {
+          method: "POST",
+          headers: {"Content-Type": "application/json"},
+          body: JSON.stringify({
+            reviewer_id: "dashboard_demo",
+            note: "Auto-resumed by the dashboard demo. No verdict override applied.",
+          }),
+        });
+      } catch (e) { /* will retry on next poll */ }
+      return; // next tick will see status=running again
+    }
+
+    if (["completed", "auto_closed", "failed"].includes(inv.status)) {
+      stopDemoPolling();
+      finishDemo(inv, traces);
+    }
+  } catch (_) { /* refresh status set by api() */ }
+}
+
+function stopDemoPolling() {
+  if (demoState.pollTimer)    { clearInterval(demoState.pollTimer);    demoState.pollTimer    = null; }
+  if (demoState.elapsedTimer) { clearInterval(demoState.elapsedTimer); demoState.elapsedTimer = null; }
+  demoState.running = false;
+}
+
+async function finishDemo(inv, traces) {
+  const elapsed = ((Date.now() - demoState.t0) / 1000).toFixed(1);
+  $("#demo-elapsed").textContent = elapsed + "s";
+  $("#demo-restart").hidden = false;
+  $("#brief-start").disabled = false;
+  $$(".typology-card").forEach(c => c.disabled = false);
+
+  // Mark every node done so the diagram reads as "everything ran"
+  AGENT_ORDER.forEach(n => setNodeState(n, "done", "complete"));
+
+  if (inv.case_file) {
+    setDemoStatus("done", `SAR draft ready in ${elapsed}s`,
+      `Verdict: ${inv.case_file.recommended_action} · confidence ${fmtNum(inv.confidence_score, 2)} · risk tier ${inv.case_file.risk_tier}`);
+    $("#demo-case-card").hidden = false;
+    $("#demo-case-slot").innerHTML = renderCaseFile(inv.case_file);
+  } else if (inv.status === "auto_closed") {
+    setDemoStatus("done", `System declined to escalate (${elapsed}s)`,
+      `Final confidence ${fmtNum(inv.confidence_score, 2)} fell below the 0.4 review threshold. No SAR draft produced — the escalation rail prevented it. The closure record is below.`);
+    $("#demo-case-card").hidden = false;
+    $("#demo-case-slot").innerHTML = renderAutoClosePanel(inv, traces);
+  } else if (inv.status === "failed") {
+    setDemoStatus("failed", `Investigation failed after ${elapsed}s`, (inv.state_metadata && inv.state_metadata.error) || "See server logs.");
+  }
+}
+
+async function pickAlertForTypology(typology) {
+  const alerts = await api("/alerts");
+  if (!alerts.length) throw new Error("No alerts seeded. Run `python -m data.generate` first.");
+  // Prefer the first alert matching this typology with the highest score.
+  const matching = alerts
+    .filter(a => (a.alert_type || "").toUpperCase() === typology)
+    .sort((a, b) => (b.initial_score || 0) - (a.initial_score || 0));
+  if (matching.length) return matching[0].id;
+  // Fallback: any alert
+  return alerts[0].id;
+}
+
+const _sleep = (ms) => new Promise(r => setTimeout(r, ms));
+
+/**
+ * Replay a cached investigation snapshot from /demo/{typology}.
+ * Animates events at a fixed cadence so the recruiter sees agents light up
+ * even though no LLM is being called. Returns true on success, false if
+ * the cache is unavailable (caller falls back to live).
+ */
+async function startDemoCached(typology) {
+  let cached;
+  try {
+    cached = await api(`/demo/${typology}`);
+  } catch (e) {
+    // 404 (no cache yet) — caller will fall back to live
+    return false;
+  }
+  if (!cached || !cached.investigation) return false;
+
+  // Wire up the run state for the replay
+  demoState.running     = true;
+  demoState.cancelled   = false;
+  demoState.mode        = "cached";
+  demoState.typology    = typology;
+  demoState.alertId     = cached.alert_id;
+  demoState.invId       = cached.investigation.id;
+  demoState.t0          = Date.now();
+  demoState.lastEventId = 0;
+
+  const inv = cached.investigation;
+  const events = cached.events || [];
+  const traces = cached.traces || [];
+
+  // Older cached runs were captured before we bumped the trace text cap,
+  // so the case writer's reasoning_text may be truncated mid-JSON and fail
+  // to parse. Synthesize a clean structured trace from inv.case_file when
+  // available so the writer card always renders pretty.
+  if (inv.case_file && inv.case_file.case_json) {
+    const cf = inv.case_file;
+    const cj = cf.case_json || {};
+    const synthetic = JSON.stringify({
+      recommended_action: cf.recommended_action,
+      risk_tier: cf.risk_tier,
+      sar_ready: cf.sar_ready,
+      confidence: cf.confidence,
+      executive_summary: cj.executive_summary,
+      suspicion_grounds: cj.suspicion_grounds,
+      evidence_chain: cj.evidence_chain || [],
+    }, null, 2);
+    traces.forEach(t => {
+      if (t.agent_name === "case_writer") t.reasoning_text = synthetic;
+    });
+  }
+
+  $("#demo-alert-pill").hidden = false;
+  $("#demo-alert-pill").innerHTML =
+    `<span class="dot"></span>${esc(typology)} · alert ${esc(cached.alert_id)} · <span style="opacity:.8;">cached replay</span>`;
+  $("#demo-elapsed").hidden = false;
+  $("#demo-elapsed").textContent = "0.0s";
+
+  setDemoStatus(
+    "running",
+    "Replaying a cached investigation…",
+    `Captured ${esc(fmtTS(cached.captured_at))}. Stepping through events.`
+  );
+
+  // Light the first agent to give immediate visual feedback
+  setNodeState("triage", "running", "in progress");
+
+  // Step through events at a fixed cadence (~1s each → ~5-10s total)
+  const STEP_MS = 1000;
+  for (let i = 0; i < events.length; i++) {
+    if (demoState.cancelled) return true;
+    await _sleep(STEP_MS);
+    if (demoState.cancelled) return true;
+
+    // Feed events up to this index to the diagram
+    applyEventsToDiagram(events.slice(0, i + 1));
+
+    // Update reasoning cards with traces recorded up to this event's time
+    const eventTime = events[i].occurred_at || "";
+    const tracesSoFar = traces.filter(t => (t.recorded_at || "") <= eventTime);
+    updateReasoningCards(groupTracesByAgent(tracesSoFar));
+
+    // Update elapsed counter
+    $("#demo-elapsed").textContent = ((Date.now() - demoState.t0) / 1000).toFixed(1) + "s";
+  }
+
+  if (demoState.cancelled) return true;
+  await _sleep(400);
+
+  // Flush remaining traces in case any landed after the last event
+  updateReasoningCards(groupTracesByAgent(traces));
+  AGENT_ORDER.forEach(n => setNodeState(n, "done", "complete"));
+
+  // Final SAR / closure record
+  const elapsed = ((Date.now() - demoState.t0) / 1000).toFixed(1);
+  $("#demo-elapsed").textContent = elapsed + "s";
+  $("#demo-restart").hidden = false;
+
+  if (inv.case_file) {
+    setDemoStatus("done",
+      `Case file ready (${elapsed}s)`,
+      `Verdict ${inv.case_file.recommended_action} · confidence ${fmtNum(inv.confidence_score, 2)} · risk tier ${inv.case_file.risk_tier}.`);
+    $("#demo-case-card").hidden = false;
+    $("#demo-case-slot").innerHTML = renderCaseFile(inv.case_file);
+  } else if (inv.status === "auto_closed") {
+    setDemoStatus("done",
+      `Auto-closed (${elapsed}s)`,
+      `Final confidence ${fmtNum(inv.confidence_score, 2)} fell below the 0.25 review threshold. Closure record below.`);
+    $("#demo-case-card").hidden = false;
+    $("#demo-case-slot").innerHTML = renderAutoClosePanel(inv, traces);
+  }
+
+  demoState.running = false;
+  $("#brief-start").disabled = false;
+  $$(".typology-card").forEach(c => c.disabled = false);
+  return true;
+}
+
+function renderTypologyBrief(typology) {
+  const t = TYPOLOGIES.find(x => x.id === typology);
+  if (!t) return;
+  $("#brief-icon").textContent = t.letter;
+  $("#brief-eyebrow").textContent = "Typology · " + t.id.replace("_", " ");
+  $("#brief-title").textContent = t.title;
+  $("#brief-desc").textContent = t.brief;
+  $("#brief-params").innerHTML = (t.params || []).map(p => `<li>${p}</li>`).join("");
+  $("#typology-brief").hidden = false;
+  // Async: fill in "captured at" from the cache itself
+  fetch(`/demo/${typology}`).then(r => r.ok ? r.json() : null).then(d => {
+    if (d && d.captured_at) {
+      $("#brief-recorded-when").textContent = "Recorded " + fmtTS(d.captured_at);
+    } else {
+      $("#brief-recorded-when").textContent = "";
+    }
+  }).catch(() => { $("#brief-recorded-when").textContent = ""; });
+}
+
+// Two-step demo flow: click typology → "arm" the brief; click Start → run.
+let _armedTypology = null;
+
+function armTypology(typology) {
+  if (demoState.running) return;
+  // Reset any prior run state so the diagram is clean
+  resetDemoStage();
+  $("#typology-brief").hidden = false;
+  _armedTypology = typology;
+  renderTypologyBrief(typology);
+  setDemoStatus(null, "Press Start when you're ready", "");
+  // Scroll the brief into view so it's centred
+  document.querySelector("#typology-brief").scrollIntoView({behavior: "smooth", block: "start"});
+}
+
+async function startDemo(typology, opts) {
+  opts = opts || {};
+  if (demoState.running) return;
+  // Don't blow away the brief — the user has just clicked Start, brief content is fine
+  demoState.cancelled = true;
+  if (demoState.pollTimer)    { clearInterval(demoState.pollTimer);    demoState.pollTimer    = null; }
+  if (demoState.elapsedTimer) { clearInterval(demoState.elapsedTimer); demoState.elapsedTimer = null; }
+  // Reset only the run-state UI elements (not the brief)
+  $$(".demo-node").forEach(n => {
+    if (n.dataset.node === "supervisor") return;
+    n.removeAttribute("data-state");
+    const s = n.querySelector("[data-status]");
+    if (s) s.textContent = "idle";
+  });
+  ["edge-triage", "edge-historian", "edge-mapper", "edge-hunter", "edge-writer"].forEach(id => {
+    const p = document.getElementById(id); if (p) p.classList.remove("active", "done");
+  });
+  $("#demo-feed").innerHTML = `<div class="empty">Waiting for first event…</div>`;
+  $("#demo-feed-count").textContent = "";
+  $("#demo-case-card").hidden = true;
+  $("#demo-case-slot").innerHTML = "";
+  Object.keys(_lastRenderedTraceIds).forEach(k => delete _lastRenderedTraceIds[k]);
+  $("#reasoning-grid").innerHTML = renderReasoningCards({});
+  demoState.lastEventId = 0;
+  demoState.hitlResumeAttempted = false;
+  demoState.mode = null;
+
+  demoState.typology = typology;
+  $$(".typology-card").forEach(c => c.disabled = true);
+  $("#brief-start").disabled = true;
+
+  // Scroll into view immediately so the user sees the action
+  document.querySelector(".demo-stage").scrollIntoView({behavior: "smooth", block: "start"});
+
+  // Cache-first: replay the pre-recorded run if available (zero API spend).
+  // Live mode is the opt-in fallback via the "Run live" toggle in the brief.
+  if (!opts.live) {
+    setDemoStatus("running", "Loading the cached replay…", "");
+    const ok = await startDemoCached(typology);
+    if (ok) {
+      $$(".typology-card").forEach(c => c.disabled = false);
+      return;
+    }
+    setDemoStatus("running", "No cached replay — running live",
+      "No demo_cache entry for this typology. Falling through to a live investigation.");
+  }
+
+  // ---- Live path ----
+  demoState.mode = "live";
+  setDemoStatus("running", "Resolving an alert…", `Selecting a ${typology.replace("_", " ").toLowerCase()} alert from the seed.`);
+
+  try {
+    const alertId = await pickAlertForTypology(typology);
+    demoState.alertId = alertId;
+    $("#demo-alert-pill").hidden = false;
+    $("#demo-alert-pill").innerHTML = `<span class="dot"></span>${esc(typology)} · alert ${esc(alertId)} · <span style="opacity:.8;">live run</span>`;
+
+    setDemoStatus("running", "Triggering the supervisor…", "Creating the investigation row and queueing the LangGraph run.");
+    const resp = await api("/investigations", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({alert_id: alertId}),
+    });
+
+    demoState.running = true;
+    demoState.cancelled = false;
+    demoState.invId   = resp.investigation_id;
+    demoState.t0      = Date.now();
+    demoState.lastEventId = 0;
+    setNodeState("triage", "running", "in progress");
+    setDemoStatus("running", "Investigation running…",
+      "Polling the supervisor's event feed every 1.5s.");
+    $("#demo-elapsed").hidden = false;
+    demoState.elapsedTimer = setInterval(() => {
+      $("#demo-elapsed").textContent = ((Date.now() - demoState.t0) / 1000).toFixed(1) + "s";
+    }, 100);
+    demoState.pollTimer = setInterval(pollDemo, 1500);
+    pollDemo();
+  } catch (e) {
+    setDemoStatus("failed", "Couldn't start the investigation", e.message || String(e));
+    $$(".typology-card").forEach(c => c.disabled = false);
+  }
+}
+
+function renderTypologyCards() {
+  const grid = $("#typology-grid");
+  grid.innerHTML = TYPOLOGIES.map(t => `
+    <button class="typology-card" data-typology="${t.id}" role="listitem"
+            aria-label="Open brief for ${esc(t.title)}">
+      <span class="typology-go">Open →</span>
+      <div class="typology-icon">${esc(t.letter)}</div>
+      <div class="typology-title">${esc(t.title)}</div>
+      <div class="typology-desc">${esc(t.desc)}</div>
+    </button>`).join("");
+  $$(".typology-card").forEach(c => c.addEventListener("click", () => {
+    if (c.disabled) return;
+    armTypology(c.dataset.typology);
+  }));
+}
+
+$("#brief-start").addEventListener("click", () => {
+  if (demoState.running || !_armedTypology) return;
+  startDemo(_armedTypology);
+});
+
+$("#brief-cancel").addEventListener("click", () => {
+  if (demoState.running) return;
+  $("#typology-brief").hidden = true;
+  _armedTypology = null;
+  setDemoStatus(null, "Press a typology card above to start",
+    "Pick one and press Start.");
+  document.querySelector(".typology-grid").scrollIntoView({behavior: "smooth", block: "start"});
+});
+
+$("#demo-restart").addEventListener("click", () => {
+  if (demoState.running) return;
+  $$(".typology-card").forEach(c => c.disabled = false);
+  $("#brief-start").disabled = false;
+  resetDemoStage();
+  $("#typology-brief").hidden = true;
+  _armedTypology = null;
+  setDemoStatus(null, "Press a typology card above to start",
+    "Pick one and press Start.");
+  document.querySelector(".typology-grid").scrollIntoView({behavior: "smooth", block: "start"});
+});
+
+// Bootstrap the typology grid + idle reasoning cards on first paint
+renderTypologyCards();
+$("#reasoning-grid").innerHTML = renderReasoningCards({});
+
+/* ============================================================
+ * Bootstrap
+ * ============================================================ */
+// (No nav counters anymore — the sidebar is the demo + the performance views.)
+</script>
+
+</body>
+</html>

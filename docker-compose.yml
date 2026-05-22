@@ -1,0 +1,157 @@
+# FALCON local stack.
+#
+# Three profiles share every service except the LLM backend:
+#   docker compose --profile local   up --build   # default — Ollama
+#   docker compose --profile bedrock up --build   # AWS — needs AWS creds in .env
+#   docker compose --profile vertex  up --build   # GCP — needs ADC mounted (see below)
+#
+# Ollama runs in a container with NVIDIA GPU passthrough. If you prefer host
+# Ollama (faster on Windows), set OLLAMA_HOST=http://host.docker.internal:11434
+# in .env and skip the ollama service.
+#
+# Vertex auth: only the supervisor/agent process calls Vertex — the MCP
+# services just talk to Postgres. So during dev, run the supervisor from your
+# host venv (which already has ADC after `gcloud auth application-default
+# login`). If you ever containerise the supervisor, mount ~/.config/gcloud
+# read-only into that container via a docker-compose.override.yml.
+
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-falcon}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-falcon_dev_only}
+      POSTGRES_DB: ${POSTGRES_DB:-falcon}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-falcon}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  jaeger:
+    image: jaegertracing/all-in-one:1.60
+    environment:
+      COLLECTOR_OTLP_ENABLED: "true"
+    ports:
+      - "16686:16686"  # UI
+      - "4317:4317"    # OTLP gRPC
+      - "4318:4318"    # OTLP HTTP
+
+  ollama:
+    image: ollama/ollama:latest
+    profiles: ["local"]
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    environment:
+      OLLAMA_KEEP_ALIVE: ${OLLAMA_KEEP_ALIVE:--1}
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  migrate:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    command: ["alembic", "upgrade", "head"]
+    restart: "no"
+
+  transaction-store-mcp:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OLLAMA_HOST: http://ollama:11434
+    ports:
+      - "${MCP_TRANSACTION_STORE_PORT:-8001}:8001"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["python", "-m", "mcp_servers.transaction_store.server"]
+
+  network-graph-mcp:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+    ports:
+      - "${MCP_NETWORK_GRAPH_PORT:-8002}:8002"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["python", "-m", "mcp_servers.network_graph.server"]
+
+  watchlist-mcp:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+    ports:
+      - "${MCP_WATCHLIST_PORT:-8003}:8003"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["python", "-m", "mcp_servers.watchlist.server"]
+
+  case-management-mcp:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+    ports:
+      - "${MCP_CASE_MANAGEMENT_PORT:-8004}:8004"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["python", "-m", "mcp_servers.case_management.server"]
+
+  # Phase 4 — FastAPI app + vanilla HTML dashboard at http://localhost:8000
+  # Triggers investigations via background tasks; this is single-process. For
+  # a horizontally-scaled deploy, swap the BackgroundTasks call in
+  # api.main.trigger_investigation for a Celery/RQ queue.
+  api:
+    build:
+      context: .
+      dockerfile: infra/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-falcon}:${POSTGRES_PASSWORD:-falcon_dev_only}@postgres:5432/${POSTGRES_DB:-falcon}
+      OTEL_EXPORTER_OTLP_ENDPOINT: http://jaeger:4317
+      OLLAMA_HOST: http://ollama:11434
+    ports:
+      - "${API_PORT:-8000}:8000"
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+    command: ["uvicorn", "api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+
+volumes:
+  postgres_data:
+  ollama_data:

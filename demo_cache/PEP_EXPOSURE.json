@@ -1,0 +1,307 @@
+{
+  "typology": "PEP_EXPOSURE",
+  "captured_at": "2026-05-21T08:39:10.749274+00:00",
+  "alert_id": "ALERT0005",
+  "investigation": {
+    "id": "64cb248e-13c2-456f-8c50-a273d406b917",
+    "alert_id": "ALERT0005",
+    "status": "completed",
+    "confidence_score": 0.569,
+    "expansion_count": 0,
+    "started_at": "2026-05-21T08:38:27.701564+00:00",
+    "completed_at": "2026-05-21T08:39:10.607939+00:00",
+    "state_metadata": {
+      "paused_at": "2026-05-21T08:38:54.133164+00:00"
+    },
+    "case_file": {
+      "id": "6651483e-6b3c-42fc-8038-0767fd7316ee",
+      "investigation_id": "64cb248e-13c2-456f-8c50-a273d406b917",
+      "risk_tier": "MEDIUM",
+      "recommended_action": "REVIEW",
+      "sar_ready": false,
+      "confidence": 0.569,
+      "case_json": {
+        "risk_tier": "MEDIUM",
+        "sar_ready": false,
+        "confidence": 0.569,
+        "evidence_chain": [
+          {
+            "summary": "Beneficial owner of AC00008237 matches PEP/sanctions watchlist entry via rule-engine scenario PEP-004, triggering Enhanced Due Diligence obligation under JMLSG guidelines.",
+            "confidence": 0.95,
+            "source_ref": "Triage assessment (PEP-004 rule_engine match); Typology assessment (primary_typology PEP_EXPOSURE, score 0.595)",
+            "evidence_type": "PEP_WATCHLIST_MATCH"
+          },
+          {
+            "summary": "One high-z transaction (ID 500273) flagged on 2026-04-09 with MEDIUM severity; transaction represents outlier in account's baseline distribution (mean \u00a38,984, stdev \u00a318,182).",
+            "confidence": 0.65,
+            "source_ref": "Account profile for AC00008237; anomalies list; flagged_transaction_ids=[500273]",
+            "evidence_type": "ACCOUNT_PROFILE_ANOMALY"
+          },
+          {
+            "summary": "Account exhibits weak semantic similarity to STRUCTURING typology (distance 0.281, score 0.20) via patterns STR-003, STR-006, STR-002 describing 'multiple inbound transfers each just below \u00a310,000 reporting threshold from unrelated counterparties within a short window'. However, no concrete structuring hallmarks are present in transaction data: no clustering of sub-threshold deposits, no rapid channel shifts, no threshold-boundary clustering.",
+            "confidence": 0.25,
+            "source_ref": "Account profile semantic_matches; Typology assessment (STRUCTURING score 0.20, no triggered detectors)",
+            "evidence_type": "SEMANTIC_PATTERN_MATCH"
+          },
+          {
+            "summary": "AC00008237 connected to AC00004785 via beneficial-owner relationship (declared source, weight 1.0). Both nodes assigned risk_score 1.0 and role 'leaf'. No expansion triggered (heuristic floor not met: 1 candidate, need 3+).",
+            "confidence": 0.85,
+            "source_ref": "Network graph; nodes and edges; expansion_request.trigger=False",
+            "evidence_type": "NETWORK_RELATIONSHIP"
+          },
+          {
+            "summary": "Zero transactional activity in last 7 days (transaction_count_7d=0). Account shows no recent behavioral shift, device-fingerprint anomalies, or counterparty novelty consistent with account takeover. Current dormancy is inconsistent with active fraud conduct.",
+            "confidence": 0.8,
+            "source_ref": "Triage quick_signals (recent_activity_7d=False, transaction_count_7d=0)",
+            "evidence_type": "DORMANCY_SIGNAL"
+          }
+        ],
+        "network_summary": {
+          "edges": [
+            {
+              "source": "AC00008237",
+              "target": "AC00004785",
+              "weight": 1.0,
+              "evidence": {},
+              "source_type": "declared",
+              "relationship_type": "beneficial_owner"
+            }
+          ],
+          "nodes": [
+            {
+              "role": "leaf",
+              "account_id": "AC00008237",
+              "risk_score": 1.0
+            },
+            {
+              "role": "leaf",
+              "account_id": "AC00004785",
+              "risk_score": 1.0
+            }
+          ],
+          "edge_count": 1,
+          "node_count": 2,
+          "total_edges": 1,
+          "total_nodes": 2,
+          "primary_account": "AC00008237",
+          "connected_accounts": [
+            "AC00004785"
+          ],
+          "relationship_types": [
+            "beneficial_owner"
+          ],
+          "expansion_rationale": "Heuristic floor not met: 1 candidates (need 3+), mean_risk=1.00 (need 0.5+)",
+          "expansion_triggered": false,
+          "suspicious_clusters": [
+            [
+              "AC00008237",
+              "AC00004785"
+            ]
+          ],
+          "network_role_primary": "leaf",
+          "network_risk_score_primary": 1.0
+        },
+        "subject_details": {
+          "kyc_tier": 2,
+          "account_id": "AC00008237",
+          "pep_status": "beneficial_owner_matches_watchlist",
+          "account_type": "business",
+          "account_opened": "2025-12-23",
+          "account_age_days": 126,
+          "pep_rule_engine_scenario": "PEP-004",
+          "beneficial_owner_relationship": "AC00004785"
+        },
+        "investigation_id": "64cb248e-13c2-456f-8c50-a273d406b917",
+        "executive_summary": "AC00008237 is a business account (KYC tier 2) opened 2025-12-23 (~4 months prior to alert) whose beneficial owner matches a PEP/sanctions watchlist entry via rule-engine scenario PEP-004. The account exhibits a mixed transaction profile (22 transactions over 90 days, dominated by card spending) with no activity in the last 7 days. One high-z transaction (ID 500273) was flagged during profiling. The primary regulatory concern is PEP exposure, which triggers Enhanced Due Diligence obligations under JMLSG guidelines. No concrete fraud typology (structuring, layering, account takeover, mule network) is supported by transactional evidence. Recommended action is REVIEW pending completion of Enhanced Due Diligence, verification of beneficial owner identity against watchlists, and assessment of source-of-funds documentation for any material historical or future activity.",
+        "suspicion_grounds": "Alert triggered by deterministic rule-engine match (PEP-004) confirming beneficial owner watchlist status. This is a regulatory compliance signal, not a fraud hypothesis. The account is newly opened (126 days old) with business classification and KYC tier 2. Baseline profile shows 22 transactions over 90 days with high variance (mean \u00a38,984, stdev \u00a318,182), indicating presence of outlier transactions. One transaction (ID 500273) scored as high-z anomaly (MEDIUM severity). Semantic pattern matching detected weak similarity to STRUCTURING typology (distance 0.281, score 0.20) but no concrete structuring hallmarks are present: no clustering of sub-threshold deposits, no rapid channel shifts, no threshold-boundary clustering. The absence of activity in the last 7 days and the lack of triggered detectors for structuring, layering, account takeover, or mule-network patterns indicate the account is currently dormant rather than actively engaged in financial crime. Network graph shows AC00008237 connected to AC00004785 via beneficial-owner relationship; no expansion was triggered (heuristic floor not met). The interim confidence of 0.569 reflects the tension between a concrete PEP regulatory obligation (high confidence in watchlist match) and the absence of transactional fraud evidence (lower confidence in active criminal conduct). This case is appropriately classified as MEDIUM risk pending Enhanced Due Diligence completion.",
+        "recommended_action": "REVIEW",
+        "contradictions_addressed": [
+          "PEP_EXPOSURE flagged as primary typology but no watchlist_hit detector triggered in Typology assessment \u2014 contradiction resolved by noting that PEP-004 rule-engine match is a deterministic regulatory signal (not a probabilistic detector) with concrete watchlist evidence; the absence of a 'watchlist_hit' detector label does not invalidate the rule-engine classification, which is the authoritative source for PEP status under JMLSG guidelines. The case file adopts PEP_EXPOSURE as primary typology based on the rule-engine match, not on weak semantic signals."
+        ],
+        "financial_exposure_estimate": 197443.62
+      },
+      "created_at": "2026-05-21T08:39:11.733744+00:00"
+    }
+  },
+  "events": [
+    {
+      "id": 756,
+      "event_type": "TRIAGE_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "severity": "MEDIUM"
+      },
+      "occurred_at": "2026-05-21T08:38:33.162640+00:00"
+    },
+    {
+      "id": 757,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00008237",
+        "anomaly_count": 1
+      },
+      "occurred_at": "2026-05-21T08:38:39.282139+00:00"
+    },
+    {
+      "id": 758,
+      "event_type": "NETWORK_MAPPER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "expand": false,
+        "edge_count": 1,
+        "node_count": 2
+      },
+      "occurred_at": "2026-05-21T08:38:43.022248+00:00"
+    },
+    {
+      "id": 759,
+      "event_type": "CLASSIFICATION_CONFLICT",
+      "actor": "supervisor",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_hypothesis": "Business account (AC00008237) flagged for PEP exposure via rule engine (PEP-004). Account is newly opened (2025-12-23, ~4 months old) with KYC tier 2. No transactional activity in the last 7 days, but PEP status alone warrants Enhanced Due Diligence per JMLSG guidelines. Risk is regulatory friction rather than immediate fraud signal, but the combination of PEP beneficial ownership + business account type + recent opening justifies deeper profile review to establish baseline behaviour and verify beneficial owner identity against watchlists."
+      },
+      "occurred_at": "2026-05-21T08:38:48.681654+00:00"
+    },
+    {
+      "id": 760,
+      "event_type": "RECONCILIATION",
+      "actor": "reconciler",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_implied": "ACCOUNT_TAKEOVER",
+        "rationale_excerpt": "Triage's PEP_EXPOSURE classification is the correct primary typology. The alert was triggered by a deterministic rule-engine match (PEP-004) confirming beneficial owner watchlist status \u2014 a concrete, verifiable fact with regulatory force under JMLSG Enhanced Due Diligence requirements. This is not a fraud hypothesis; it is a compliance obligation. Pattern Hunter's STRUCTURING score of 0.20 is a weak semantic signal with no triggered detectors and no supporting transactional evidence. The absence",
+        "reconciled_primary": "PEP_EXPOSURE"
+      },
+      "occurred_at": "2026-05-21T08:38:54.270798+00:00"
+    },
+    {
+      "id": 761,
+      "event_type": "PATTERN_HUNTER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "primary_score": 0.595,
+        "primary_typology": "PEP_EXPOSURE"
+      },
+      "occurred_at": "2026-05-21T08:38:54.284787+00:00"
+    },
+    {
+      "id": 762,
+      "event_type": "CONTRADICTION_DETECTED",
+      "actor": "supervisor",
+      "payload": {
+        "count": 1,
+        "items": [
+          "PEP_EXPOSURE flagged primary but no watchlist_hit detector triggered \u2014 classification rests on weak signal only"
+        ],
+        "penalty": 0.1
+      },
+      "occurred_at": "2026-05-21T08:38:54.289747+00:00"
+    },
+    {
+      "id": 763,
+      "event_type": "CHECKPOINT_4_DECISION",
+      "actor": "supervisor",
+      "payload": {
+        "route": "hitl_pause",
+        "confidence": 0.569,
+        "hitl_required": true
+      },
+      "occurred_at": "2026-05-21T08:38:54.294268+00:00"
+    },
+    {
+      "id": 764,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.569
+      },
+      "occurred_at": "2026-05-21T08:38:54.307949+00:00"
+    },
+    {
+      "id": 765,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.569
+      },
+      "occurred_at": "2026-05-21T08:38:54.584431+00:00"
+    },
+    {
+      "id": 766,
+      "event_type": "HITL_RESUMED",
+      "actor": "supervisor",
+      "payload": {
+        "annotation_present": true
+      },
+      "occurred_at": "2026-05-21T08:38:54.599971+00:00"
+    },
+    {
+      "id": 767,
+      "event_type": "CASE_WRITER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.569,
+        "recommended_action": "REVIEW"
+      },
+      "occurred_at": "2026-05-21T08:39:11.754732+00:00"
+    }
+  ],
+  "traces": [
+    {
+      "id": 251,
+      "agent_name": "triage",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"severity\": \"MEDIUM\",\n  \"recommended_depth\": \"DEEP\",\n  \"initial_hypothesis\": \"Business account (AC00008237) flagged for PEP exposure via rule engine (PEP-004). Account is newly opened (2025-12-23, ~4 months old) with KYC tier 2. No transactional activity in the last 7 days, but PEP status alone warrants Enhanced Due Diligence per JMLSG guidelines. Risk is regulatory friction rather than immediate fraud signal, but the combination of PEP beneficial ownership + business account type + recent opening justifies deeper profile review to establish baseline behaviour and verify beneficial owner identity against watchlists.\",\n  \"quick_signals\": {\n    \"pep_alert_triggered\": true,\n    \"scenario_id\": \"PEP-004\",\n    \"account_age_days\": 126,\n    \"recent_activity_7d\": false,\n    \"transaction_count_7d\": 0,\n    \"kyc_tier\": 2,\n    \"account_type\": \"business\"\n  },\n  \"justification\": \"PEP_EXPOSURE alert (rule_engine, scenario PEP-004) with initial_score 0.595 indicates beneficial owner or counterparty matches PEP/sanctions watchlist. Account is business-type with KYC tier 2, opened 2025-12-23 (~4 months prior to alert). Zero transactional activity in last 7 days prevents immediate fraud-pattern detection but does not reduce PEP regulatory risk. MEDIUM severity assigned because PEP status is a compliance obligation (Enhanced Due Diligence required) rather than a direct fraud indicator; however, DEEP depth is justified to establish full 90-day baseline, verify beneficial owner identity, and assess whether any historical inbound international wires or material transfers occurred before the 7-day window. This supports either regulatory clearance or escalation to SAR if material suspicious activity is discovered in the full profile.\"\n}\n```",
+      "token_count": 737,
+      "latency_ms": 5603,
+      "recorded_at": "2026-05-21T08:38:33.146497+00:00"
+    },
+    {
+      "id": 252,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00008237\",\n  \"baseline\": {\n    \"transaction_count\": 22,\n    \"mean_amount\": 8983.71,\n    \"stdev_amount\": 18182.13,\n    \"channel_mix\": {\n      \"transfer\": 2,\n      \"card\": 14,\n      \"wire\": 5,\n      \"atm\": 1\n    },\n    \"narrative\": \"Account exhibits mixed transaction profile dominated by card spending (14 of 22 transactions) across retail, utilities, transport, groceries, professional services, and dining categories. High standard deviation (\u00a318,182) relative to mean (\u00a38,984) indicates presence of outlier transactions; wire channel (5 transactions) and one flagged transfer warrant closer examination.\"\n  },\n  \"anomalies\": [\n    {\n      \"start\": \"2026-04-09T16:16:06.575892+00:00\",\n      \"end\": \"2026-04-09T16:16:06.575892+00:00\",\n      \"description\": \"1 high-z transaction (transaction ID 500273)\",\n      \"severity\": \"MEDIUM\"\n    }\n  ],\n  \"flagged_transaction_ids\": [\n    500273\n  ],\n  \"counterparty_account_ids\": [],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.281192958354904\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.281192958354904\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.281192958354904\n    }\n  ]\n}\n```",
+      "token_count": 1198,
+      "latency_ms": 3689,
+      "recorded_at": "2026-05-21T08:38:39.265257+00:00"
+    },
+    {
+      "id": 253,
+      "agent_name": "network_mapper",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"nodes\": [\n    {\n      \"account_id\": \"AC00008237\",\n      \"risk_score\": 1.0,\n      \"role\": \"leaf\"\n    },\n    {\n      \"account_id\": \"AC00004785\",\n      \"risk_score\": 1.0,\n      \"role\": \"leaf\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"AC00008237\",\n      \"target\": \"AC00004785\",\n      \"relationship_type\": \"beneficial_owner\",\n      \"source_type\": \"declared\",\n      \"weight\": 1.0,\n      \"evidence\": {}\n    }\n  ],\n  \"suspicious_clusters\": [\n    [\n      \"AC00008237\",\n      \"AC00004785\"\n    ]\n  ],\n  \"expansion_request\": {\n    \"trigger\": true,\n    \"new_accounts\": [\n      \"AC00004785\"\n    ],\n    \"rationale\": \"AC00004785 is connected to seed account AC00008237 via a declared beneficial_owner relationship with maximum edge weight (1.0). Both nodes exhibit maximum risk scores (1.0), indicating high-risk characteristics. The beneficial_owner link suggests AC00004785 may be a controlling entity or alternate account for the same beneficial owner, warranting direct investigation to establish whether this represents a single actor operating multiple accounts (potential mule-network or account-takeover pattern) or legitimate multi-account ownership. Expansion is justified to profile AC00004785's transaction history and behavioural baseline independently before Pattern Hunter classifies the typology.\"\n  }\n}\n```",
+      "token_count": 644,
+      "latency_ms": 3741,
+      "recorded_at": "2026-05-21T08:38:43.003193+00:00"
+    },
+    {
+      "id": 254,
+      "agent_name": "pattern_hunter",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"STRUCTURING\",\n  \"primary_score\": 0.20,\n  \"matches\": [\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"semantic match to STR-003\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"The detector suite returned a primary typology of STRUCTURING with a score of 0.20, based on a semantic match to pattern STR-003. This is a weak signal \u2014 well below the 0.75 confidence threshold required for SAR filing and below the 0.2 floor that would indicate a clear typological match. No other typology detector fired; LAYERING, ACCOUNT_TAKEOVER, MULE_NETWORK, and PEP_EXPOSURE all scored 0.00 with no supporting evidence. The semantic match to STR-003 suggests the account or transaction profile exhibits some characteristics consistent with structuring (e.g., deposit patterns, threshold clustering, or channel mix anomalies), but the low score indicates these signals are either weak, ambiguous, or present in isolation without corroborating behavioral or network evidence. The absence of any triggered detectors across all five typologies indicates that the deterministic rule-based checks did not identify concrete hallmarks (e.g., multiple sub-threshold deposits, rapid layering chains, device-fingerprint anomalies, or watchlist matches). This assessment should be interpreted as: structuring is the most plausible typology given the available signals, but the evidence is insufficient to support a high-confidence determination. Downstream agents (Case Writer) should treat this as a weak typological signal and rely heavily on the Account Historian's behavioral baseline and Network Mapper's graph topology to either strengthen or downgrade the final risk assessment.\"\n}\n```",
+      "token_count": 800,
+      "latency_ms": 6191,
+      "recorded_at": "2026-05-21T08:38:48.666370+00:00"
+    },
+    {
+      "id": 255,
+      "agent_name": "reconciler",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"PEP_EXPOSURE\",\n  \"primary_score\": 0.595,\n  \"matches\": [\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.595,\n      \"evidence\": [\n        \"Beneficial owner matches PEP/sanctions watchlist (rule_engine PEP-004)\",\n        \"Business account type with KYC tier 2\",\n        \"Account opened 2025-12-23 (~4 months prior to alert)\",\n        \"Regulatory obligation for Enhanced Due Diligence per JMLSG guidelines\"\n      ],\n      \"triggered_detectors\": [\n        \"PEP-004 rule engine match\"\n      ]\n    },\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.20,\n      \"evidence\": [\n        \"Semantic match to pattern STR-003\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.0,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"Triage's PEP_EXPOSURE classification is the correct primary typology. The alert was triggered by a deterministic rule-engine match (PEP-004) confirming beneficial owner watchlist status \u2014 a concrete, verifiable fact with regulatory force under JMLSG Enhanced Due Diligence requirements. This is not a fraud hypothesis; it is a compliance obligation. Pattern Hunter's STRUCTURING score of 0.20 is a weak semantic signal with no triggered detectors and no supporting transactional evidence. The absence of activity in the last 7 days and the lack of any concrete structuring hallmarks (sub-threshold deposits, rapid channel shifts, threshold clustering) mean the semantic match is likely spurious or based on incomplete historical data. Triage's implied ACCOUNT_TAKEOVER typology is also incorrect \u2014 there is no evidence of behavioral shift, device-fingerprint anomalies, or counterparty novelty; the account is simply dormant. The primary typology should reflect the strongest, most verifiable signal: PEP status (0.595, rule-engine confirmed) supersedes the weak STRUCTURING semantic match (0.20, no detectors fired). The case file should adopt PEP_EXPOSURE as the primary typology, with recommended_action REVIEW (not SAR_FILE) pending completion of Enhanced Due Diligence and verification of beneficial owner identity and source of funds for any future material activity.\"\n}\n```",
+      "token_count": 1683,
+      "latency_ms": 6030,
+      "recorded_at": "2026-05-21T08:38:54.265998+00:00"
+    },
+    {
+      "id": 256,
+      "agent_name": "case_writer",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"investigation_id\": \"64cb248e-13c2-456f-8c50-a273d406b917\",\n  \"risk_tier\": \"MEDIUM\",\n  \"recommended_action\": \"REVIEW\",\n  \"sar_ready\": false,\n  \"confidence\": 0.569,\n  \"executive_summary\": \"AC00008237 is a business account (KYC tier 2) opened 2025-12-23 (~4 months prior to alert) whose beneficial owner matches a PEP/sanctions watchlist entry via rule-engine scenario PEP-004. The account exhibits a mixed transaction profile (22 transactions over 90 days, dominated by card spending) with no activity in the last 7 days. One high-z transaction (ID 500273) was flagged during profiling. The primary regulatory concern is PEP exposure, which triggers Enhanced Due Diligence obligations under JMLSG guidelines. No concrete fraud typology (structuring, layering, account takeover, mule network) is supported by transactional evidence. Recommended action is REVIEW pending completion of Enhanced Due Diligence, verification of beneficial owner identity against watchlists, and assessment of source-of-funds documentation for any material historical or future activity.\",\n  \"suspicion_grounds\": \"Alert triggered by deterministic rule-engine match (PEP-004) confirming beneficial owner watchlist status. This is a regulatory compliance signal, not a fraud hypothesis. The account is newly opened (126 days old) with business classification and KYC tier 2. Baseline profile shows 22 transactions over 90 days with high variance (mean \u00a38,984, stdev \u00a318,182), indicating presence of outlier transactions. One transaction (ID 500273) scored as high-z anomaly (MEDIUM severity). Semantic pattern matching detected weak similarity to STRUCTURING typology (distance 0.281, score 0.20) but no concrete structuring hallmarks are present: no clustering of sub-threshold deposits, no rapid channel shifts, no threshold-boundary clustering. The absence of activity in the last 7 days and the lack of triggered detectors for structuring, layering, account takeover, or mule-network patterns indicate the account is currently dormant rather than actively engaged in financial crime. Network graph shows AC00008237 connected to AC00004785 via beneficial-owner relationship; no expansion was triggered (heuristic floor not met). The interim confidence of 0.569 reflects the tension between a concrete PEP regulatory obligation (high confidence in watchlist match) and the absence of transactional fraud evidence (lower confidence in active criminal conduct). This case is appropriately classified as MEDIUM risk pending Enhanced Due Diligence completion.\",\n  \"subject_details\": {\n    \"account_id\": \"AC00008237\",\n    \"account_type\": \"business\",\n    \"kyc_tier\": 2,\n    \"account_opened\": \"2025-12-23\",\n    \"account_age_days\": 126,\n    \"pep_status\": \"beneficial_owner_matches_watchlist\",\n    \"pep_rule_engine_scenario\": \"PEP-004\",\n    \"beneficial_owner_relationship\": \"AC00004785\"\n  },\n  \"financial_exposure_estimate\": 197443.62,\n  \"evidence_chain\": [\n    {\n      \"evidence_type\": \"PEP_WATCHLIST_MATCH\",\n      \"summary\": \"Beneficial owner of AC00008237 matches PEP/sanctions watchlist entry via rule-engine scenario PEP-004, triggering Enhanced Due Diligence obligation under JMLSG guidelines.\",\n      \"confidence\": 0.95,\n      \"source_ref\": \"Triage assessment (PEP-004 rule_engine match); Typology assessment (primary_typology PEP_EXPOSURE, score 0.595)\"\n    },\n    {\n      \"evidence_type\": \"ACCOUNT_PROFILE_ANOMALY\",\n      \"summary\": \"One high-z transaction (ID 500273) flagged on 2026-04-09 with MEDIUM severity; transaction represents outlier in account's baseline distribution (mean \u00a38,984, stdev \u00a318,182).\",\n      \"confidence\": 0.65,\n      \"source_ref\": \"Account profile for AC00008237; anomalies list; flagged_transaction_ids=[500273]\"\n    },\n    {\n      \"evidence_type\": \"SEMANTIC_PATTERN_MATCH\",\n      \"summary\": \"Account exhibits weak semantic similarity to STRUCTURING typology (distance 0.281, score 0.20) via patterns STR-003, STR-006, STR-002 describing 'multiple inbound transfers each just below \u00a310,000 reporting threshold from unrelated counterparties within a short window'. However, no concrete structuring hallmarks are present in transaction data: no clustering of sub-threshold deposits, no rapid channel shifts, no threshold-boundary clustering.\",\n      \"confidence\": 0.25,\n      \"source_ref\": \"Account profile semantic_matches; Typology assessment (STRUCTURING score 0.20, no triggered detectors)\"\n    },\n    {\n      \"evidence_type\": \"NETWORK_RELATIONSHIP\",\n      \"summary\": \"AC00008237 connected to AC00004785 via beneficial-owner relationship (declared source, weight 1.0). Both nodes assigned risk_score 1.0 and role 'leaf'. No expansion triggered (heuristic floor not met: 1 candidate, need 3+).\",\n      \"confidence\": 0.85,\n      \"source_ref\": \"Network graph; nodes and edges; expansion_request.trigger=False\"\n    },\n    {\n      \"evidence_type\": \"DORMANCY_SIGNAL\",\n      \"summary\": \"Zero transactional activity in last 7 days (transaction_count_7d=0). Account shows no recent behavioral shift, device-fingerprint anomalies, or counterparty novelty consistent with account takeover. Current dormancy is inconsistent with active fraud conduct.\",\n      \"confidence\": 0.80,\n      \"source_ref\": \"Triage quick_signals (recent_activity_7d=False, transaction_count_7d=0)\"\n    }\n  ],\n  \"network_summary\": {\n    \"total_nodes\": 2,\n    \"total_edges\": 1,\n    \"primary_account\": \"AC00008237\",\n    \"connected_accounts\": [\"AC00004785\"],\n    \"relationship_types\": [\"beneficial_owner\"],\n    \"suspicious_clusters\": [[\"AC00008237\", \"AC00004785\"]],\n    \"expansion_triggered\": false,\n    \"expansion_rationale\": \"Heuristic floor not met: 1 candidates (need 3+), mean_risk=1.00 (need 0.5+)\",\n    \"network_role_primary\": \"leaf\",\n    \"network_risk_score_primary\": 1.0\n  },\n  \"contradictions_addressed\": [\n    \"PEP_EXPOSURE flagged as primary typology but no watchlist_hit detector triggered in Typology assessment \u2014 contradiction resolved by noting that PEP-004 rule-engine match is a deterministic regulatory signal (not a probabilistic detector) with concrete watchlist evidence; the absence of a 'watchlist_hit' detector label does not invalidate the rule-engine classification, which is the authoritative source for PEP status under JMLSG guidelines. The case file adopts PEP_EXPOSURE as primary typology based on the rule-engine match, not on weak semantic signals.\"\n  ]\n}\n```",
+      "token_count": 3813,
+      "latency_ms": 15792,
+      "recorded_at": "2026-05-21T08:39:11.406796+00:00"
+    }
+  ]
+}

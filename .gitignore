@@ -1,0 +1,72 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+build/
+dist/
+
+# Virtual envs
+.venv/
+venv/
+env/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+.claude/
+
+# Env files (NEVER commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Generated data (regenerable from data/generate.py)
+data/output/
+
+# Alembic local SQLite (we use Postgres but keep this safe)
+*.db
+*.sqlite
+*.sqlite3
+
+# Logs
+*.log
+logs/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Frontend (Phase 4)
+frontend/node_modules/
+frontend/dist/
+frontend/.next/
+
+# Docker volumes (if mounted locally)
+infra/volumes/
+
+
+notes.txt
+
+falcon_impl_plan.md
+
+docker_commands.md
+
+fix.md
+
+cases.md
+
+learning/
+
+# Demo-cache capture script — kept LOCAL ONLY so anyone who clones the
+# public repo cannot run it against my Anthropic key. The cached JSON
+# output (demo_cache/*.json) is still committed so the dashboard works
+# on every clone — the recorded replays are all a recruiter ever needs.
+scripts/capture_demo_runs.py
+

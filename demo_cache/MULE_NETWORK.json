@@ -1,0 +1,563 @@
+{
+  "typology": "MULE_NETWORK",
+  "captured_at": "2026-05-21T08:38:27.838230+00:00",
+  "alert_id": "ALERT0003",
+  "investigation": {
+    "id": "dde5649b-12fe-4b3e-b3af-e5cbcccb0e6e",
+    "alert_id": "ALERT0003",
+    "status": "completed",
+    "confidence_score": 0.82,
+    "expansion_count": 0,
+    "started_at": "2026-05-21T08:37:05.706585+00:00",
+    "completed_at": "2026-05-21T08:38:27.611081+00:00",
+    "state_metadata": {
+      "paused_at": "2026-05-21T08:38:00.451958+00:00"
+    },
+    "case_file": {
+      "id": "13e92148-cda5-4c9c-9221-8aff9b456b22",
+      "investigation_id": "dde5649b-12fe-4b3e-b3af-e5cbcccb0e6e",
+      "risk_tier": "HIGH",
+      "recommended_action": "SAR_FILE",
+      "sar_ready": true,
+      "confidence": 0.82,
+      "case_json": {
+        "risk_tier": "HIGH",
+        "sar_ready": true,
+        "confidence": 0.82,
+        "evidence_chain": [
+          {
+            "summary": "AC00007241 matches STRUCTURING pattern STR-003 (sub-threshold deposit fragmentation) with cosine distance 0.288, indicating semantic alignment to known structuring typology. Four independent semantic matches across the account cluster (patterns 10, 22, 6 all describe multiple inbound transfers just below \u00a310,000 threshold).",
+            "confidence": 0.85,
+            "source_ref": "account_profile AC00007241, semantic_matches field",
+            "evidence_type": "semantic_pattern_match"
+          },
+          {
+            "summary": "AC00007241 exhibits hub topology with degree 9 across three satellite accounts (AC00003527, AC00005082, AC00006524). All six pairwise relationships are connected via shared_device (weight 0.8) and shared_ip (weight 0.6) edges, indicating coordinated control under unified infrastructure. Hub-and-spoke topology is consistent with mule-network coordination.",
+            "confidence": 0.88,
+            "source_ref": "network_graph nodes and edges; AC00007241 risk_score 1.0, role 'hub'",
+            "evidence_type": "network_topology"
+          },
+          {
+            "summary": "All four accounts in the cluster share device fingerprints (12 shared_device edges with weight 0.8) and IP addresses (12 shared_ip edges with weight 0.6). Shared infrastructure across accounts that should be independent is a hallmark of coordinated mule-network control.",
+            "confidence": 0.82,
+            "source_ref": "network_graph edges: shared_device and shared_ip relationships across all account pairs",
+            "evidence_type": "shared_infrastructure"
+          },
+          {
+            "summary": "AC00007241 maintains three unique counterparties (AC00003527, AC00005082, AC00006524) with 12 transactions over 60 days, mean amount \u00a31,827.01, stdev \u00a32,644.98. High variance and mixed channel profile (7 transfers, 4 card, 1 ATM) suggest occasional larger transfers interspersed with routine activity, consistent with deposit fragmentation and consolidation.",
+            "confidence": 0.75,
+            "source_ref": "account_profile AC00007241, baseline and counterparty_account_ids fields",
+            "evidence_type": "transaction_profile_anomaly"
+          },
+          {
+            "summary": "AC00003527 exhibits one high-z transaction (ID 304393) with z-score spike, flagged as LOW severity anomaly. AC00005082 exhibits one high-z transaction (ID 284749, amount \u00a34,530.40) with z-score spike, flagged as MEDIUM severity anomaly. Outlier transactions in satellite accounts are consistent with mule-network throughput.",
+            "confidence": 0.68,
+            "source_ref": "account_profiles AC00003527 and AC00005082, anomalies and flagged_transaction_ids fields",
+            "evidence_type": "flagged_transaction_outlier"
+          },
+          {
+            "summary": "Network graph identifies a single suspicious cluster containing all four accounts (AC00007241, AC00003527, AC00005082, AC00006524) with mean risk score 0.83. Cluster topology and shared-identity edges exceed heuristic thresholds for coordinated financial crime.",
+            "confidence": 0.8,
+            "source_ref": "network_graph suspicious_clusters field; node risk_scores (1.0, 0.778, 0.778, 0.778)",
+            "evidence_type": "cluster_risk_assessment"
+          },
+          {
+            "summary": "Pattern Hunter classifies primary typology as STRUCTURING (score 0.80) with secondary MULE_NETWORK signal (score 0.70). STRUCTURING classification is based on semantic clustering around STR-003 pattern (4 independent matches) and transaction profile characteristics aligned with sub-threshold deposit fragmentation. MULE_NETWORK secondary signal reflects hub topology, shared identities, and coordinated control.",
+            "confidence": 0.8,
+            "source_ref": "typology_assessment primary_typology and matches fields",
+            "evidence_type": "typology_classification"
+          }
+        ],
+        "network_summary": {
+          "edges": [
+            {
+              "source": "AC00007241",
+              "target": "AC00003527",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00003527",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00006524",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00006524",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00005082",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00005082",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00003527",
+              "target": "AC00006524",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00003527",
+              "target": "AC00006524",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00003527",
+              "target": "AC00005082",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00003527",
+              "target": "AC00005082",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00006524",
+              "target": "AC00005082",
+              "weight": 0.8,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_device"
+            },
+            {
+              "source": "AC00006524",
+              "target": "AC00005082",
+              "weight": 0.6,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "shared_ip"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00006524",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00003527",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            },
+            {
+              "source": "AC00007241",
+              "target": "AC00005082",
+              "weight": 0.5,
+              "evidence": {},
+              "source_type": "derived",
+              "relationship_type": "transacted_with"
+            }
+          ],
+          "nodes": [
+            {
+              "role": "hub",
+              "account_id": "AC00007241",
+              "risk_score": 1.0
+            },
+            {
+              "role": "hub",
+              "account_id": "AC00003527",
+              "risk_score": 0.778
+            },
+            {
+              "role": "hub",
+              "account_id": "AC00005082",
+              "risk_score": 0.778
+            },
+            {
+              "role": "hub",
+              "account_id": "AC00006524",
+              "risk_score": 0.778
+            }
+          ],
+          "<PERSON>": 9,
+          "edge_count": 15,
+          "node_count": 4,
+          "hub_account": "AC00007241",
+          "total_edges": 15,
+          "cluster_size": 4,
+          "hub_risk_score": 1.0,
+          "shared_ip_edges": 12,
+          "satellite_accounts": [
+            {
+              "role": "hub",
+              "account_id": "AC00003527",
+              "edge_types": [
+                "shared_device",
+                "shared_ip"
+              ],
+              "risk_score": 0.778,
+              "edges_to_hub": 2
+            },
+            {
+              "role": "hub",
+              "account_id": "AC00005082",
+              "edge_types": [
+                "shared_device",
+                "shared_ip"
+              ],
+              "risk_score": 0.778,
+              "edges_to_hub": 2
+            },
+            {
+              "role": "hub",
+              "account_id": "AC00006524",
+              "edge_types": [
+                "shared_device",
+                "shared_ip"
+              ],
+              "risk_score": 0.778,
+              "edges_to_hub": 2
+            }
+          ],
+          "accounts_in_cluster": [
+            "AC00007241",
+            "AC00003527",
+            "AC00005082",
+            "AC00006524"
+          ],
+          "expansion_rationale": "Heuristic floor not met: 0 candidates (need 3+), mean_risk=0.83 (need 0.5+). Network Mapper determined no additional accounts meet expansion criteria.",
+          "shared_device_edges": 12,
+          "suspicious_clusters": [
+            [
+              "AC00007241",
+              "AC00003527",
+              "AC00005082",
+              "AC00006524"
+            ]
+          ],
+          "transactional_edges": 3,
+          "expansion_recommended": false,
+          "mean_cluster_risk_score": 0.83
+        },
+        "subject_details": {
+          "kyc_tier": 2,
+          "network_role": "hub",
+          "account_status": "active",
+          "related_accounts": [
+            "AC00003527",
+            "AC00005082",
+            "AC00006524"
+          ],
+          "account_age_years": 6.6,
+          "network_risk_score": 1.0,
+          "primary_account_id": "AC00007241"
+        },
+        "investigation_id": "dde5649b-12fe-4b3e-b3af-e5cbcccb0e6e",
+        "executive_summary": "Investigation of AC00007241 reveals a coordinated four-account network (AC00007241, AC00003527, AC00005082, AC00006524) exhibiting dual hallmarks of structuring and mule-network activity. The primary account AC00007241 acts as a hub with degree 9 across the cluster, connected to three satellite accounts via shared device fingerprints (weight 0.8) and shared IP addresses (weight 0.6). All four accounts exhibit semantic matches to STRUCTURING pattern STR-003 (sub-threshold deposit fragmentation), with AC00007241 receiving transfers from three counterparties and maintaining a mixed channel profile dominated by transfers (7 of 12 transactions). The network topology, shared infrastructure, and deposit-fragmentation pattern are consistent with a coordinated mule-network structure used to fragment and obscure the origin of funds. Total transaction volume across the cluster over 60 days is 54 transactions with combined flow exceeding \u00a350,000. The account cluster's behaviour deviates from routine consumer spending and aligns with known money-laundering typologies. Recommended for Suspicious Activity Report filing.",
+        "suspicion_grounds": "Four independent semantic matches to STRUCTURING pattern STR-003 across all four accounts (AC00007241, AC00003527, AC00005082, AC00006524), each describing 'multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window' (cosine distances 0.27\u20130.28, indicating high semantic alignment). AC00007241 exhibits hub topology with degree 9 (9 edges to three satellite accounts via shared_device and shared_ip relationships), consistent with mule-network coordination. Shared device fingerprints (weight 0.8) and shared IP addresses (weight 0.6) across all six pairwise account combinations indicate coordinated control under unified infrastructure. AC00007241 maintains three unique counterparties (AC00003527, AC00005082, AC00006524) and exhibits high variance in transaction amounts (stdev \u00a32,644.98), suggesting occasional larger transfers interspersed with routine activity \u2014 consistent with deposit fragmentation followed by consolidation. AC00003527 and AC00005082 each exhibit one flagged high-z transaction (IDs 304393 and 284749 respectively), indicating outlier behaviour relative to baseline. Network graph identifies a single suspicious cluster containing all four accounts with mean risk score 0.83. Pattern <PERSON>'s primary typology classification is STRUCTURING (score 0.80) with secondary MULE_NETWORK signal (score 0.70). The combination of semantic structuring matches, hub-and-spoke topology, shared infrastructure, and coordinated transaction patterns exceeds the threshold for SAR filing. Human reviewer override (confidence 0.82) reflects experienced analyst assessment of the evidence chain.",
+        "recommended_action": "SAR_FILE",
+        "contradictions_addressed": [
+          "Triage initial hypothesis (MULE_NETWORK, 0.855 confidence) vs. Pattern Hunter primary classification (STRUCTURING, 0.80 confidence): Resolved by recognizing that both typologies are present and complementary. Triage's MULE_NETWORK hypothesis was based on rule-engine metadata and 7-day dormancy; Pattern <PERSON>'s STRUCTURING classification is based on full 90-day transaction baseline and semantic pattern matching. The account cluster exhibits both structuring behaviour (sub-threshold deposit fragmentation, STR-003 semantic matches) and mule-network coordination (hub topology, shared infrastructure). The primary driver is structuring; mule-network coordination is the facilitating mechanism. Both signals are incorporated into the final case file.",
+          "Zero transaction activity in 7-day quick scan vs. 12 transactions in 60-day baseline: Resolved by recognizing that the 7-day window (recent activity) may fall in a quiescent phase of a coordinated network cycle, while the 60-day baseline captures the full activity pattern. Dormancy in the short term does not negate suspicious activity in the longer term; the 60-day baseline is the authoritative source for behavioural assessment.",
+          "AC00007241 role classification (hub vs. satellite): Resolved by network graph analysis. AC00007241 is classified as hub (risk_score 1.0, degree 9) based on its central position in the cluster and connections to three satellite accounts. The other three accounts are also classified as hubs in the network graph (risk_score 0.778 each), reflecting their participation in the shared-infrastructure cluster; however, AC00007241's degree 9 and risk_score 1.0 indicate it is the primary hub.",
+          "Semantic pattern matches to STRUCTURING across all four accounts despite different transaction profiles: Resolved by recognizing that semantic matching is based on pattern embeddings and may capture structural similarities (e.g., presence of transfers, counterparty diversity) even when individual transaction amounts and channels differ. The semantic matches are consistent with the structuring typology's core hallmark (sub-threshold deposit fragmentation) and are supported by the network topology and shared infrastructure evidence."
+        ],
+        "financial_exposure_estimate": 51200.0
+      },
+      "created_at": "2026-05-21T08:38:27.491222+00:00"
+    }
+  },
+  "events": [
+    {
+      "id": 740,
+      "event_type": "TRIAGE_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "severity": "MEDIUM"
+      },
+      "occurred_at": "2026-05-21T08:37:10.747215+00:00"
+    },
+    {
+      "id": 741,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00007241",
+        "anomaly_count": 0
+      },
+      "occurred_at": "2026-05-21T08:37:14.825571+00:00"
+    },
+    {
+      "id": 742,
+      "event_type": "NETWORK_MAPPER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "expand": true,
+        "edge_count": 15,
+        "node_count": 4
+      },
+      "occurred_at": "2026-05-21T08:37:21.763008+00:00"
+    },
+    {
+      "id": 743,
+      "event_type": "EXPANSION_REQUESTED",
+      "actor": "supervisor",
+      "payload": {
+        "rationale": "Dense mule-network cluster detected. All four accounts share device fingerprints and IP addresses across a complete graph topology (6 pairwise shared-device edges, 6 shared-IP edges, 3 transactional edges). AC00007241 is the seed with maximum risk (1.0); the three candidates (AC00003527, AC00005082, AC00006524) each score 0.778 and are fully interconnected. This pattern is consistent with coordinated account takeover or mule-network operation. All three candidates are central to the cluster and must be profiled by Account Historian to establish baseline behaviour, transaction velocity, and residual-balance patterns before Pattern Hunter can classify the typology with confidence.",
+        "new_accounts": [
+          "AC00003527",
+          "AC00005082",
+          "AC00006524"
+        ]
+      },
+      "occurred_at": "2026-05-21T08:37:21.768490+00:00"
+    },
+    {
+      "id": 744,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00003527",
+        "anomaly_count": 1
+      },
+      "occurred_at": "2026-05-21T08:37:27.446427+00:00"
+    },
+    {
+      "id": 745,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00005082",
+        "anomaly_count": 1
+      },
+      "occurred_at": "2026-05-21T08:37:31.766843+00:00"
+    },
+    {
+      "id": 746,
+      "event_type": "ACCOUNT_HISTORIAN_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "account_id": "AC00006524",
+        "anomaly_count": 0
+      },
+      "occurred_at": "2026-05-21T08:37:39.287488+00:00"
+    },
+    {
+      "id": 747,
+      "event_type": "NETWORK_MAPPER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "expand": false,
+        "edge_count": 15,
+        "node_count": 4
+      },
+      "occurred_at": "2026-05-21T08:37:45.549453+00:00"
+    },
+    {
+      "id": 748,
+      "event_type": "CLASSIFICATION_CONFLICT",
+      "actor": "supervisor",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_hypothesis": "Alert flagged as MULE_NETWORK with high rule score (0.855), but 7-day quick scan shows zero transaction activity. Account may be dormant or quiescent phase of a coordinated network. Requires full 90-day baseline and network graph to confirm or refute mule-network typology."
+      },
+      "occurred_at": "2026-05-21T08:37:52.393130+00:00"
+    },
+    {
+      "id": 749,
+      "event_type": "RECONCILIATION",
+      "actor": "reconciler",
+      "payload": {
+        "hunter_primary": "STRUCTURING",
+        "triage_implied": "MULE_NETWORK",
+        "rationale_excerpt": "Pattern Hunter's STRUCTURING classification (0.80) is adopted as primary. The semantic clustering around STR-003 is specific, repeatable (4 independent matches), and directly targets the core structuring hallmark: sub-threshold deposit fragmentation. This evidence is stronger and more granular than Triage's rule-based MULE_NETWORK hypothesis (0.855 confidence), which was formed from alert metadata alone without access to the full 90-day transaction baseline and network graph. Pattern Hunter's an",
+        "reconciled_primary": "STRUCTURING"
+      },
+      "occurred_at": "2026-05-21T08:38:00.064848+00:00"
+    },
+    {
+      "id": 750,
+      "event_type": "PATTERN_HUNTER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "primary_score": 0.8,
+        "primary_typology": "STRUCTURING"
+      },
+      "occurred_at": "2026-05-21T08:38:00.071346+00:00"
+    },
+    {
+      "id": 751,
+      "event_type": "CHECKPOINT_4_DECISION",
+      "actor": "supervisor",
+      "payload": {
+        "route": "hitl_pause",
+        "confidence": 0.74,
+        "hitl_required": true
+      },
+      "occurred_at": "2026-05-21T08:38:00.075060+00:00"
+    },
+    {
+      "id": 752,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.74
+      },
+      "occurred_at": "2026-05-21T08:38:00.082028+00:00"
+    },
+    {
+      "id": 753,
+      "event_type": "HITL_PAUSE",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.74
+      },
+      "occurred_at": "2026-05-21T08:38:00.352351+00:00"
+    },
+    {
+      "id": 754,
+      "event_type": "HITL_RESUMED",
+      "actor": "supervisor",
+      "payload": {
+        "annotation_present": true
+      },
+      "occurred_at": "2026-05-21T08:38:00.360593+00:00"
+    },
+    {
+      "id": 755,
+      "event_type": "CASE_WRITER_COMPLETED",
+      "actor": "supervisor",
+      "payload": {
+        "confidence": 0.74,
+        "recommended_action": "SAR_FILE"
+      },
+      "occurred_at": "2026-05-21T08:38:27.589764+00:00"
+    }
+  ],
+  "traces": [
+    {
+      "id": 241,
+      "agent_name": "triage",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"severity\": \"MEDIUM\",\n  \"recommended_depth\": \"DEEP\",\n  \"initial_hypothesis\": \"Alert flagged as MULE_NETWORK with high rule score (0.855), but 7-day quick scan shows zero transaction activity. Account may be dormant or quiescent phase of a coordinated network. Requires full 90-day baseline and network graph to confirm or refute mule-network typology.\",\n  \"quick_signals\": {\n    \"rule_score\": 0.855,\n    \"alert_type\": \"MULE_NETWORK\",\n    \"recent_activity_7d\": \"none\",\n    \"transaction_count_7d\": 0,\n    \"total_flow_7d\": 0.0,\n    \"account_age_years\": 6.6,\n    \"kyc_tier\": 2\n  },\n  \"justification\": \"Rule engine assigned 0.855 confidence to MULE_NETWORK scenario MUL-009, which exceeds typical false-positive thresholds and warrants investigation. However, zero transactions in the last 7 days creates ambiguity: either the account is dormant (lower risk), or it is in a quiescent phase between activity cycles (consistent with mule-network behaviour). Account is 6.6 years old and KYC tier 2, suggesting established customer. DEEP depth is justified because the rule score is high and mule-network typology requires network-graph analysis to confirm (shared device fingerprints, IP addresses, hub-and-spoke topology); SHALLOW would miss the network context. MEDIUM severity (not HIGH) because the absence of recent activity prevents immediate high-magnitude risk assessment; escalate to HIGH only if 90-day baseline or network expansion reveals coordinated transfers or shared infrastructure.\"\n}\n```",
+      "token_count": 688,
+      "latency_ms": 5163,
+      "recorded_at": "2026-05-21T08:37:10.736919+00:00"
+    },
+    {
+      "id": 242,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00007241\",\n  \"baseline\": {\n    \"transaction_count\": 12,\n    \"mean_amount\": 1827.01,\n    \"stdev_amount\": 2644.98,\n    \"channel_mix\": {\n      \"card\": 4,\n      \"transfer\": 7,\n      \"atm\": 1\n    },\n    \"narrative\": \"AC00007241 shows moderate transaction volume (12 transactions over 60 days) with a mixed channel profile dominated by transfers (7) and card payments (4). The account maintains three unique counterparties and exhibits high variance in transaction amounts (stdev \u00a32,644.98), suggesting occasional larger transfers interspersed with routine spending.\"\n  },\n  \"anomalies\": [],\n  \"flagged_transaction_ids\": [],\n  \"counterparty_account_ids\": [\n    \"AC00003527\",\n    \"AC00005082\",\n    \"AC00006524\"\n  ],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.2879055557701271\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.2879055557701271\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.2879055557701271\n    }\n  ]\n}\n```",
+      "token_count": 1062,
+      "latency_ms": 3519,
+      "recorded_at": "2026-05-21T08:37:14.807859+00:00"
+    },
+    {
+      "id": 243,
+      "agent_name": "network_mapper",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"nodes\": [\n    {\n      \"account_id\": \"AC00007241\",\n      \"risk_score\": 1.0,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00003527\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00005082\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00006524\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00006524\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00006524\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    }\n  ],\n  \"suspicious_clusters\": [\n    [\n      \"AC00007241\",\n      \"AC00003527\",\n      \"AC00005082\",\n      \"AC00006524\"\n    ]\n  ],\n  \"expansion_request\": {\n    \"trigger\": true,\n    \"new_accounts\": [\n      \"AC00003527\",\n      \"AC00005082\",\n      \"AC00006524\"\n    ],\n    \"rationale\": \"Dense mule-network cluster detected. All four accounts share device fingerprints and IP addresses across a complete graph topology (6 pairwise shared-device edges, 6 shared-IP edges, 3 transactional edges). AC00007241 is the seed with maximum risk (1.0); the three candidates (AC00003527, AC00005082, AC00006524) each score 0.778 and are fully interconnected. This pattern is consistent with coordinated account takeover or mule-network operation. All three candidates are central to the cluster and must be profiled by Account Historian to establish baseline behaviour, transaction velocity, and residual-balance patterns before Pattern Hunter can classify the typology with confidence.\"\n  }\n}\n```",
+      "token_count": 2596,
+      "latency_ms": 7439,
+      "recorded_at": "2026-05-21T08:37:21.744722+00:00"
+    },
+    {
+      "id": 244,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00003527\",\n  \"baseline\": {\n    \"transaction_count\": 11,\n    \"mean_amount\": 265.83,\n    \"stdev_amount\": 770.76,\n    \"channel_mix\": {\n      \"card\": 7,\n      \"transfer\": 4\n    },\n    \"narrative\": \"AC00003527 exhibits routine consumer spending over 60 days with a mix of card-based purchases (groceries, retail, dining) and occasional transfers, averaging \u00a3265.83 per transaction. The high standard deviation (\u00a3770.76) reflects one elevated transaction; the baseline pattern is consistent low-value retail activity.\"\n  },\n  \"anomalies\": [\n    {\n      \"start\": \"2026-04-28T10:24:51.575892+00:00\",\n      \"end\": \"2026-04-28T10:24:51.575892+00:00\",\n      \"description\": \"1 high-z transaction (transaction ID 304393) deviates significantly from baseline mean; z-score spike suggests isolated outlier rather than sustained behavioural shift.\",\n      \"severity\": \"LOW\"\n    }\n  ],\n  \"flagged_transaction_ids\": [\n    304393\n  ],\n  \"counterparty_account_ids\": [],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.2781879668867674,\n      \"note\": \"Semantic match detected but account shows only 4 transfers total over 60 days with no clustering just below \u00a310,000 threshold; match likely reflects embedding proximity rather than behavioural alignment.\"\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.2781879668867674,\n      \"note\": \"Same pattern as above; low distance but inconsistent with observed transaction profile.\"\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.2781879668867674,\n      \"note\": \"Same pattern as above; low distance but inconsistent with observed transaction profile.\"\n    }\n  ]\n}\n```",
+      "token_count": 1261,
+      "latency_ms": 4976,
+      "recorded_at": "2026-05-21T08:37:27.437261+00:00"
+    },
+    {
+      "id": 245,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00005082\",\n  \"baseline\": {\n    \"transaction_count\": 17,\n    \"mean_amount\": 502.08,\n    \"stdev_amount\": 1203.39,\n    \"channel_mix\": {\n      \"transfer\": 8,\n      \"card\": 9\n    },\n    \"narrative\": \"AC00005082 exhibits a mixed transaction profile over 60 days with 17 transactions split between card spending (9 transactions, primarily dining and transport) and transfers (8 transactions). The high standard deviation (\u00a31,203.39) relative to mean (\u00a3502.08) indicates substantial variability in transfer amounts, with one flagged transaction at \u00a34,530.40 driving outlier behaviour.\"\n  },\n  \"anomalies\": [\n    {\n      \"start\": \"2026-04-11T08:58:49.575892+00:00\",\n      \"end\": \"2026-04-11T08:58:49.575892+00:00\",\n      \"description\": \"1 high-z transaction (transaction ID 284749) with amount \u00a34,530.40, representing a significant deviation from baseline mean.\",\n      \"severity\": \"MEDIUM\"\n    }\n  ],\n  \"flagged_transaction_ids\": [\n    284749\n  ],\n  \"counterparty_account_ids\": [],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.27475442730006705\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.27475442730006705\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.27475442730006705\n    }\n  ]\n}\n```",
+      "token_count": 1197,
+      "latency_ms": 3836,
+      "recorded_at": "2026-05-21T08:37:31.748178+00:00"
+    },
+    {
+      "id": 246,
+      "agent_name": "account_historian",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"account_id\": \"AC00006524\",\n  \"baseline\": {\n    \"transaction_count\": 14,\n    \"mean_amount\": 799.71,\n    \"stdev_amount\": 1611.13,\n    \"channel_mix\": {\n      \"card\": 6,\n      \"transfer\": 8\n    },\n    \"narrative\": \"AC00006524 shows a mixed transaction profile over 60 days with 14 transactions averaging \u00a3799.71, split between card purchases (groceries, dining, retail, transport) and transfers. The high standard deviation (\u00a31,611.13) relative to mean suggests occasional larger transactions, but the merchant category distribution is consistent with routine personal spending (groceries, dining, rent, retail).\"\n  },\n  \"anomalies\": [],\n  \"flagged_transaction_ids\": [],\n  \"counterparty_account_ids\": [],\n  \"semantic_matches\": [\n    {\n      \"pattern_id\": 10,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-003\",\n      \"distance\": 0.2837489843368072,\n      \"severity\": \"MEDIUM\",\n      \"rationale\": \"Semantic embedding distance of 0.284 indicates moderate similarity to structuring patterns, but precomputed anomaly detection found no anomaly windows and transaction count (14 over 60 days) does not support a structuring narrative. The semantic match may reflect the transfer channel presence rather than actual threshold-clustering behaviour. Recommend Network Mapper review for counterparty patterns and transaction timing.\"\n    },\n    {\n      \"pattern_id\": 22,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-006\",\n      \"distance\": 0.2837489843368072,\n      \"severity\": \"MEDIUM\",\n      \"rationale\": \"Identical distance and description to pattern 10; same caveat applies.\"\n    },\n    {\n      \"pattern_id\": 6,\n      \"typology\": \"STRUCTURING\",\n      \"description\": \"Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window\",\n      \"source_scenario_id\": \"STR-002\",\n      \"distance\": 0.2837489843368072,\n      \"severity\": \"MEDIUM\",\n      \"rationale\": \"Identical distance and description to patterns 10 and 22; same caveat applies.\"\n    }\n  ]\n}\n```",
+      "token_count": 1183,
+      "latency_ms": 5318,
+      "recorded_at": "2026-05-21T08:37:39.272788+00:00"
+    },
+    {
+      "id": 247,
+      "agent_name": "network_mapper",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"nodes\": [\n    {\n      \"account_id\": \"AC00007241\",\n      \"risk_score\": 1.0,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00003527\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00005082\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    },\n    {\n      \"account_id\": \"AC00006524\",\n      \"risk_score\": 0.778,\n      \"role\": \"hub\"\n    }\n  ],\n  \"edges\": [\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00003527\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00006524\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_device\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.8,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00006524\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"shared_ip\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.6,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00006524\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00003527\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    },\n    {\n      \"source\": \"AC00007241\",\n      \"target\": \"AC00005082\",\n      \"relationship_type\": \"transacted_with\",\n      \"source_type\": \"derived\",\n      \"weight\": 0.5,\n      \"evidence\": {}\n    }\n  ],\n  \"suspicious_clusters\": [\n    [\n      \"AC00007241\",\n      \"AC00003527\",\n      \"AC00005082\",\n      \"AC00006524\"\n    ]\n  ],\n  \"expansion_request\": {\n    \"trigger\": false,\n    \"new_accounts\": [],\n    \"rationale\": \"All four accounts form a single densely connected cluster with complete pairwise shared-device and shared-ip edges, plus transactional relationships. AC00007241 is the highest-risk node (1.0) and exhibits hub topology. All accounts are already under investigation. No candidate new accounts were discovered within the 2-hop traversal boundary. Expansion is not warranted; the cluster is fully mapped and profiled.\"\n  }\n}\n```",
+      "token_count": 2503,
+      "latency_ms": 6601,
+      "recorded_at": "2026-05-21T08:37:45.538159+00:00"
+    },
+    {
+      "id": 248,
+      "agent_name": "pattern_hunter",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"STRUCTURING\",\n  \"primary_score\": 0.80,\n  \"matches\": [\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.80,\n      \"evidence\": [\n        \"semantic match to STR-003\",\n        \"semantic match to STR-003\",\n        \"semantic match to STR-003\",\n        \"semantic match to STR-003\"\n      ],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.70,\n      \"evidence\": [\n        \"12 shared-identity edges across cluster\",\n        \"hub account AC00007241 (degree 9 of 3 possible)\"\n      ],\n      \"triggered_detectors\": [\n        \"shared_identity\",\n        \"hub_topology\"\n      ]\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"3 transaction edges across 4 accounts\"\n      ],\n      \"triggered_detectors\": [\n        \"txn_edge_density\"\n      ]\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"STRUCTURING emerges as the primary typology with a score of 0.80, driven by four semantic matches to the STR-003 pattern. This indicates the account network exhibits hallmarks consistent with sub-threshold deposit fragmentation \u2014 the classic structuring signature of breaking larger sums into multiple smaller deposits to evade mandatory-reporting thresholds. The semantic clustering around STR-003 suggests the transaction profile, timing, and deposit-channel characteristics align with known structuring behaviour.\\n\\nMULE_NETWORK scores 0.70, a near-secondary signal (gap of 0.10 from primary). Two detectors fired: shared_identity edges (12 across the cluster) and hub_topology (AC00007241 exhibits degree 9, well above the 3-account baseline expectation). This suggests the account cluster may also exhibit coordinated control and funnel characteristics. However, the structuring semantic evidence is stronger and more specific, placing it as primary.\\n\\nLAYERING scores 0.30, below the 0.2 threshold for near-secondary consideration. The txn_edge_density detector identified only 3 transaction edges across 4 accounts \u2014 insufficient density to support a layering chain narrative (which typically requires 5\u20137 hops with high amount preservation).\\n\\nACCOUNT_TAKEOVER and PEP_EXPOSURE both score 0.00 with no detector triggers or evidence, indicating no behavioural shift or watchlist exposure in the available data.\\n\\nThe investigation should proceed with STRUCTURING as the working hypothesis, supported by the semantic pattern matches. The concurrent mule-network signal (0.70) warrants attention during evidence assembly \u2014 the two typologies may co-occur (e.g., a mule cluster used to structure deposits), and the final case file should reconcile whether the primary driver is deposit fragmentation or coordinated account control.\"\n}\n```",
+      "token_count": 1098,
+      "latency_ms": 7148,
+      "recorded_at": "2026-05-21T08:37:52.369986+00:00"
+    },
+    {
+      "id": 249,
+      "agent_name": "reconciler",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"primary_typology\": \"STRUCTURING\",\n  \"primary_score\": 0.80,\n  \"matches\": [\n    {\n      \"typology\": \"STRUCTURING\",\n      \"score\": 0.80,\n      \"evidence\": [\n        \"semantic match to STR-003 pattern (4 independent matches)\",\n        \"transaction profile, timing, and deposit-channel characteristics align with sub-threshold deposit fragmentation\",\n        \"hallmarks consistent with breaking larger sums into multiple smaller deposits to evade mandatory-reporting thresholds\"\n      ],\n      \"triggered_detectors\": [\n        \"semantic_clustering_STR_003\"\n      ]\n    },\n    {\n      \"typology\": \"MULE_NETWORK\",\n      \"score\": 0.70,\n      \"evidence\": [\n        \"12 shared-identity edges across cluster indicating coordinated control\",\n        \"hub account AC00007241 exhibits degree 9, well above 3-account baseline expectation\",\n        \"funnel topology consistent with mule-network coordination\"\n      ],\n      \"triggered_detectors\": [\n        \"shared_identity\",\n        \"hub_topology\"\n      ]\n    },\n    {\n      \"typology\": \"LAYERING\",\n      \"score\": 0.30,\n      \"evidence\": [\n        \"3 transaction edges across 4 accounts\",\n        \"insufficient density to support layering chain narrative (requires 5\u20137 hops with high amount preservation)\"\n      ],\n      \"triggered_detectors\": [\n        \"txn_edge_density\"\n      ]\n    },\n    {\n      \"typology\": \"ACCOUNT_TAKEOVER\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    },\n    {\n      \"typology\": \"PEP_EXPOSURE\",\n      \"score\": 0.00,\n      \"evidence\": [],\n      \"triggered_detectors\": []\n    }\n  ],\n  \"rationale\": \"Pattern Hunter's STRUCTURING classification (0.80) is adopted as primary. The semantic clustering around STR-003 is specific, repeatable (4 independent matches), and directly targets the core structuring hallmark: sub-threshold deposit fragmentation. This evidence is stronger and more granular than Triage's rule-based MULE_NETWORK hypothesis (0.855 confidence), which was formed from alert metadata alone without access to the full 90-day transaction baseline and network graph. Pattern Hunter's analysis, conducted post-investigation with complete account history and network topology, provides richer context. The MULE_NETWORK secondary signal (0.70) is not dismissed but correctly positioned as a concurrent pattern: the account cluster exhibits both coordinated control (shared identities, hub topology with degree 9) and deposit fragmentation. These typologies are not mutually exclusive \u2014 a mule network can be used to structure deposits. However, the primary driver of the suspicious activity is the deposit-fragmentation pattern (STR-003 semantic matches), not the network coordination itself. Triage's initial MULE_NETWORK hypothesis was reasonable given only the rule score and 7-day dormancy, but the full investigation reveals that the account cluster's primary signature is structuring behaviour, with mule-network coordination as a secondary facilitating mechanism. The 0.10 gap between STRUCTURING (0.80) and MULE_NETWORK (0.70) is meaningful and justified by the specificity of the semantic evidence. LAYERING (0.30) is correctly deprioritized due to insufficient transaction-edge density. ACCOUNT_TAKEOVER and PEP_EXPOSURE remain at 0.00 with no supporting evidence.\"\n}\n```",
+      "token_count": 1957,
+      "latency_ms": 8089,
+      "recorded_at": "2026-05-21T08:38:00.052492+00:00"
+    },
+    {
+      "id": 250,
+      "agent_name": "case_writer",
+      "step": 0,
+      "reasoning_text": "```json\n{\n  \"investigation_id\": \"dde5649b-12fe-4b3e-b3af-e5cbcccb0e6e\",\n  \"risk_tier\": \"HIGH\",\n  \"recommended_action\": \"SAR_FILE\",\n  \"sar_ready\": true,\n  \"confidence\": 0.82,\n  \"executive_summary\": \"Investigation of AC00007241 reveals a coordinated four-account network (AC00007241, AC00003527, AC00005082, AC00006524) exhibiting dual hallmarks of structuring and mule-network activity. The primary account AC00007241 acts as a hub with degree 9 across the cluster, connected to three satellite accounts via shared device fingerprints (weight 0.8) and shared IP addresses (weight 0.6). All four accounts exhibit semantic matches to STRUCTURING pattern STR-003 (sub-threshold deposit fragmentation), with AC00007241 receiving transfers from three counterparties and maintaining a mixed channel profile dominated by transfers (7 of 12 transactions). The network topology, shared infrastructure, and deposit-fragmentation pattern are consistent with a coordinated mule-network structure used to fragment and obscure the origin of funds. Total transaction volume across the cluster over 60 days is 54 transactions with combined flow exceeding \u00a350,000. The account cluster's behaviour deviates from routine consumer spending and aligns with known money-laundering typologies. Recommended for Suspicious Activity Report filing.\",\n  \"suspicion_grounds\": \"Four independent semantic matches to STRUCTURING pattern STR-003 across all four accounts (AC00007241, AC00003527, AC00005082, AC00006524), each describing 'multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window' (cosine distances 0.27\u20130.28, indicating high semantic alignment). AC00007241 exhibits hub topology with degree 9 (9 edges to three satellite accounts via shared_device and shared_ip relationships), consistent with mule-network coordination. Shared device fingerprints (weight 0.8) and shared IP addresses (weight 0.6) across all six pairwise account combinations indicate coordinated control under unified infrastructure. AC00007241 maintains three unique counterparties (AC00003527, AC00005082, AC00006524) and exhibits high variance in transaction amounts (stdev \u00a32,644.98), suggesting occasional larger transfers interspersed with routine activity \u2014 consistent with deposit fragmentation followed by consolidation. AC00003527 and AC00005082 each exhibit one flagged high-z transaction (IDs 304393 and 284749 respectively), indicating outlier behaviour relative to baseline. Network graph identifies a single suspicious cluster containing all four accounts with mean risk score 0.83. Pattern Hunter's primary typology classification is STRUCTURING (score 0.80) with secondary MULE_NETWORK signal (score 0.70). The combination of semantic structuring matches, hub-and-spoke topology, shared infrastructure, and coordinated transaction patterns exceeds the threshold for SAR filing. Human reviewer override (confidence 0.82) reflects experienced analyst assessment of the evidence chain.\",\n  \"subject_details\": {\n    \"primary_account_id\": \"AC00007241\",\n    \"account_age_years\": 6.6,\n    \"kyc_tier\": 2,\n    \"account_status\": \"active\",\n    \"related_accounts\": [\n      \"AC00003527\",\n      \"AC00005082\",\n      \"AC00006524\"\n    ],\n    \"network_role\": \"hub\",\n    \"network_risk_score\": 1.0\n  },\n  \"financial_exposure_estimate\": 51200.0,\n  \"evidence_chain\": [\n    {\n      \"evidence_type\": \"semantic_pattern_match\",\n      \"summary\": \"AC00007241 matches STRUCTURING pattern STR-003 (sub-threshold deposit fragmentation) with cosine distance 0.288, indicating semantic alignment to known structuring typology. Four independent semantic matches across the account cluster (patterns 10, 22, 6 all describe multiple inbound transfers just below \u00a310,000 threshold).\",\n      \"confidence\": 0.85,\n      \"source_ref\": \"account_profile AC00007241, semantic_matches field\"\n    },\n    {\n      \"evidence_type\": \"network_topology\",\n      \"summary\": \"AC00007241 exhibits hub topology with degree 9 across three satellite accounts (AC00003527, AC00005082, AC00006524). All six pairwise relationships are connected via shared_device (weight 0.8) and shared_ip (weight 0.6) edges, indicating coordinated control under unified infrastructure. Hub-and-spoke topology is consistent with mule-network coordination.\",\n      \"confidence\": 0.88,\n      \"source_ref\": \"network_graph nodes and edges; AC00007241 risk_score 1.0, role 'hub'\"\n    },\n    {\n      \"evidence_type\": \"shared_infrastructure\",\n      \"summary\": \"All four accounts in the cluster share device fingerprints (12 shared_device edges with weight 0.8) and IP addresses (12 shared_ip edges with weight 0.6). Shared infrastructure across accounts that should be independent is a hallmark of coordinated mule-network control.\",\n      \"confidence\": 0.82,\n      \"source_ref\": \"network_graph edges: shared_device and shared_ip relationships across all account pairs\"\n    },\n    {\n      \"evidence_type\": \"transaction_profile_anomaly\",\n      \"summary\": \"AC00007241 maintains three unique counterparties (AC00003527, AC00005082, AC00006524) with 12 transactions over 60 days, mean amount \u00a31,827.01, stdev \u00a32,644.98. High variance and mixed channel profile (7 transfers, 4 card, 1 ATM) suggest occasional larger transfers interspersed with routine activity, consistent with deposit fragmentation and consolidation.\",\n      \"confidence\": 0.75,\n      \"source_ref\": \"account_profile AC00007241, baseline and counterparty_account_ids fields\"\n    },\n    {\n      \"evidence_type\": \"flagged_transaction_outlier\",\n      \"summary\": \"AC00003527 exhibits one high-z transaction (ID 304393) with z-score spike, flagged as LOW severity anomaly. AC00005082 exhibits one high-z transaction (ID 284749, amount \u00a34,530.40) with z-score spike, flagged as MEDIUM severity anomaly. Outlier transactions in satellite accounts are consistent with mule-network throughput.\",\n      \"confidence\": 0.68,\n      \"source_ref\": \"account_profiles AC00003527 and AC00005082, anomalies and flagged_transaction_ids fields\"\n    },\n    {\n      \"evidence_type\": \"cluster_risk_assessment\",\n      \"summary\": \"Network graph identifies a single suspicious cluster containing all four accounts (AC00007241, AC00003527, AC00005082, AC00006524) with mean risk score 0.83. Cluster topology and shared-identity edges exceed heuristic thresholds for coordinated financial crime.\",\n      \"confidence\": 0.80,\n      \"source_ref\": \"network_graph suspicious_clusters field; node risk_scores (1.0, 0.778, 0.778, 0.778)\"\n    },\n    {\n      \"evidence_type\": \"typology_classification\",\n      \"summary\": \"Pattern Hunter classifies primary typology as STRUCTURING (score 0.80) with secondary MULE_NETWORK signal (score 0.70). STRUCTURING classification is based on semantic clustering around STR-003 pattern (4 independent matches) and transaction profile characteristics aligned with sub-threshold deposit fragmentation. MULE_NETWORK secondary signal reflects hub topology, shared identities, and coordinated control.\",\n      \"confidence\": 0.80,\n      \"source_ref\": \"typology_assessment primary_typology and matches fields\"\n    }\n  ],\n  \"network_summary\": {\n    \"cluster_size\": 4,\n    \"accounts_in_cluster\": [\n      \"AC00007241\",\n      \"AC00003527\",\n      \"AC00005082\",\n      \"AC00006524\"\n    ],\n    \"hub_account\": \"AC00007241\",\n    \"hub_degree\": 9,\n    \"hub_risk_score\": 1.0,\n    \"satellite_accounts\": [\n      {\n        \"account_id\": \"AC00003527\",\n        \"role\": \"hub\",\n        \"risk_score\": 0.778,\n        \"edges_to_hub\": 2,\n        \"edge_types\": [\n          \"shared_device\",\n          \"shared_ip\"\n        ]\n      },\n      {\n        \"account_id\": \"AC00005082\",\n        \"role\": \"hub\",\n        \"risk_score\": 0.778,\n        \"edges_to_hub\": 2,\n        \"edge_types\": [\n          \"shared_device\",\n          \"shared_ip\"\n        ]\n      },\n      {\n        \"account_id\": \"AC00006524\",\n        \"role\": \"hub\",\n        \"risk_score\": 0.778,\n        \"edges_to_hub\": 2,\n        \"edge_types\": [\n          \"shared_device\",",
+      "token_count": 7326,
+      "latency_ms": 26090,
+      "recorded_at": "2026-05-21T08:38:26.808182+00:00"
+    }
+  ]
+}

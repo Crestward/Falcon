@@ -1,0 +1,1905 @@
+{
+  "generated_at": "2026-04-28T23:17:25.943949+00:00",
+  "alerts": [
+    {
+      "alert_id": "ALERT0001",
+      "is_genuine": true,
+      "scenario_id": "LAY-002",
+      "expected_typology": "LAYERING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00003024",
+        "AC00001621",
+        "AC00006935",
+        "AC00009438",
+        "AC00004476"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~32 minutes",
+        "Amount preserved within 16.0% across chain"
+      ]
+    },
+    {
+      "alert_id": "ALERT0002",
+      "is_genuine": true,
+      "scenario_id": "LAY-003",
+      "expected_typology": "LAYERING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00004095",
+        "AC00003582",
+        "AC00007170",
+        "AC00000247",
+        "AC00008954"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~38 minutes",
+        "Amount preserved within 36.0% across chain"
+      ]
+    },
+    {
+      "alert_id": "ALERT0003",
+      "is_genuine": true,
+      "scenario_id": "MUL-009",
+      "expected_typology": "MULE_NETWORK",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00007241",
+        "AC00003527",
+        "AC00006524",
+        "AC00005082"
+      ],
+      "expected_evidence": [
+        "4 accounts share device 9556f015",
+        "Shared IP 136.206.153.145 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ]
+    },
+    {
+      "alert_id": "ALERT0004",
+      "is_genuine": true,
+      "scenario_id": "LAY-008",
+      "expected_typology": "LAYERING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00008633",
+        "AC00005988",
+        "AC00005121",
+        "AC00007866"
+      ],
+      "expected_evidence": [
+        "Chain of 4 accounts traversed",
+        "Inter-hop interval median ~38 minutes",
+        "Amount preserved within 19.8% across chain"
+      ]
+    },
+    {
+      "alert_id": "ALERT0005",
+      "is_genuine": true,
+      "scenario_id": "PEP-004",
+      "expected_typology": "PEP_EXPOSURE",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00008237"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Ellie White on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ]
+    },
+    {
+      "alert_id": "ALERT0006",
+      "is_genuine": true,
+      "scenario_id": "STR-002",
+      "expected_typology": "STRUCTURING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00007631",
+        "AC00004466",
+        "AC00007216",
+        "AC00005295",
+        "AC00008947",
+        "AC00009171",
+        "AC00008530",
+        "AC00005765"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ]
+    },
+    {
+      "alert_id": "ALERT0007",
+      "is_genuine": true,
+      "scenario_id": "PEP-001",
+      "expected_typology": "PEP_EXPOSURE",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00001733"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Jamie Roberts on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ]
+    },
+    {
+      "alert_id": "ALERT0008",
+      "is_genuine": true,
+      "scenario_id": "STR-006",
+      "expected_typology": "STRUCTURING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00007363",
+        "AC00005077",
+        "AC00006889",
+        "AC00009085",
+        "AC00001567",
+        "AC00007700",
+        "AC00005516"
+      ],
+      "expected_evidence": [
+        "6 near-threshold credits within 72h",
+        "Counterparty diversity: 6 distinct sources",
+        "Account opened within 60 days of pattern"
+      ]
+    },
+    {
+      "alert_id": "ALERT0009",
+      "is_genuine": true,
+      "scenario_id": "PEP-005",
+      "expected_typology": "PEP_EXPOSURE",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00007927"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Trevor Davies on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ]
+    },
+    {
+      "alert_id": "ALERT0010",
+      "is_genuine": true,
+      "scenario_id": "LAY-006",
+      "expected_typology": "LAYERING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00002152",
+        "AC00008523",
+        "AC00000266",
+        "AC00000859",
+        "AC00002417"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~146 minutes",
+        "Amount preserved within 29.2% across chain"
+      ]
+    },
+    {
+      "alert_id": "ALERT0011",
+      "is_genuine": true,
+      "scenario_id": "ATO-004",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00002792"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 06238c83 not present in 90d history",
+        "New geography PH, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ]
+    },
+    {
+      "alert_id": "ALERT0012",
+      "is_genuine": true,
+      "scenario_id": "STR-007",
+      "expected_typology": "STRUCTURING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00006188",
+        "AC00003993",
+        "AC00004802",
+        "AC00001689",
+        "AC00003806",
+        "AC00002455",
+        "AC00002987",
+        "AC00009788"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ]
+    },
+    {
+      "alert_id": "ALERT0013",
+      "is_genuine": true,
+      "scenario_id": "PEP-009",
+      "expected_typology": "PEP_EXPOSURE",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00004590"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Rachel Lee on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ]
+    },
+    {
+      "alert_id": "ALERT0014",
+      "is_genuine": true,
+      "scenario_id": "STR-005",
+      "expected_typology": "STRUCTURING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00002966",
+        "AC00001161",
+        "AC00006025",
+        "AC00007996",
+        "AC00006824"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ]
+    },
+    {
+      "alert_id": "ALERT0015",
+      "is_genuine": true,
+      "scenario_id": "ATO-003",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00001727"
+      ],
+      "expected_evidence": [
+        "Device fingerprint ca74191e not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ]
+    },
+    {
+      "alert_id": "ALERT0016",
+      "is_genuine": true,
+      "scenario_id": "STR-004",
+      "expected_typology": "STRUCTURING",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00009010",
+        "AC00008421",
+        "AC00001680",
+        "AC00002848",
+        "AC00006211"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ]
+    },
+    {
+      "alert_id": "ALERT0017",
+      "is_genuine": true,
+      "scenario_id": "MUL-005",
+      "expected_typology": "MULE_NETWORK",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00008730",
+        "AC00003292",
+        "AC00008985",
+        "AC00007462",
+        "AC00006398"
+      ],
+      "expected_evidence": [
+        "5 accounts share device 0d6aeb55",
+        "Shared IP 16.212.252.77 across cluster",
+        "Funnel pattern: 4 sources \u2192 1 hub"
+      ]
+    },
+    {
+      "alert_id": "ALERT0018",
+      "is_genuine": true,
+      "scenario_id": "ATO-009",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00007742"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 6a5b4ea5 not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ]
+    },
+    {
+      "alert_id": "ALERT0019",
+      "is_genuine": true,
+      "scenario_id": "ATO-002",
+      "expected_typology": "ACCOUNT_TAKEOVER",
+      "expected_verdict": "REVIEW",
+      "expected_network_accounts": [
+        "AC00001798"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 33f58874 not present in 90d history",
+        "New geography UA, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ]
+    },
+    {
+      "alert_id": "ALERT0020",
+      "is_genuine": true,
+      "scenario_id": "MUL-006",
+      "expected_typology": "MULE_NETWORK",
+      "expected_verdict": "SAR_FILE",
+      "expected_network_accounts": [
+        "AC00000063",
+        "AC00005941",
+        "AC00005511",
+        "AC00004773",
+        "AC00000426",
+        "AC00006005",
+        "AC00008372"
+      ],
+      "expected_evidence": [
+        "7 accounts share device b3e4f678",
+        "Shared IP 212.24.66.82 across cluster",
+        "Funnel pattern: 6 sources \u2192 1 hub"
+      ]
+    },
+    {
+      "alert_id": "ALERT0021",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0022",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0023",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0024",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0025",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0026",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0027",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0028",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0029",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    },
+    {
+      "alert_id": "ALERT0030",
+      "is_genuine": false,
+      "scenario_id": null,
+      "expected_typology": "NONE",
+      "expected_verdict": "AUTO_CLOSE",
+      "expected_network_accounts": [],
+      "expected_evidence": []
+    }
+  ],
+  "scenarios": [
+    {
+      "scenario_id": "STR-001",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00009010",
+      "accounts_involved": [
+        "AC00009010",
+        "AC00008341",
+        "AC00005314",
+        "AC00008200",
+        "AC00009404"
+      ],
+      "pattern_descriptions": [
+        "4 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500001,
+        500002,
+        500003,
+        500004
+      ]
+    },
+    {
+      "scenario_id": "STR-002",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00007631",
+      "accounts_involved": [
+        "AC00007631",
+        "AC00004466",
+        "AC00007216",
+        "AC00005295",
+        "AC00008947",
+        "AC00009171",
+        "AC00008530",
+        "AC00005765"
+      ],
+      "pattern_descriptions": [
+        "7 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500005,
+        500006,
+        500007,
+        500008,
+        500009,
+        500010,
+        500011
+      ]
+    },
+    {
+      "scenario_id": "STR-003",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00005335",
+      "accounts_involved": [
+        "AC00005335",
+        "AC00005521",
+        "AC00007718",
+        "AC00006356",
+        "AC00001028",
+        "AC00008497",
+        "AC00007532",
+        "AC00009021"
+      ],
+      "pattern_descriptions": [
+        "7 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500012,
+        500013,
+        500014,
+        500015,
+        500016,
+        500017,
+        500018
+      ]
+    },
+    {
+      "scenario_id": "STR-004",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00009010",
+      "accounts_involved": [
+        "AC00009010",
+        "AC00008421",
+        "AC00001680",
+        "AC00002848",
+        "AC00006211"
+      ],
+      "pattern_descriptions": [
+        "4 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500019,
+        500020,
+        500021,
+        500022
+      ]
+    },
+    {
+      "scenario_id": "STR-005",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00002966",
+      "accounts_involved": [
+        "AC00002966",
+        "AC00001161",
+        "AC00006025",
+        "AC00007996",
+        "AC00006824"
+      ],
+      "pattern_descriptions": [
+        "4 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500023,
+        500024,
+        500025,
+        500026
+      ]
+    },
+    {
+      "scenario_id": "STR-006",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00007363",
+      "accounts_involved": [
+        "AC00007363",
+        "AC00005077",
+        "AC00006889",
+        "AC00009085",
+        "AC00001567",
+        "AC00007700",
+        "AC00005516"
+      ],
+      "pattern_descriptions": [
+        "6 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "6 near-threshold credits within 72h",
+        "Counterparty diversity: 6 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500027,
+        500028,
+        500029,
+        500030,
+        500031,
+        500032
+      ]
+    },
+    {
+      "scenario_id": "STR-007",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00006188",
+      "accounts_involved": [
+        "AC00006188",
+        "AC00003993",
+        "AC00004802",
+        "AC00001689",
+        "AC00003806",
+        "AC00002455",
+        "AC00002987",
+        "AC00009788"
+      ],
+      "pattern_descriptions": [
+        "7 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500033,
+        500034,
+        500035,
+        500036,
+        500037,
+        500038,
+        500039
+      ]
+    },
+    {
+      "scenario_id": "STR-008",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00005509",
+      "accounts_involved": [
+        "AC00005509",
+        "AC00005461",
+        "AC00004997",
+        "AC00003217",
+        "AC00003366",
+        "AC00005736"
+      ],
+      "pattern_descriptions": [
+        "5 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "5 near-threshold credits within 72h",
+        "Counterparty diversity: 5 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500040,
+        500041,
+        500042,
+        500043,
+        500044
+      ]
+    },
+    {
+      "scenario_id": "STR-009",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00003887",
+      "accounts_involved": [
+        "AC00003887",
+        "AC00001531",
+        "AC00004087",
+        "AC00002503",
+        "AC00002487",
+        "AC00001565",
+        "AC00007602",
+        "AC00001805"
+      ],
+      "pattern_descriptions": [
+        "7 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "7 near-threshold credits within 72h",
+        "Counterparty diversity: 7 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500045,
+        500046,
+        500047,
+        500048,
+        500049,
+        500050,
+        500051
+      ]
+    },
+    {
+      "scenario_id": "STR-010",
+      "typology": "STRUCTURING",
+      "target_account_id": "AC00001820",
+      "accounts_involved": [
+        "AC00001820",
+        "AC00001862",
+        "AC00003465",
+        "AC00005996",
+        "AC00000789"
+      ],
+      "pattern_descriptions": [
+        "4 deposits of \u00a39,300-\u00a39,900 within 72 hours from distinct counterparties to a personal account opened in the last 60 days",
+        "Multiple inbound transfers each just below the \u00a310,000 reporting threshold from unrelated counterparties within a short window",
+        "Cluster of credits sized to evade currency transaction reporting, originating from accounts with no prior relationship to the receiver",
+        "Recently opened personal account receives several near-threshold deposits over a few days from different sources"
+      ],
+      "expected_evidence": [
+        "4 near-threshold credits within 72h",
+        "Counterparty diversity: 4 distinct sources",
+        "Account opened within 60 days of pattern"
+      ],
+      "transaction_ids": [
+        500052,
+        500053,
+        500054,
+        500055
+      ]
+    },
+    {
+      "scenario_id": "LAY-001",
+      "typology": "LAYERING",
+      "target_account_id": "AC00007744",
+      "accounts_involved": [
+        "AC00007744",
+        "AC00001507",
+        "AC00005404",
+        "AC00000653"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 4 accounts in under 12 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 4 accounts traversed",
+        "Inter-hop interval median ~73 minutes",
+        "Amount preserved within 16.1% across chain"
+      ],
+      "transaction_ids": [
+        500056,
+        500058,
+        500060
+      ]
+    },
+    {
+      "scenario_id": "LAY-002",
+      "typology": "LAYERING",
+      "target_account_id": "AC00003024",
+      "accounts_involved": [
+        "AC00003024",
+        "AC00001621",
+        "AC00006935",
+        "AC00009438",
+        "AC00004476"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~32 minutes",
+        "Amount preserved within 16.0% across chain"
+      ],
+      "transaction_ids": [
+        500062,
+        500064,
+        500066,
+        500068
+      ]
+    },
+    {
+      "scenario_id": "LAY-003",
+      "typology": "LAYERING",
+      "target_account_id": "AC00004095",
+      "accounts_involved": [
+        "AC00004095",
+        "AC00003582",
+        "AC00007170",
+        "AC00000247",
+        "AC00008954"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~38 minutes",
+        "Amount preserved within 36.0% across chain"
+      ],
+      "transaction_ids": [
+        500070,
+        500072,
+        500074,
+        500076
+      ]
+    },
+    {
+      "scenario_id": "LAY-004",
+      "typology": "LAYERING",
+      "target_account_id": "AC00005018",
+      "accounts_involved": [
+        "AC00005018",
+        "AC00001213",
+        "AC00007608",
+        "AC00006949",
+        "AC00003365"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~98 minutes",
+        "Amount preserved within 37.0% across chain"
+      ],
+      "transaction_ids": [
+        500078,
+        500080,
+        500082,
+        500084
+      ]
+    },
+    {
+      "scenario_id": "LAY-005",
+      "typology": "LAYERING",
+      "target_account_id": "AC00002420",
+      "accounts_involved": [
+        "AC00002420",
+        "AC00006170",
+        "AC00001410",
+        "AC00006938",
+        "AC00009181",
+        "AC00006326"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 6 accounts in under 20 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 6 accounts traversed",
+        "Inter-hop interval median ~102 minutes",
+        "Amount preserved within 45.5% across chain"
+      ],
+      "transaction_ids": [
+        500086,
+        500088,
+        500090,
+        500092,
+        500094
+      ]
+    },
+    {
+      "scenario_id": "LAY-006",
+      "typology": "LAYERING",
+      "target_account_id": "AC00002152",
+      "accounts_involved": [
+        "AC00002152",
+        "AC00008523",
+        "AC00000266",
+        "AC00000859",
+        "AC00002417"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~146 minutes",
+        "Amount preserved within 29.2% across chain"
+      ],
+      "transaction_ids": [
+        500096,
+        500098,
+        500100,
+        500102
+      ]
+    },
+    {
+      "scenario_id": "LAY-007",
+      "typology": "LAYERING",
+      "target_account_id": "AC00007010",
+      "accounts_involved": [
+        "AC00007010",
+        "AC00005729",
+        "AC00001820",
+        "AC00003137"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 4 accounts in under 12 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 4 accounts traversed",
+        "Inter-hop interval median ~132 minutes",
+        "Amount preserved within 14.6% across chain"
+      ],
+      "transaction_ids": [
+        500104,
+        500106,
+        500108
+      ]
+    },
+    {
+      "scenario_id": "LAY-008",
+      "typology": "LAYERING",
+      "target_account_id": "AC00008633",
+      "accounts_involved": [
+        "AC00008633",
+        "AC00005988",
+        "AC00005121",
+        "AC00007866"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 4 accounts in under 12 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 4 accounts traversed",
+        "Inter-hop interval median ~38 minutes",
+        "Amount preserved within 19.8% across chain"
+      ],
+      "transaction_ids": [
+        500110,
+        500112,
+        500114
+      ]
+    },
+    {
+      "scenario_id": "LAY-009",
+      "typology": "LAYERING",
+      "target_account_id": "AC00002528",
+      "accounts_involved": [
+        "AC00002528",
+        "AC00000490",
+        "AC00001208",
+        "AC00000659",
+        "AC00002198"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~37 minutes",
+        "Amount preserved within 17.7% across chain"
+      ],
+      "transaction_ids": [
+        500116,
+        500118,
+        500120,
+        500122
+      ]
+    },
+    {
+      "scenario_id": "LAY-010",
+      "typology": "LAYERING",
+      "target_account_id": "AC00004637",
+      "accounts_involved": [
+        "AC00004637",
+        "AC00004366",
+        "AC00001529",
+        "AC00002211",
+        "AC00004741"
+      ],
+      "pattern_descriptions": [
+        "Funds move through 5 accounts in under 16 hours, with each hop reducing the amount by 1-15% to obscure origin",
+        "Rapid sequential transfers across a chain of three or more accounts within a short window with no apparent commercial purpose",
+        "Onward-transfer pattern: a credit is followed within minutes-to-hours by a near-equivalent debit to a fresh counterparty",
+        "Velocity of movement and absence of business rationale across multiple intermediary accounts"
+      ],
+      "expected_evidence": [
+        "Chain of 5 accounts traversed",
+        "Inter-hop interval median ~102 minutes",
+        "Amount preserved within 28.4% across chain"
+      ],
+      "transaction_ids": [
+        500124,
+        500126,
+        500128,
+        500130
+      ]
+    },
+    {
+      "scenario_id": "ATO-001",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00009127",
+      "accounts_involved": [
+        "AC00009127"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from NG, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint bbfc640c not present in 90d history",
+        "New geography NG, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500132,
+        500133,
+        500134,
+        500135,
+        500136,
+        500137
+      ]
+    },
+    {
+      "scenario_id": "ATO-002",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00001798",
+      "accounts_involved": [
+        "AC00001798"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from UA, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 33f58874 not present in 90d history",
+        "New geography UA, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500138,
+        500139,
+        500140,
+        500141,
+        500142,
+        500143,
+        500144,
+        500145,
+        500146,
+        500147,
+        500148,
+        500149
+      ]
+    },
+    {
+      "scenario_id": "ATO-003",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00001727",
+      "accounts_involved": [
+        "AC00001727"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from RO, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint ca74191e not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500150,
+        500151,
+        500152,
+        500153,
+        500154,
+        500155,
+        500156,
+        500157,
+        500158
+      ]
+    },
+    {
+      "scenario_id": "ATO-004",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00002792",
+      "accounts_involved": [
+        "AC00002792"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from PH, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 06238c83 not present in 90d history",
+        "New geography PH, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500159,
+        500160,
+        500161,
+        500162,
+        500163,
+        500164
+      ]
+    },
+    {
+      "scenario_id": "ATO-005",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00008116",
+      "accounts_involved": [
+        "AC00008116"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from UA, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 6e2cef53 not present in 90d history",
+        "New geography UA, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500165,
+        500166,
+        500167,
+        500168,
+        500169,
+        500170,
+        500171,
+        500172
+      ]
+    },
+    {
+      "scenario_id": "ATO-006",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00000234",
+      "accounts_involved": [
+        "AC00000234"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from RO, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint ff204e96 not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500173,
+        500174,
+        500175,
+        500176,
+        500177,
+        500178,
+        500179,
+        500180,
+        500181,
+        500182
+      ]
+    },
+    {
+      "scenario_id": "ATO-007",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00008571",
+      "accounts_involved": [
+        "AC00008571"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from UA, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint be6f423a not present in 90d history",
+        "New geography UA, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500183,
+        500184,
+        500185,
+        500186,
+        500187,
+        500188,
+        500189
+      ]
+    },
+    {
+      "scenario_id": "ATO-008",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00004857",
+      "accounts_involved": [
+        "AC00004857"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from RO, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 40148de0 not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500190,
+        500191,
+        500192,
+        500193,
+        500194,
+        500195,
+        500196,
+        500197,
+        500198,
+        500199,
+        500200,
+        500201
+      ]
+    },
+    {
+      "scenario_id": "ATO-009",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00007742",
+      "accounts_involved": [
+        "AC00007742"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from RO, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint 6a5b4ea5 not present in 90d history",
+        "New geography RO, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500202,
+        500203,
+        500204,
+        500205,
+        500206,
+        500207,
+        500208
+      ]
+    },
+    {
+      "scenario_id": "ATO-010",
+      "typology": "ACCOUNT_TAKEOVER",
+      "target_account_id": "AC00000659",
+      "accounts_involved": [
+        "AC00000659"
+      ],
+      "pattern_descriptions": [
+        "Sharp behavioural shift in last 48h: card-not-present spend from PH, new device fingerprint, merchant categories absent from 90-day baseline",
+        "Sudden burst of foreign card-not-present transactions to high-risk merchant categories on an account with stable historical profile",
+        "Device fingerprint and IP geolocation diverge from established baseline immediately before a high-velocity spend pattern",
+        "Behavioural change-point: long-tenured account begins transacting in luxury goods, crypto, or gift cards from a new geography"
+      ],
+      "expected_evidence": [
+        "Device fingerprint e14493ff not present in 90d history",
+        "New geography PH, baseline GB",
+        "Merchant category shift toward high-risk categories"
+      ],
+      "transaction_ids": [
+        500209,
+        500210,
+        500211,
+        500212,
+        500213,
+        500214,
+        500215,
+        500216
+      ]
+    },
+    {
+      "scenario_id": "MUL-001",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00009410",
+      "accounts_involved": [
+        "AC00009410",
+        "AC00000881",
+        "AC00008084",
+        "AC00001904"
+      ],
+      "pattern_descriptions": [
+        "4 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "4 accounts share device ab8f5b97",
+        "Shared IP 220.3.33.255 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500217,
+        500218,
+        500219
+      ]
+    },
+    {
+      "scenario_id": "MUL-002",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00006522",
+      "accounts_involved": [
+        "AC00006522",
+        "AC00007274",
+        "AC00000309",
+        "AC00003297"
+      ],
+      "pattern_descriptions": [
+        "4 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "4 accounts share device a10b7fd1",
+        "Shared IP 142.175.1.1 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500220,
+        500221,
+        500222
+      ]
+    },
+    {
+      "scenario_id": "MUL-003",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00008333",
+      "accounts_involved": [
+        "AC00008333",
+        "AC00000699",
+        "AC00005828",
+        "AC00004165",
+        "AC00006685",
+        "AC00000591",
+        "AC00001957"
+      ],
+      "pattern_descriptions": [
+        "7 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "7 accounts share device a1b15e64",
+        "Shared IP 30.241.42.98 across cluster",
+        "Funnel pattern: 6 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500223,
+        500224,
+        500225,
+        500226,
+        500227,
+        500228
+      ]
+    },
+    {
+      "scenario_id": "MUL-004",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00007818",
+      "accounts_involved": [
+        "AC00007818",
+        "AC00005648",
+        "AC00005676",
+        "AC00008748"
+      ],
+      "pattern_descriptions": [
+        "4 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "4 accounts share device 47d20770",
+        "Shared IP 71.232.178.207 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500229,
+        500230,
+        500231
+      ]
+    },
+    {
+      "scenario_id": "MUL-005",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00008730",
+      "accounts_involved": [
+        "AC00008730",
+        "AC00003292",
+        "AC00008985",
+        "AC00007462",
+        "AC00006398"
+      ],
+      "pattern_descriptions": [
+        "5 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "5 accounts share device 0d6aeb55",
+        "Shared IP 16.212.252.77 across cluster",
+        "Funnel pattern: 4 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500232,
+        500233,
+        500234,
+        500235
+      ]
+    },
+    {
+      "scenario_id": "MUL-006",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00000063",
+      "accounts_involved": [
+        "AC00000063",
+        "AC00005941",
+        "AC00005511",
+        "AC00004773",
+        "AC00000426",
+        "AC00006005",
+        "AC00008372"
+      ],
+      "pattern_descriptions": [
+        "7 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "7 accounts share device b3e4f678",
+        "Shared IP 212.24.66.82 across cluster",
+        "Funnel pattern: 6 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500236,
+        500237,
+        500238,
+        500239,
+        500240,
+        500241
+      ]
+    },
+    {
+      "scenario_id": "MUL-007",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00000366",
+      "accounts_involved": [
+        "AC00000366",
+        "AC00004717",
+        "AC00008562",
+        "AC00005087"
+      ],
+      "pattern_descriptions": [
+        "4 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "4 accounts share device 7afc282e",
+        "Shared IP 74.203.106.33 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500242,
+        500243,
+        500244
+      ]
+    },
+    {
+      "scenario_id": "MUL-008",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00003424",
+      "accounts_involved": [
+        "AC00003424",
+        "AC00007365",
+        "AC00007464",
+        "AC00007511",
+        "AC00003060",
+        "AC00006607",
+        "AC00002090"
+      ],
+      "pattern_descriptions": [
+        "7 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "7 accounts share device 94e0c76e",
+        "Shared IP 184.27.115.36 across cluster",
+        "Funnel pattern: 6 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500245,
+        500246,
+        500247,
+        500248,
+        500249,
+        500250
+      ]
+    },
+    {
+      "scenario_id": "MUL-009",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00007241",
+      "accounts_involved": [
+        "AC00007241",
+        "AC00003527",
+        "AC00006524",
+        "AC00005082"
+      ],
+      "pattern_descriptions": [
+        "4 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "4 accounts share device 9556f015",
+        "Shared IP 136.206.153.145 across cluster",
+        "Funnel pattern: 3 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500251,
+        500252,
+        500253
+      ]
+    },
+    {
+      "scenario_id": "MUL-010",
+      "typology": "MULE_NETWORK",
+      "target_account_id": "AC00002811",
+      "accounts_involved": [
+        "AC00002811",
+        "AC00005133",
+        "AC00002531",
+        "AC00000827",
+        "AC00006634",
+        "AC00004536"
+      ],
+      "pattern_descriptions": [
+        "6 accounts share the same device fingerprint and primary IP, with funds consolidating into one account over 1-2 weeks",
+        "Multiple personal accounts opened on the same device fingerprint, exhibiting funnel-shaped transaction flow toward a single beneficiary",
+        "Cluster of accounts with overlapping technical signals (device, IP) and small inbound credits that consolidate into a hub account",
+        "Mule-network signature: dense graph of accounts linked by shared device/IP, low individual transaction values, hub-and-spoke money flow"
+      ],
+      "expected_evidence": [
+        "6 accounts share device 6621f022",
+        "Shared IP 222.233.243.175 across cluster",
+        "Funnel pattern: 5 sources \u2192 1 hub"
+      ],
+      "transaction_ids": [
+        500254,
+        500255,
+        500256,
+        500257,
+        500258
+      ]
+    },
+    {
+      "scenario_id": "PEP-001",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00001733",
+      "accounts_involved": [
+        "AC00001733"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Jamie Roberts' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Jamie Roberts on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500259,
+        500260,
+        500261,
+        500262
+      ]
+    },
+    {
+      "scenario_id": "PEP-002",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00003419",
+      "accounts_involved": [
+        "AC00003419"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Dr Helen Thomas' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Dr Helen Thomas on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500263,
+        500264,
+        500265,
+        500266
+      ]
+    },
+    {
+      "scenario_id": "PEP-003",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00006890",
+      "accounts_involved": [
+        "AC00006890"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Mr Jason Thorpe' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Mr Jason Thorpe on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500267,
+        500268,
+        500269,
+        500270
+      ]
+    },
+    {
+      "scenario_id": "PEP-004",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00008237",
+      "accounts_involved": [
+        "AC00008237"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Ellie White' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Ellie White on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500271,
+        500272,
+        500273,
+        500274,
+        500275
+      ]
+    },
+    {
+      "scenario_id": "PEP-005",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00007927",
+      "accounts_involved": [
+        "AC00007927"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Trevor Davies' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Trevor Davies on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500276,
+        500277,
+        500278,
+        500279
+      ]
+    },
+    {
+      "scenario_id": "PEP-006",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00007242",
+      "accounts_involved": [
+        "AC00007242"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Steven Jones-Phillips' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Steven Jones-Phillips on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500280,
+        500281,
+        500282,
+        500283,
+        500284
+      ]
+    },
+    {
+      "scenario_id": "PEP-007",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00007827",
+      "accounts_involved": [
+        "AC00007827"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Jay Randall' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Jay Randall on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500285,
+        500286,
+        500287,
+        500288
+      ]
+    },
+    {
+      "scenario_id": "PEP-008",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00004724",
+      "accounts_involved": [
+        "AC00004724"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Timothy Jordan' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Timothy Jordan on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500289,
+        500290,
+        500291,
+        500292,
+        500293,
+        500294
+      ]
+    },
+    {
+      "scenario_id": "PEP-009",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00004590",
+      "accounts_involved": [
+        "AC00004590"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Rachel Lee' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Rachel Lee on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500295,
+        500296,
+        500297,
+        500298,
+        500299,
+        500300
+      ]
+    },
+    {
+      "scenario_id": "PEP-010",
+      "typology": "PEP_EXPOSURE",
+      "target_account_id": "AC00007431",
+      "accounts_involved": [
+        "AC00007431"
+      ],
+      "pattern_descriptions": [
+        "Business account with declared beneficial owner 'Dr Steven James' present on PEP watchlist, receiving large international wires",
+        "Corporate account where ultimate beneficial owner matches a politically exposed person record, with material inbound wire activity",
+        "Beneficial owner identified on sanctions or PEP list, business account showing five- to six-figure inbound international payments",
+        "PEP-exposure signature: beneficial owner watchlist hit combined with high-value cross-border credits to a UK business entity"
+      ],
+      "expected_evidence": [
+        "Beneficial owner Dr Steven James on PEP list",
+        "Material inbound international wires",
+        "Business account, professional_services category"
+      ],
+      "transaction_ids": [
+        500301,
+        500302,
+        500303,
+        500304,
+        500305
+      ]
+    }
+  ]
+}
