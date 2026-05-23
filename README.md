@@ -181,3 +181,7 @@ falcon/
 └── tests/            88 unit tests across phases 0–4
 ```
 
+## License
+
+MIT — see [LICENSE](LICENSE).
+
